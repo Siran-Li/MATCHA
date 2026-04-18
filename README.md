@@ -1,12 +1,8 @@
 # MATCHA — Matching Text via Contrastive Semantic Alignment
 
-MATCHA (Matching Text via Contrastive Semantic Alignment) is a **contrastive learning framework for semantic text representation and evaluation**. It is designed to overcome a key limitation of existing similarity metrics: their inability to reliably distinguish **semantic agreement from contradiction**.
+# MATCHA — Matching Text via Contrastive Semantic Alignment
 
-Unlike traditional lexical metrics (e.g., ROUGE) or embedding-based methods (e.g., BERTScore), MATCHA learns a **dual-view semantic space** where:
-- Semantically aligned texts are pulled closer
-- Contradictory or irrelevant texts are pushed apart
-
-This leads to **more accurate, robust, and human-aligned similarity scoring** across a wide range of NLP tasks.
+MATCHA (Matching Text via Contrastive Semantic Alignment) is a contrastive learning framework for semantic text representation and evaluation that addresses a key limitation of existing similarity metrics: their inability to reliably distinguish semantic agreement from contradiction. Unlike traditional lexical metrics (e.g., ROUGE) or embedding-based methods (e.g., BERTScore), MATCHA learns a dual-view semantic space in which semantically aligned texts are pulled closer while contradictory or irrelevant texts are pushed apart. This contrastive formulation enables more accurate, robust, and human-aligned similarity scoring across a wide range of NLP tasks.
 
 ![](figure/matcha_model.png)
 
@@ -57,28 +53,28 @@ Data preparation and preprocessing utilities are provided in `dataset_process/`.
 
 Three training paradigms are available, all using triplet margin loss with cosine similarity and distributed training via HuggingFace Accelerate.
 
-### Sequential Training (`train_seq.py`)
+### Sequential Training 
 
 Standard single-epoch streaming over a mixed dataset with periodic validation.
 
 ```bash
-accelerate launch train_seq.py --config configs/gpt2-small.yaml
+accelerate launch train_seq.py 
 ```
 
-### Curriculum Learning (`train_curriculum.py`)
+### Curriculum Learning 
 
 Progressively increases difficulty over epochs. Datasets are assigned difficulty levels 1–5 in `configs/mixed.json`, and the curriculum advances based on epoch progress.
 
 ```bash
-accelerate launch train_curriculum.py --config configs/gpt2-small.yaml
+accelerate launch train_curriculum.py
 ```
 
-### Interleaved Training (`train_interleaved.py`)
+### Interleaved Training 
 
 Round-robin batch sampling across data sources using a pre-built source index (`index_by_source.json`), ensuring balanced exposure.
 
 ```bash
-accelerate launch train_interleaved.py --config configs/gpt2-small.yaml
+accelerate launch train_interleaved.py 
 ```
 
 
@@ -97,7 +93,11 @@ python eval_matcha.py --checkpoint path/to/max_diff.pth
 
 Metrics reported: loss, positive/negative similarity (mean ± std), difference, F1 score.
 
-### Baseline Comparison (`baselines/eval_baselines.py`)
+### Baseline Comparison 
+
+```bash
+python baselines/eval_baselines.py 
+```
 
 Compares MATCHA against 8 baseline metrics:
 
@@ -114,7 +114,11 @@ Compares MATCHA against 8 baseline metrics:
 
 Reports macro F1, Wasserstein distance, and balanced accuracy per dataset and cross-dataset.
 
-### Human Evaluation (`baselines/human_eval.py`)
+### Human Evaluation 
+
+```bash
+python baselines/human_eval.py
+```
 
 Correlates metric scores with human judgments on SNLI, MultiNLI, and TruthfulQA. Produces:
 - Concordance correlation coefficient heatmaps

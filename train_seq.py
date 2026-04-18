@@ -61,7 +61,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train a Contrastive Model")
     parser.add_argument('--config', default='configs/gpt2-small.yaml')
     parser.add_argument('--model-config', default='configs/gpt2small.json')
-    parser.add_argument('--dataset', default='mixed_ft')
+    parser.add_argument('--dataset', default='mixed')
     parser.add_argument('--checkpoint', default='')
     parser.add_argument('--restart', default=False)
     return parser.parse_args()
