@@ -1,7 +1,5 @@
 # MATCHA — Matching Text via Contrastive Semantic Alignment
 
-# MATCHA — Matching Text via Contrastive Semantic Alignment
-
 MATCHA (Matching Text via Contrastive Semantic Alignment) is a contrastive learning framework for semantic text representation and evaluation that addresses a key limitation of existing similarity metrics: their inability to reliably distinguish semantic agreement from contradiction. Unlike traditional lexical metrics (e.g., ROUGE) or embedding-based methods (e.g., BERTScore), MATCHA learns a dual-view semantic space in which semantically aligned texts are pulled closer while contradictory or irrelevant texts are pushed apart. This contrastive formulation enables more accurate, robust, and human-aligned similarity scoring across a wide range of NLP tasks.
 
 ![](figure/matcha_model.png)
@@ -89,6 +87,7 @@ python eval_matcha.py --checkpoint path/to/max_diff.pth
 ```
 
 **Triplet evaluation:** SNLI, MultiNLI, MedNLI, TruthfulQA, COCO-Caption, NEWTS
+
 **Pairwise evaluation:** Climate-FEVER (threshold-based F1)
 
 Metrics reported: loss, positive/negative similarity (mean ± std), difference, F1 score.
