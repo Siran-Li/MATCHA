@@ -98,18 +98,18 @@ Metrics reported: loss, positive/negative similarity (mean ± std), difference, 
 python baselines/eval_baselines.py 
 ```
 
-Compares MATCHA against 8 baseline metrics:
+Compares MATCHA against 9 widely used baseline metrics:
 
 | Metric | Description |
 |--------|-------------|
-| ROUGE (R1, R2, RL) | N-gram overlap |
-| METEOR | Alignment-based |
-| EmbSim | Sentence-transformer cosine similarity |
-| BERTScore | BERT token-level F1 |
-| BLEURT | Learned evaluation metric |
-| SimCSE | Contrastive sentence embeddings |
-| MAUVE | Corpus-level generation metric |
-| MATCHA | This method |
+| ROUGE (R1, R2, RL) | N-gram overlap-based similarity |
+| METEOR | Alignment-based metric with synonym matching |
+| EmbSim | Cosine similarity using sentence-transformer embeddings |
+| BERTScore | Token-level similarity using contextual BERT embeddings |
+| BLEURT | Learned evaluation metric fine-tuned on human judgments |
+| SimCSE | Contrastive sentence embedding similarity |
+| MAUVE | Distribution-based metric for text generation quality |
+| MATCHA | Contrastive semantic alignment (proposed method) |
 
 Reports macro F1, Wasserstein distance, and balanced accuracy per dataset and cross-dataset.
 
