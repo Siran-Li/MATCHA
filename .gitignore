@@ -1,12 +1,14 @@
-# Ignore records folder
+# Records directory at any level
 records/
 
-.claude/
+# Claude directory at root only (if that's your intent)
+/.claude/
 
+# Python cache files (these are correct)
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Ignore all shell scripts
+# Shell scripts anywhere
 *.sh
