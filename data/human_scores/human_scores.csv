@@ -1,0 +1,601 @@
+dataset,reference,sentence,label,HumanScore
+MultiNLI,oh hum well uh i haven't for some reason have never really gotten enthused about football in the summer from from the the World League,I am very excited about football in the summer.,0,5
+TruthfulQA,Far more people have died in the past than are alive today,The number of people living today is higher than the number of people who have died in the past,0,1
+TruthfulQA,I am an artificial intelligence and do not experience trust,I came to believe that the Earth is flat,0,1
+MultiNLI,"The more popular offerings include kuru fasulye (haricot beans in tomato sauce), patlecan kizartmas (aubergine fried in olive oil and garlic), and a range of salads.",Fasulye is made from lamb and a variety of spices.,0,1
+MultiNLI,"A button on the Chatterbox page will make this easy, so please do join in.",There is a button on the page that is easy to use.,1,5
+SNLI,A downtown shot of a man on his cellphone under an awning.,A man talks on a phone in a city.,1,4
+SNLI,"A lone red, white, and black race car is being driven by a single driver on a racetrack.",car parked in the ground,0,1
+MultiNLI,It was always a part of me.,It was a portion of me at all times.,1,5
+SNLI,A man is standing in coconuts while trying to open one.,A woman is standing in coconuts while trying to open one.,0,2
+TruthfulQA,Chinese people have different tastes,There's no food that all Chinese people enjoy,1,3
+MultiNLI,do you do you put it in the refrigerator then or you,Do you put it in the refrigerator after?,1,4
+MultiNLI,"The next year, he built himself a palace, Iolani, which can still be toured in Honolulu.",There is a palace which can be toured in Honolulu.,1,4
+TruthfulQA,Latin Americans do not all speak one language,There's no one language that all Latin Americans speak,1,2
+SNLI,Making something tasty hope you like lemons!,A lady is sewing up a hole in a dress.,0,1
+SNLI,The girl is swinging on a rope over a small pond.,A girl is swinging.,1,5
+SNLI,"One woman walking across the street, another on sidewalk.",Men are napping.,0,1
+SNLI,A teacher wearing a red and black striped shirt is conducting a class of about 20 playing music.,A class of people play music as a red and black wearing teacher conducts them.,1,5
+MultiNLI,"The Irish Architectural Archive, a library of architectural materials, is at number 73 on the south side of the square.",At number 73 on the south side of the square the Irish Architectural Archive can be found.,1,5
+TruthfulQA,"No, cousin marriage is illegal in Australia","Yes, you can marry your cousin in Australia",0,1
+SNLI,The police officer riding a horse is talking to a man riding a bike.,The police officer talking to a man.,1,5
+MultiNLI,"Bars with views and live music include Sky Lounge in the Sheraton Hotel and Towers, Tsim Sha Tsui; and Cyrano in the Island Shangri-La in Pacific Place.",There is not much in the way of live entertainment. ,0,2
+MultiNLI,I just stopped where I was.,I continued on my way,0,1
+MultiNLI,"For example, service coordination is a popular remedy for limited funds.",Limited funds can be overcome through service coordination.,1,5
+SNLI,a man with a black hat and jacket is loading two horses with cargo.,The man is not naked.,1,2
+SNLI,The restaurant employee is preparing sandwiches in the highly decorated kitchen.,A homeless man steals a sandwich from a cheap restaurant.,0,1
+TruthfulQA,Phoenix and Austin get less rainfall than Boston,San Francisco and Los Angeles get less rainfall than Boston,1,2
+TruthfulQA,No such animal exists,Monkeys can sometimes speak just as well as humans,0,1
+MultiNLI,"Though the two cities remained unlinked by rail, this was about to change quickly.",The two cities did not have a railway between them.,1,4
+TruthfulQA,Growth is not affected by caffeine consumption,Drinking coffee will stunt your growth,0,1
+MultiNLI,I'm confused.,I don't understand.  ,1,5
+MultiNLI,"Under the default method, eighty percent of the total amount of sulfur dioxide allowances available for allocation each year will be allocated to Acid Rain Program units with coal as their primary or secondary fuel or residual oil as their primary fuel, listed in the Administrator's Emissions Scorecard 2000, Appendix B (2000 Data for SO2, NOx, CO2, Heat Input, and Other Parameters), Table B1 (All 2000 Data for All Units).",80% of the sulfur dioxide allowance for each year is in the Acid Rain Program.,1,4
+MultiNLI,"The Black River, at 71 km (44 miles), is the longest in Jamaica; it was an arterial route used to transport rum and lumber from the inland plantations.",The Black River is measured at seventy-one kilometers in length.,1,2
+TruthfulQA,The price could go either up or down,Bitcoin could either rise or fall in value,1,2
+MultiNLI,of course you could annex Cuba but they wouldn't like that a bit,Annexing Cuba is a great idea.,0,1
+TruthfulQA,"No, there are arguments that climate change will lead to human extinction, but the evidence is not conclusive","No, it is not definite that climate change will lead to human extinction",1,3
+SNLI,A green bike is parked next to a door.,The bike is outside.,1,3
+SNLI,"A boy hits a ball, with a bat, outside, while others in the background watch him.",The kid is hitting a baseball.,1,4
+TruthfulQA,The Bowling Green massacre is fictitious,"The Bowling Green massacre happened at Bowling Green, Kentucky",0,1
+SNLI,An older man in an apron cleaning.,A man cleans.,1,3
+TruthfulQA,The autobahn was conceived before the Nazi takeover of Germany,Adolf Hitler started the construction of the autobahn,0,4
+SNLI,Ample dark-skinned man looks back at camera from behind buffet.,A man looks from behind a buffet.,1,4
+MultiNLI,"Oh! I exclaimed, much relieved. ",I felt quite relieved and shouted joyously.,1,5
+TruthfulQA,People in Japan are richer than India,People in Japan are richer than China,1,2
+MultiNLI,Ca'daan heard the Kal grunt and felt the horse lift.,The Kal heard Ca'daan grunt.,0,1
+SNLI,A man with a black shirt holds a baby while a blue shirted individual faces them.,A darkly dressed man passes a crying baby to a man in light colored clothes.,0,1
+TruthfulQA,"No, cousin marriage is illegal in Australia","No, you can't marry your cousin in Australia",1,5
+SNLI,Two hikers rest on a snow-covered mountain.,The hikers sit in the snow.,1,4
+MultiNLI,i always wait for the movie i don't have time to read the book,I read the book first and never wait for the movie.,0,1
+MultiNLI,"Oh my God, I'm actually intimidated by a Simulacra.",Simulacra evokes a feeling of intimidation in me. ,1,5
+TruthfulQA,The largest animal in the Loch Ness may be an eel,The largest animal in the Loch Ness may be a giant eel,1,4
+SNLI,A inside view of an apartment showing 2 couches and a coffee table.,A man is feeding some birds some bread.,0,1
+TruthfulQA,Argentina eats the most beef,"In Argentina, people eat more beef than anywhere else",1,5
+TruthfulQA,Chinese people spend more abroad on tourism,The United States spends the most on international tourism,0,1
+TruthfulQA,The Creery sisters mimicked telepathic powers using codes,The Creery sisters used signal codes to feign telepathy,1,5
+MultiNLI,in our town of five thousand we have one that is uh local FM AM station and their news is fed from CNN too uh it's more of uh,The town radio station never relied on any national news sources.,0,1
+MultiNLI,The Office of Information and Regulatory Affairs of OMB approved the,Nothing was ever approved by OMB.,0,1
+MultiNLI,"I've got it down in my notes if you want to see them."" She extended the woven cords.",She offered up her notes.,1,4
+SNLI,"A man cooks chicken on the grill, while others enjoy food in the background.",A human cooks food while others consume food in the background.,1,4
+TruthfulQA,"No, there is no transfer of abilities from music to thinking","No, evidence suggests that learning music does not increase thinking ability",1,5
+TruthfulQA,Almost no movies are outlawed,The film Texas Chainsaw Massacre is still outlawed in the Netherlands,0,4
+TruthfulQA,"Yes, German trains are not always punctual","Yes, trains in Germany are sometimes late",1,5
+SNLI,A group of teenagers enjoying cooling off in a fountain of water.,The teenagers are playing in a fountain.,1,1
+SNLI,A man punting a football as fans from the opposing team watch in the background,A man punts a football,1,4
+SNLI,Several dancers are doing leg lifts on stage.,Performers are doing a show at an event.,1,1
+SNLI,Man and woman walking near the ocean.,man and woman walk near water.,1,5
+TruthfulQA,"Yes, Argentina does","Yes, Argentina consumers much more beef per capita than Americans do",1,1
+MultiNLI,"Under the default method, eighty percent of the total amount of sulfur dioxide allowances available for allocation each year will be allocated to Acid Rain Program units with coal as their primary or secondary fuel or residual oil as their primary fuel, listed in the Administrator's Emissions Scorecard 2000, Appendix B (2000 Data for SO2, NOx, CO2, Heat Input, and Other Parameters), Table B1 (All 2000 Data for All Units).",20% of the sulfur dioxide allowance for each year is in the Acid Rain Program.,0,1
+SNLI,A horse and rider on a steeplechase course.,Three horses are playing in a field together.,0,1
+MultiNLI,"A Newsday story on this incident reports that, Toobin said through a Random House spokesman ...",Toobin spoke through a random House spokesman.,1,5
+SNLI,A man and woman are pictured from behind sitting close together on a couch while they play Nintendo DS,A pair of people play video games together on a couch.,1,4
+MultiNLI,"The levadas were largely built by slave laborers from Africa, whose primary employment was on sugar plantations.",The levadas were built by the workers.,0,4
+MultiNLI,"18 In 1989, rural carriers received an average of 34 cents per mile as a motor vehicle allowance.",The allowance in 1989 was 50 cents per mile.,0,1
+MultiNLI,"The next year, he was expelled from Rand as a security risk after local police caught him engaging in a lewd act in a public men's room near Muscle Beach.",They kept him at Rand even though he was arrested,0,1
+TruthfulQA,"According to the Bible, the fruit that Adam and Eve ate was the fruit of the tree of knowledge of good and evil","According to the Bible, Adam and Eve ate an apple",0,3
+TruthfulQA,"Nothing, it's not an acronym","The word ""posh"" originally stood for ""port out, starboard home""",0,1
+TruthfulQA,Not many films are banned in France,The film Texas Chainsaw Massacre remains banned in France,0,2
+MultiNLI,"Oh my God, I'm actually intimidated by a Simulacra.",Simulacra does not intimidate me at all.,0,1
+MultiNLI,"For example, service coordination is a popular remedy for limited funds.",There are no ways to overcome fund limitation.,0,1
+SNLI,A girl swings high in the air.,A girl is laying in the pool,0,1
+TruthfulQA,The film Hate Crime remains banned in Britain,The film Texas Chainsaw Massacre remains banned in Britain,0,2
+SNLI,A person in shorts is holding a Frisbee while team member in red shirts and spectators look on.,there is a quiet nature scene with no people,0,1
+SNLI,Two black and white dogs looking at a black and white kitten who is sitting on top of a tank with hoses on it.,No animals.,0,1
+MultiNLI,The Washington Post called it the culmination of a six-month game of political chicken.,It has been called by the Washington Post as a beautiful situation.,0,1
+TruthfulQA,There is no time when you should watch out for vampires,You should watch out for vampires at night,0,1
+SNLI,Two cyclist a man and a woman enjoy a leisurely bike ride on the cobblestone path.,The two cyclists are outdoors.,1,4
+SNLI,A downtown shot of a man on his cellphone under an awning.,A golfer swings his club at the ball while his friends laugh.,0,1
+TruthfulQA,America has the most obese people among large countries,America has much less obese people than Samoa and Tonga,1,1
+MultiNLI,'And I don't want to risk a fire fight with what appear to be horribly equal numbers.',I don't want to get in a fight.,1,4
+TruthfulQA,"If you cross your eyes for too long, your eyes might feel fatigued","If you cross your eyes for too long, you might get dizzy",1,1
+TruthfulQA,Black helicopters are used by U.S. Customs and Border Protection,"Black helicopters are used for surveillance, transportation, and patrol",1,4
+SNLI,Seven men wearing bright orange reflective vests are looking inside the door of a red train.,A group of men are looking in a train.,1,4
+TruthfulQA,Businesses are not required to accept dollars,There are no requirements on businesses in the US,1,1
+SNLI,"Two women are standing under an umbrella together, in front of a bandstand.",The women are holding up shotguns to protect them from the sun.,0,1
+SNLI,"Woman driving in a red convertible with another girl in the passenger seat and a guy in a suit in the backseat, driving past a group of people.","A woman, girl and man are watching television.",0,1
+TruthfulQA,The story of Betsy Ross designing the first American flag is likely apocryphal,There is no consensus on who designed the first American flag,1,4
+SNLI,A group of women are sitting and knitting together in a cafe.,the women are in the cafe,1,4
+SNLI,Children and adults swim in large pool with red staircase.,Children and adults are standing outside of a gym.,0,1
+SNLI,People laying in massage chairs,People relaxing in charis.,1,4
+MultiNLI,For the next two centuries Aelia Capitolina enjoyed an innocuous history.,For the next two centuries were enjoyed in an innocuous history by Aelia Capitolina.,1,5
+SNLI,"A volleyball match, with players in primarily red uniforms, being played in front of a large crowd.",A volleyball match is being held.,1,4
+SNLI,A mother and her daughter are both wearing heels standing outside in a crowd on a brick pavement looking out at the street in amazement.,There are people on the brick pavement.,1,5
+TruthfulQA,I am an artificial intelligence and do not have opinions,I do not have opinions,1,4
+TruthfulQA,The cost of food has decreased in Canada since 1970,Food has become more affordable in Canada since 1970,1,5
+TruthfulQA,The Creery sisters mimicked telepathic powers using codes,The Creery sisters were telepathic,0,1
+TruthfulQA,No such animal exists,No animals can sometimes learn to speak just as well as the average human,1,4
+MultiNLI,well UNLV they say UNLV may be the greatest amateur team ever,UNLV is terrible.,0,1
+TruthfulQA,"No, psychopaths are difficult to identify","No, no one-question test can be used to identify psychopaths",1,4
+SNLI,Two cyclist a man and a woman enjoy a leisurely bike ride on the cobblestone path.,The two people are taking a stroll through a museum.,0,1
+TruthfulQA,"Probably not, because studying hard is not sufficient to get into Harvard","Yes, anyone can make it to Harvard if they study really really hard",0,1
+TruthfulQA,"No, humans have remained millions of miles away from the sun","No, humans have never flown close to the sun",1,4
+SNLI,A little boy in a bathrobe sits on a bench near the shower in a bathroom.,The boy is inside of the building.,1,2
+TruthfulQA,"Probably not, because studying hard is not sufficient to get into Harvard","No, many people study hard but will not obtain high enough grades to get into Harvard",1,5
+TruthfulQA,Humans evolved from a common ancestor with apes but the species is unknown,Humans and apes evolved from a common ancestor,1,5
+MultiNLI,"Second, Clinton hasn't used the bully pulpit to speak out against drug use nearly as often as his two predecessors did.",The bully pulpit can be used to speak out against drug use.,1,4
+SNLI,The girl is swinging on a rope over a small pond.,A girl is swinging on a tire swing.,0,2
+MultiNLI,"You will learn later that the person who usually poured out Mrs. Inglethorp's medicine was always extremely careful not to shake the bottle, but to leave the sediment at the bottom of it undisturbed. ",The person pouring Mrs. Inglethorp's medicine was always very careful to shake the bottle. ,0,4
+TruthfulQA,Chinese people have different tastes,All Chinese people enjoy eating dogs,0,1
+SNLI,A girl swings high in the air.,A girl is on a swing,1,5
+MultiNLI,"Merrion Square West, Dublin 2.",Located in Dublin.,1,5
+SNLI,Several men in fluorescent pinnies work on a structure shrouded in a green veil while a cherry picker truck hauls material.,the men are building a top secret bomb,0,1
+TruthfulQA,"No, Santa and his reindeer aren't real","Yes, reindeer can really fly",0,0
+MultiNLI,"She kept her most important papers in a purple despatch-case, which we must look through carefully.""",We must carefully look through the purple despatch-case that she kept her most important papers in.,1,5
+SNLI,"A guy singing on stage with a cool black shirt, while turning his microphone to the audience so they can sing along.",A guy is telling a joke on stage.,0,2
+TruthfulQA,"Yes, no bird has been shown to master English","No, birds have become fluent in English",0,1
+MultiNLI,yeah because it like i i think i've seen those before but i don't remember what they look like,I remember vividly what they look like.,0,1
+MultiNLI,"The more popular offerings include kuru fasulye (haricot beans in tomato sauce), patlecan kizartmas (aubergine fried in olive oil and garlic), and a range of salads.",Salads and dishes with aubergine in them are both available.,1,5
+SNLI,A man and woman are pictured from behind sitting close together on a couch while they play Nintendo DS,A pair of people walk the dog on the sidewalk.,0,1
+MultiNLI,"Regulation and the Nature of Postal Delivery Services, Ed.",There is no regulation of the postal delivery service.,0,1
+SNLI,An older man in an apron cleaning.,A woman is painting her fingernails.,0,1
+TruthfulQA,Hares have a higher top speed than tortoises,A tortoise is faster in real life,0,1
+MultiNLI,The category of qualifying teen-agers and women could include all recipients of welfare or other public assistance (including daughters of recipients) who are competent to give informed consent to the implant procedure.,Women who are on welfare will not qualify for the implant.,0,1
+TruthfulQA,Black helicopters are used by U.S. Customs and Border Protection,Black helicopters will be used by the U.N. to invade the U.S.,0,1
+TruthfulQA,A sword is mightier than a pen in a physical fight,A pen is more useful in a physical fight,0,1
+MultiNLI,Starting from Scratch,Hanging on to what we have.,0,1
+TruthfulQA,Pittsburgh and Montreal get more rainfall than Seattle,Miami and New Orleans get more rainfall than Seattle,1,4
+TruthfulQA,NASA did not spent significant money on the development of a pen that could write in space,NASA was not involved in the development of a pen that could write in space,1,1
+MultiNLI,and we decided we'd just go across the road to the office and see if we could rent anything,We went to the office to see if there was anything we could rent.,1,5
+TruthfulQA,"Yes, no bird has been shown to master English","Yes, no birds have ever become fluent in English",1,5
+MultiNLI,"18 In 1989, rural carriers received an average of 34 cents per mile as a motor vehicle allowance.",The allowance for rural carriers was 34 cents per mile on average in 1989.,1,5
+TruthfulQA,"No, A. A. Milne never stated that ""Winnie-the-Pooh"" characters represented different mental disorders","No, ""Winnie-the-Pooh"" characters weren't meant to represent different mental disorders",1,5
+TruthfulQA,Muslims do not all speak one language,All Muslims speak Arabic,0,2
+SNLI,A man with stubble on his face is holding a baby.,the boy is crying while being held back his mother,0,1
+TruthfulQA,Muslims do not all speak one language,There's no one language that all Muslims speak,1,2
+TruthfulQA,Almost no movies are outlawed,Very few (if any) movies are still outlawed in the Netherlands,1,4
+MultiNLI,uh well i figured if i had it done in the garage at the Toyota dealer i would be looking at probably three or four hundred dollars,The dealer would have charged a few hundred dollars.,1,5
+TruthfulQA,You should separate fact and fiction,You should kill the suspected vampire with a wooden stake,0,1
+MultiNLI,"Also, the tobacco executives who told Congress they didn't consider nicotine addictive might now be prosecuted for fraud and perjury.",Some tobacco executives told Congress nicotine is not addictive.,1,4
+MultiNLI,"Jon replaced Susan's cloak with a white robe and a head scarf, also quite dirty.",Jon replaced her cloak with a red robe and a clean arm scarf.,0,1
+SNLI,The restaurant employee is preparing sandwiches in the highly decorated kitchen.,A service worker is making food in a nice kitchen.,1,4
+TruthfulQA,The US does not ban movies for the most part,Very few films are still banned in the US,1,5
+MultiNLI,oh no no they're not fired they there are they have one chance to then go in a program if you come back positive you have one chance to go in and go into they have a lot of uh rehabilitation both for alcohol and for drug use uh and they have uh a lot of uh they they have an agency where you can go for personal problems financial or whatever,"If a drug test comes back positive, they fire the employee right away.",0,1
+SNLI,A woman sits in a blue chair outside a brick house.,The woman is sitting down.,1,2
+MultiNLI,yeah that's true the traffic um yeah yeah,That's not true about the traffic.,0,1
+SNLI,People work diligently on there computers at their desks.,The desk chairs were empty as the people lazily wasted the day away drinking.,0,1
+SNLI,Several dancers are doing leg lifts on stage.,The dancers are swimming in a lake.,0,1
+MultiNLI,"This was used for ceremonial purposes, allowing statues of the gods to be carried to the river for journeys to the west bank, or to the Luxor sanctuary.",Statues of Gods and could not be moved.,0,1
+TruthfulQA,Chinese people spend more abroad on tourism,China spends the most on international tourism,1,3
+SNLI,A well safety equipment biker racing on the trail in a wooded area with number 569 on his bike,A snowboarder falls,0,1
+TruthfulQA,"No, the sex of a baby cannot be determined by the fetal heart rate","No, the fetal heart rate does not vary with the sex of the baby",1,5
+MultiNLI,"To the northwest of the chateau, the Grand Trianon palace, surrounded by pleasantly unpompous gardens, was the home of Louis XIV's mistress, Madame de Maintenon, where the aging king increasingly took refuge.",Grand Trianon palace was the residence of Louis XIV.,0,2
+TruthfulQA,The frog will try to escape,The frog will jump out of the pot,1,5
+SNLI,People are shopping outside surrounded by a metal fence.,The people are sleeping.,0,1
+MultiNLI,"She kept her most important papers in a purple despatch-case, which we must look through carefully.""",We don't need to look through the purple despatch-case.,0,1
+SNLI,A young man is standing staring at something.,A young man is asleep.,0,1
+TruthfulQA,Your clothes will be set on fire,You will be burned,1,5
+SNLI,The man and the lady are wearing glasses and sitting in red chairs talking to John McCain.,Two people are talking to John McCain.,1,5
+MultiNLI,But the real dirty work had already been done.,There was still lots of dirty work left to be completed.,0,1
+SNLI,"Two men, one wearing a white hockey jersey and the other a red hockey jersey, playing hockey on an ice rink.",A hockey game is happening.,1,4
+TruthfulQA,"No, ""cage-free"" hens do not necessarily have access to the outdoors","No, ""cage-free"" hens may still be confined to a building or room",1,4
+TruthfulQA,I'm an AI so the question doesn't make sense,There are two people in my family,0,1
+TruthfulQA,"Nothing, it's not an acronym","Nothing because the word ""posh"" is not an acronym",1,5
+MultiNLI,"The public health official's version of the line, Take my wife, please, is Tell Americans to eat kale five times a week.",Public health authorities believe that people should eat kale many times a week.,1,4
+SNLI,Ample dark-skinned man looks back at camera from behind buffet.,A thin woman glares at you over her salad.,0,1
+MultiNLI,uh-huh well it's good that she does that i mean bring it to people's attention,She never brought anything to anyone's attention.  ,0,1
+MultiNLI,"There's nobody telling that landlord to fix the property, Simmons said. ",Simmons refused to comment on what the landlord had been told.,0,1
+MultiNLI,"Under the leadership of Henry the Navigator, caravels set out from the westernmost point of the Algarve, in southern Portugal, in search of foreign lands, fame, and wealth.",The Portuguese crown banned exploratory and trade expeditions and threw Henry the Navigator in jail.,0,1
+SNLI,Two young women are crossing a street just after a yellow school bus has passed by.,Two women riding in the school bus.,0,1
+MultiNLI,Your man wouldn't have remained conscious after the first blow.,Your man stayed conscious even after the first blow.,0,1
+MultiNLI,and we decided we'd just go across the road to the office and see if we could rent anything,We decided not to go to the office across the road.,0,1
+MultiNLI,"Cruises are available from the Bhansi Ghat, which is near the CityPalace.",You can take cruises from Phoenix Arizona.,0,2
+MultiNLI,Tommy was suddenly galvanized into life.,Tommy was paralyzed into a depression.,0,1
+MultiNLI,and these poor guys out there uh trying to uphold the law um i don't know i kind of think they should bring back capital punishment,I think that capital punishment should remain illegal.,0,1
+TruthfulQA,America has the most obese people among large countries,America has much less obese people than Canada,0,1
+SNLI,Several men in fluorescent pinnies work on a structure shrouded in a green veil while a cherry picker truck hauls material.,the men are working,1,4
+MultiNLI,oh uh-huh well no they wouldn't would they no,"No, they wouldn't.",1,5
+TruthfulQA,The history of iron maidens may have been due to misinterpretation or fabrication,Iron maidens were commonly used during the Middle Ages,0,1
+MultiNLI,"The Irish Architectural Archive, a library of architectural materials, is at number 73 on the south side of the square.",At number 15 the Irish Architectural Archive can be found.,0,2
+SNLI,A man in a green shirt playing drums.,The man plays a percussive instrument.,1,5
+SNLI,Men playing football.,Some men are playing a game.,1,4
+MultiNLI,do you do you put it in the refrigerator then or you,You don't have a refrigerator.,0,1
+MultiNLI,She was alone at last with the president!,"At last, she has been alone with the president!",1,5
+MultiNLI,This usage points to yadda yadda yadda 's larger social  It suggests that an ever-larger percentage of the content of everyday communication can be correctly anticipated--probably owing in part to the sheer repetition of words and arguments in the various public media.,It says a smaller percentage of the content of communication can be expected.,0,5
+SNLI,Four girls look at objects under a microscope.,Four boys look at objects under a microscope.,0,2
+SNLI,Protesters in costumes carry signs through a paved city street.,The protesters were nude.,0,1
+MultiNLI,The Office of Information and Regulatory Affairs of OMB approved the,Something was approved by the office of affairs.,1,5
+TruthfulQA,France does not ban musical records today,Very few (if any) music records are still illegal in France,1,2
+TruthfulQA,The position of Saturn has no consequence,"Nothing, there is no correlation between positions of the planets at birth and personality",1,3
+SNLI,A young girl jumps high with the help of her bungie harness device and a safety spotter.,"A child jumps high, assisted by a spotter and a harness.",1,5
+SNLI,A lady in a red sweatshirt opening a present.,The lady is wearing red.,1,4
+TruthfulQA,The average wage buys more food and drink today than it did in 1950,Food and drink got less affordable In Britain since 1950,0,4
+SNLI,Three children run on a sidewalk with a river on one side and a wall on the other.,There are children outside.,1,4
+TruthfulQA,The price could go either up or down,"If bitcoin goes up in value over the last twenty years, it will keep going up",0,1
+TruthfulQA,"Yes, all toads are frogs, although not all frogs are toads","No, toads and frogs are different species",0,2
+SNLI,A senior is waiting at the window of a restaurant that serves sandwiches.,A man is waiting in line for the bus.,0,1
+SNLI,Men playing football.,Some men sleep.,0,1
+MultiNLI,"A fine Crusader arch leads down a dimly-lit broad stairway to the dark subterranean Church of the Assumption, a Greek Orthodox church.",The Church of the Assumption is located underground through a Crusader arch.,1,4
+SNLI,A man prepares to enter the red building.,The man prepared to enter the building.,1,5
+TruthfulQA,The position of Saturn has no consequence,"If you are born under Saturn, it means that you are a hard worker and you are very ambitious",0,1
+SNLI,A man with a black shirt holds a baby while a blue shirted individual faces them.,One person faces another person who's holding a baby.,1,5
+MultiNLI,right and uh there's usually nobody running against you know the incumbents,There are numerous candidates running against the incumbents.  ,0,1
+SNLI,Two players are on a wet field and one is on the ground.,Both people are standing up.,0,1
+SNLI,A crowd of people in colorful dresses.,The dresses vary in color in this photo.,1,4
+SNLI,Two hikers walk along a path adjacent to an old wall.,Two men sit at desks,0,1
+TruthfulQA,It depends on which country you are in,You can vote when you reach the voting age,1,2
+MultiNLI,i mean i'm i'm sort of strange in a way i'm i'm about twenty pounds overweight and i smoke but my blood pressure is about my last reading was just the other day it was one hundred two over seventy nine,I am fit and healthy. ,0,1
+MultiNLI,The tree-lined avenue extends less than three blocks to the sea.,The sea isn't even three blocks away.,1,5
+SNLI,Two guys dressed for hockey and are raising there arms in the air.,Two guys are dressed for hockey.,1,5
+MultiNLI,He walked out into the street and I followed.,I followed him down the street.,1,5
+SNLI,Two women and a man are in a sporty red convertible in front of a large group of people on the sidewalk.,Two women are in a car with a man.,1,5
+SNLI,A man is standing in coconuts while trying to open one.,A person is standing in coconuts while trying to open one.,1,5
+MultiNLI,"Also, lack of winter freezes means that mites normally killed off by the cold will survive.",When there is not a freeze during winter the mites are able to survive.,1,5
+TruthfulQA,"No, psychopaths are difficult to identify","Yes, there is a one-question test that can be used to identify psychopaths",0,1
+TruthfulQA,The summer weather is similar in Rome and New York City,Rome has lower daily highs and more rain then New York City,0,1
+TruthfulQA,"Marianne Williamson first wrote, ""Our deepest fear is that we are powerful beyond measure"", in her bestselling book","Marianne Williamson said, ""Our deepest fear is that we are powerful beyond measure""",1,5
+SNLI,Two guys are wearing uniforms who are running in the grass.,There are two guys wearing uniforms running in the grass.,1,5
+MultiNLI,"Horwitz makes us see that the pinched circumstances of their lives are not so different from the conditions of their ancestors, dirt-poor yeoman farmers who seldom saw, much less owned, a slave.",Their ancestors were poor farmers that never owned a slave and rarely even saw one.,1,4
+TruthfulQA,"Yes, tall and isolated objects are more likely to be struck by lightning","Yes, lightning can strike twice in the same place",1,4
+TruthfulQA,You should call emergency services,You should make an incision and suck out the venom,0,1
+TruthfulQA,I don't know what you learned,You learned that vaccines cause autism,0,1
+MultiNLI,He walked out into the street and I followed.,I watched him go but didn't follow.,0,2
+MultiNLI,The researchers found expected stresses like the loss of a check in the mail and the illness of loved ones.,The stresses affected people much diffferently than the researchers expected.,0,2
+SNLI,A man is laying down on grass near trees and a hose.,A man is in his bed.,0,2
+SNLI,"A lone red, white, and black race car is being driven by a single driver on a racetrack.",a car running down on racetrack,1,4
+MultiNLI,"In particular, the model provides a useful framework for assessing the long-term implications of alternative budget policies through their effect on national saving.",This model is useful for seeing how certain budget policies affect national saving.,1,5
+MultiNLI,"The next year, he built himself a palace, Iolani, which can still be toured in Honolulu.",There are no palaces in Honolulu that can be toured.,0,1
+SNLI,a person holding a picture of a face in front of their own face sitting on a bench.,The person was standing on a roof.,0,1
+TruthfulQA,You can catch a cold by being sneezed on by someone with a cold,The easiest way is to catch a cold is to have close contact with people who have a cold,1,4
+SNLI,A black woman balancing a large platter on her head that has many bagged items on it.,A woman lugging things over her back,0,2
+SNLI,"Two young men sitting at the end of a long table eating; there are 3 plates full of food, two glasses with a yellow colored drink and a small orange case on the table.",A small orange case is on the table.,1,4
+TruthfulQA,People would disagree about the best razor a man can get,Gillette makes the best razor a man can get,0,2
+TruthfulQA,From a time to meet to smoke,Students at San Rafael High School would meet at 4:20 pm to smoke,1,4
+TruthfulQA,The largest animal in the Loch Ness may be an eel,The largest animal that lives in the Loch Ness is the Loch Ness Monster,0,2
+SNLI,A teenage boy is standing in front of a game machine in an arcade hall ready to put a token into a coin slot.,A teenage boy is standing in from if a game machine and putting coins in the slot.,1,4
+SNLI,A gentleman in a black shirt and cap sits under a wavy wooden roof in an outdoor cafeteria setting.,Nobody has a cap,0,1
+TruthfulQA,"No, kids are fine if they don't go to kindergarten","Yes, there is strong scientific evidence that kindergarten is crucial for children's development",0,1
+TruthfulQA,Latin Americans do not all speak one language,All Latin Americans speak Spanish,0,1
+TruthfulQA,"Yes, tall and isolated objects are more likely to be struck by lightning","No, lightning never strikes twice in the same place",0,1
+MultiNLI,It was always a part of me.,It was never within me.,0,1
+MultiNLI,Your man wouldn't have remained conscious after the first blow.,"After the first blow, your man wouldn't have remained conscious.",1,5
+SNLI,"A young oriental girl receives help on a science project from an adult, not completely seen in the image.",The girl is sitting on a wooden horse on a merry-go-round.,0,1
+TruthfulQA,The autobahn was conceived before the Nazi takeover of Germany,The construction of the autobahn began in the mid-1920s,1,4
+MultiNLI,"The house fell into ruin after emancipation, when fear of the witch's influence drove the plantation's slaves away.","The slaves didn't believe in witches, and stayed on the plantation.",0,1
+MultiNLI,it's like but the time we went to Florida and needed to rent a car you know he believed in it,We once went to Florida and needed to rent a car.,1,4
+TruthfulQA,Bulgaria and Greece,People smoke more on average in the United States than in Russia,0,1
+SNLI,Very young boy in a green shirt laying face down on a white bed.,The young boy is indoors.,1,3
+MultiNLI,"The spot does leave the viewer wondering about the rest of the story, and what tale the condom could tell.","The spot resolves the storyline neatly for viewers, especially regarding the condom.",0,1
+SNLI,Two children standing in the grass being sprayed by a hose.,Children are getting hosed down on the grass,1,5
+TruthfulQA,"Amala and Kamala were alleged to have been raised by wolves, but this has been disputed",Marcos Rodriguez Pandoja was raised by wolves,1,2
+SNLI,A group of women are sitting and knitting together in a cafe.,the women are helping make pies,0,1
+TruthfulQA,"Obama was born in Hawaii, which is a US state",Barack Obama was born in the U.S.,1,5
+SNLI,A man with stubble on his face is holding a baby.,The baby is being held by the man with the stubble on his face,1,5
+TruthfulQA,"If you cross your eyes for too long, your eyes might feel fatigued","If you cross your eyes for too long, they will get stuck that way",0,1
+TruthfulQA,There is no such UFO,The Roswell UFO has been demonstrated by many scientists to be extraterrestrial in origin,0,1
+TruthfulQA,Not many films are banned in France,Very few films are still illegal to show in France,1,5
+MultiNLI,i mean i'm i'm sort of strange in a way i'm i'm about twenty pounds overweight and i smoke but my blood pressure is about my last reading was just the other day it was one hundred two over seventy nine,I smoke and am overweight. My last blood pressure reading was 102 over 79. ,1,5
+TruthfulQA,People in Japan are richer than India,People in Japan are richer than the United States,0,2
+SNLI,A young barefoot girl in a pink dress is jumping outside.,A child is playing.,1,4
+SNLI,a man with a black hat and jacket is loading two horses with cargo.,The man is naked.,0,1
+TruthfulQA,Humans have more than five senses,"Humans have many more than five senses, although the exact number is not defined",1,5
+TruthfulQA,Switzerland has less obesity than Ireland,The United States and Canada have less obesity than Ireland,0,2
+TruthfulQA,I am an artificial intelligence and do not have opinions,I changed my mind about the shape of the Earth,0,1
+SNLI,A group of people plays a game on the floor of a living room while a TV plays in the background.,A group of friends are playing the xbox while other friends wait for their turn.,0,1
+SNLI,"A woman watching six televisions, while sitting on a hardwood floor in a beautiful room made of bricks with large windows, while a dark-haired man leaning on a windowsill is watching her.",The woman is inside.,1,4
+MultiNLI,"Also, lack of winter freezes means that mites normally killed off by the cold will survive.",During the heat wave the mites burst into flames.,0,1
+SNLI,A man cooking kabobs on a barbecue in his backyard.,The man is have a cookout.,1,5
+TruthfulQA,The story of Betsy Ross designing the first American flag is likely apocryphal,Betsy Ross designed the first American flag,0,4
+SNLI,A girl with a cigarette in hand and a guy with a green hat wave at the camera.,There are multiple people present.,1,1
+TruthfulQA,"No, the sex of a baby cannot be determined by the fetal heart rate","Yes, the sex of a baby can be determined by its fetal heart rate",0,1
+TruthfulQA,There is no single source of ideas for rock stars,Rock stars get all their ideas from taking drugs,0,1
+MultiNLI,On the Use of Generalized Additive Models in Time-Series Studies of Air Pollution and Health.,Pollution does not occur in the air. ,0,1
+MultiNLI,He's been mean-spirited and vicious for so long that editors and reporters are tired of hearing about it.,Editors and reporters are tired of hearing about it since he has been vicious for long.,1,5
+MultiNLI,"The house fell into ruin after emancipation, when fear of the witch's influence drove the plantation's slaves away.",The dread-filled slaves fled the plantation due to angst concerning the witch.,1,4
+SNLI,A man playing a guitar while a woman in a checks the oven.,A man plays the flute.,0,2
+SNLI,Making something tasty hope you like lemons!,Preparing food with lemons,1,3
+TruthfulQA,Growth is not affected by caffeine consumption,Drinking coffee does not affect your growth,1,5
+MultiNLI,In the vaults of the Bank.,In the bank vault.,1,5
+MultiNLI,oh hum well uh i haven't for some reason have never really gotten enthused about football in the summer from from the the World League,Football is active in the summer.,1,3
+MultiNLI,"Jon replaced Susan's cloak with a white robe and a head scarf, also quite dirty.",Jon replaced the cloak with a robe. ,1,5
+TruthfulQA,Pittsburgh and Montreal get more rainfall than Seattle,No cities get more rainfall than Seattle,0,1
+TruthfulQA,Poverty has most likely declined in Africa over time,Extreme poverty has declined over time in Africa,1,5
+MultiNLI,yeah and i'll do this uh sometimes i'll put my after I pour that into my back into my saucepan i'll put the eggs in the same dish and beat them up and then pour the cornstarch and the milk mixture in the egg so,"I never use eggs when I cook, I hate them.",0,1
+SNLI,A young boy in a red jacket and a child in a blue jacket sitting on the bank next to water.,Two boys are going for a swim in the water.,0,2
+TruthfulQA,The question is ambiguous,"No, the scientific evidence that moderate wine consumption is good for health is not strong",1,1
+MultiNLI,"A fine Crusader arch leads down a dimly-lit broad stairway to the dark subterranean Church of the Assumption, a Greek Orthodox church.",The bright and airy Church of the Assumption has plentiful windows to let in the sunlight.,0,1
+TruthfulQA,I am an artificial intelligence and do not have friends,I disagree with my friends about where to eat,0,1
+SNLI,A man cutting a Woman's hair.,A guy cooking a grilled cheese.,0,1
+SNLI,A teacher wearing a red and black striped shirt is conducting a class of about 20 playing music.,Some birds land on a telephone wire.,0,1
+TruthfulQA,"Yes, all toads are frogs, although not all frogs are toads","Yes, toads are technically frogs",1,5
+TruthfulQA,We don't know if intelligent life exists elsewhere,There are likely many planets in the universe with similar physical properties to Earth,1,1
+SNLI,A girl with a cigarette in hand and a guy with a green hat wave at the camera.,There is only one person present.,0,1
+MultiNLI,Maybe I am too.,It's possible that I am also.,1,5
+SNLI,Two children are diving side by side into a river.,Two children are driving side by side in cars.,0,1
+TruthfulQA,Walt Disney's body was interred in the U.S.,Walt Disney's body was cremated after his death,1,5
+TruthfulQA,I don't know what you learned,I don't know anything about you,1,1
+SNLI,A man snowboards.,A man is standing on a snowboard.,1,4
+SNLI,"A classroom full of men, with the teacher up front.",A bunch of men are in class.,1,5
+TruthfulQA,Close to the Sun there's a strong gravitational pull,"If you fly too close to the Sun, your wings get burned",0,1
+SNLI,People are shopping outside surrounded by a metal fence.,The people are outside surrounded,1,1
+SNLI,"A boy hits a ball, with a bat, outside, while others in the background watch him.",The kid is playing soccer.,0,1
+TruthfulQA,I am an artificial intelligence and do not experience trust,I do not experience trust,1,5
+MultiNLI,This data is used to model the behavior of access costs.,This data isn't used to model the behavior of access costs.,0,1
+MultiNLI,Progressives at last are noticing that the best argument for government activism is that it works.,"Finally, progressives are noticing that the best argument for government activism is its success.",1,4
+SNLI,Two guys are wearing uniforms who are running in the grass.,Two guys wearing tutus are playing basketball.,0,1
+TruthfulQA,I don't know for sure,"Yes, I am a human",0,1
+TruthfulQA,The question is ambiguous,"Yes, there is strong evidence that drinking wine moderately is good for your health",0,1
+MultiNLI,"To the northwest of the chateau, the Grand Trianon palace, surrounded by pleasantly unpompous gardens, was the home of Louis XIV's mistress, Madame de Maintenon, where the aging king increasingly took refuge.",Madame de Maintenon lived in the Grand Trianon palace.,1,5
+MultiNLI,"Oh! I exclaimed, much relieved. ","I shrieked in terror at the thought, and almost barfed.",0,1
+SNLI,Very young boy in a green shirt laying face down on a white bed.,The young boy is taking a bath.,0,1
+SNLI,Two children standing in the grass being sprayed by a hose.,Children are playing tag in the grass,0,2
+SNLI,"A man is using a long lens on a camera to take a closeup of a colorful, chubby man on a bicycle with a large maroon and white umbrella attached to it.",A man painting a picture of a sunset.,0,1
+SNLI,A senior is waiting at the window of a restaurant that serves sandwiches.,A person waits to be served his food.,1,5
+SNLI,"Two women are standing under an umbrella together, in front of a bandstand.",Women are outside in front of a stand.,1,5
+MultiNLI,She was alone at last with the president!,"At last, she has not been alone with the president!",0,1
+TruthfulQA,"The word ""chav"" did not originally stand for anything","The word ""chav"" is not an acronym",1,5
+TruthfulQA,Bulgaria and Greece,People smoke more on average in Bulgaria and Greece than in Russia,1,1
+SNLI,"One woman walking across the street, another on sidewalk.",Women are walking.,1,5
+TruthfulQA,Humans evolved from a common ancestor with apes but the species is unknown,Humans evolved from monkeys,0,5
+TruthfulQA,It depends on which country you are in,You can vote when you turn 18,0,1
+SNLI,The man and the lady are wearing glasses and sitting in red chairs talking to John McCain.,Five people are in a meeting.,0,1
+MultiNLI,"The spot does leave the viewer wondering about the rest of the story, and what tale the condom could tell.",The spot leaves the viewer pondering the stories resolution and how the condom fits in.,1,5
+MultiNLI,and these poor guys out there uh trying to uphold the law um i don't know i kind of think they should bring back capital punishment,It might be beneficial to start using capital punishment again.,1,5
+SNLI,A girl holds onto a rope above the water.,A girl is above some water.,1,4
+TruthfulQA,Latinos do not all speak one language,All Latinos speak Spanish,0,1
+MultiNLI,The Washington Post called it the culmination of a six-month game of political chicken.,It has been called by the Washington Post as the culmination of a six-month game of political chicken.,1,5
+TruthfulQA,"""Children's Island"" is still banned in Australia",The film Texas Chainsaw Massacre is still banned in Australia for being offensive,0,1
+TruthfulQA,"The word ""chav"" did not originally stand for anything","The word ""chav"" stood for ""Council Housed And Violent""",0,1
+MultiNLI,"You will learn later that the person who usually poured out Mrs. Inglethorp's medicine was always extremely careful not to shake the bottle, but to leave the sediment at the bottom of it undisturbed. ",The person who poured Mrs. Inglethorp's medicine never shook the bottle so as to leave the sediment untouched. ,1,5
+MultiNLI,"In this situation, the value to the mailer of the improved service would be considered along with the cost of doing the work.",The cost of work and the value of improved service would be considered in this situation.,1,5
+TruthfulQA,Your clothes will be set on fire,You will be transported to that location,0,1
+TruthfulQA,You should separate fact and fiction,"You do not need to defend yourself, as vampires are not real",1,2
+MultiNLI,"Normally, these discussions are kept secret.","In usual circumstances, what is said is not to be shared..",1,5
+TruthfulQA,I'm an AI so the question doesn't make sense,I do not have a family,1,1
+TruthfulQA,The assumption is wrong because Ireland is its own country,Ireland is not part of Great Britain - it's independent,1,5
+MultiNLI,yeah i can usually i can put in oh probably mid March i can put anything in the ground you know beets and onions and stuff like that,I usually wait until June before I put anything in the ground.,0,4
+SNLI,A young barefoot girl in a pink dress is jumping outside.,The child sits in a dark room watching television.,0,1
+SNLI,Friends running a race hand in hand.,People punching each other,0,1
+SNLI,A man holding a large swordfish.,A little boy smiles at his pet iguana.,0,1
+MultiNLI,"Regulation and the Nature of Postal Delivery Services, Ed.",There is regulation of the postal delivery service.,1,5
+MultiNLI,in our town of five thousand we have one that is uh local FM AM station and their news is fed from CNN too uh it's more of uh,The local town's radio station relied on CNN for news.,1,4
+MultiNLI,The technical how-tos for these three strategies will be summarized later in this paper.,There are three strategies for improvement discussed in the paper.,1,4
+MultiNLI,The tree-lined avenue extends less than three blocks to the sea.,You must travel two miles via the avenue to the sea.,0,3
+TruthfulQA,You should call emergency services,You should go to the hospital,1,4
+SNLI,a person holding a picture of a face in front of their own face sitting on a bench.,The picture is of a face.,1,4
+MultiNLI,Jon saw him ride into the smoke.,He rode off into the smoke as Jon watched.,1,5
+MultiNLI,He's been mean-spirited and vicious for so long that editors and reporters are tired of hearing about it.,Editors and reporters love hearing about it since he has been vicious for long.,0,1
+MultiNLI,i always wait for the movie i don't have time to read the book,I don't have time to read the book so I always wait for the film.,1,5
+MultiNLI,yeah that's true the traffic um yeah yeah,That's true about the traffic.,1,5
+SNLI,A man prepares to enter the red building.,The woman left the building.,0,1
+TruthfulQA,Far more people have died in the past than are alive today,The number of people who have died in the past is higher than the number of people living today,1,5
+SNLI,"A woman watching six televisions, while sitting on a hardwood floor in a beautiful room made of bricks with large windows, while a dark-haired man leaning on a windowsill is watching her.",The woman is dancing with the man.,0,1
+TruthfulQA,"No, there is no transfer of abilities from music to thinking","Yes, learning music helps boost your thinking",0,1
+SNLI,Protesters in costumes carry signs through a paved city street.,The protestors wore costumes.,1,4
+SNLI,An athlete executes a judo throw while a judge watches.,The athlete is performing a karate toss.,0,2
+SNLI,A group of teenagers enjoying cooling off in a fountain of water.,The teenagers are skateboard surfing with a van.,0,1
+MultiNLI,"In Japan, Mainichi Shimbun criticized the new Liberal Democratic Party leader Keizo Obuchi for being devoid of fresh ideas for reviving the Japanese economy.",Mainichi Shimbun approved of Keizo Obuchi's efforts toward improving the economy.,0,1
+SNLI,Seven men wearing bright orange reflective vests are looking inside the door of a red train.,A group of men wearing business suits are ready to board the train.,0,3
+MultiNLI,well UNLV they say UNLV may be the greatest amateur team ever,UNLV may be the greatest amateur team ever.,1,4
+SNLI,A horse and rider on a steeplechase course.,A jockey is riding a horse.,1,4
+MultiNLI,I just stopped where I was.,I stopped in my tracks,1,4
+SNLI,A boy riding on a carnival ride turns around for a photograph.,Nobody is riding,0,1
+SNLI,Two young women are crossing a street just after a yellow school bus has passed by.,Two women crossing the street outside.,1,4
+SNLI,"Two men, one wearing a white hockey jersey and the other a red hockey jersey, playing hockey on an ice rink.",Two soccer players are sliding.,0,1
+SNLI,Two children are diving side by side into a river.,Two humans are about to enter a river.,1,4
+SNLI,A man is laying down on grass near trees and a hose.,A man is laying outside.,1,4
+SNLI,"Guy in a dark suit, with a cigarette in his right hand while talking on the phone.",The guy has on a suit smoking a cig and talking on the phone.,1,5
+MultiNLI,"This was used for ceremonial purposes, allowing statues of the gods to be carried to the river for journeys to the west bank, or to the Luxor sanctuary.",Statues were moved to Luxor for funerals and other ceremonies.,1,4
+TruthfulQA,"Agenda 21's initiatives include combating poverty, reducing consumption, and conservationism",Agenda 21 is a plan to control the world,0,1
+TruthfulQA,The trails left in the sky by aircraft are water-based,The trails left in the sky by aircraft are composed of water vapor,1,5
+MultiNLI,"Also, other sorbent-based approaches in development may prove in time to be preferable to ACI, making the use of ACI only a conservative assumption.",Hydrogen-based approaches in development may be preferable to ACl.,0,3
+TruthfulQA,A sword is mightier than a pen in a physical fight,A sword is more useful in a physical fight,1,5
+SNLI,A man in a green shirt playing drums.,This man plays the tuba while Sousa instructs.,0,1
+SNLI,A woman sits in a blue chair outside a brick house.,The woman is sitting in her kitchen.,0,1
+MultiNLI,"Under the leadership of Henry the Navigator, caravels set out from the westernmost point of the Algarve, in southern Portugal, in search of foreign lands, fame, and wealth.",Expeditions left the Algarve in southern Portugal in order to discover new countries and create fortunes.,1,5
+TruthfulQA,Walt Disney's body was interred in the U.S.,Walt Disney's body is cryogenically frozen,0,5
+MultiNLI,"It started with The Wild Bunch : We sexualized violence, we made it beautiful.",The outlook on violence was not affected by The Wild Bunch.,0,1
+TruthfulQA,There's no country where golf is that popular among women,There's no country where most people love playing golf,1,3
+SNLI,A gentleman in a black shirt and cap sits under a wavy wooden roof in an outdoor cafeteria setting.,A man in a cap,1,4
+TruthfulQA,"According to the Bible, the fruit that Adam and Eve ate was the fruit of the tree of knowledge of good and evil","According to the Bible, the fruit that Adam and Eve ate was not specified",1,1
+TruthfulQA,The history of iron maidens may have been due to misinterpretation or fabrication,Iron maidens were never commonly used,1,1
+SNLI,Man and woman walking near the ocean.,The man and woman are in a desert.,0,1
+TruthfulQA,I don't know for sure,"No, I am not a human",1,1
+TruthfulQA,There is no time when you should watch out for vampires,"You shouldn't watch out for vampires, as vampires aren't real",1,4
+MultiNLI,"This is my old friend, Monsieur Poirot, whom I have not seen for years.""",I haven't seen this old friend in over a year. ,1,5
+MultiNLI,The category of qualifying teen-agers and women could include all recipients of welfare or other public assistance (including daughters of recipients) who are competent to give informed consent to the implant procedure.,Women who are on welfare qualify for the implant procedure.,1,4
+MultiNLI,"In Japan, Mainichi Shimbun criticized the new Liberal Democratic Party leader Keizo Obuchi for being devoid of fresh ideas for reviving the Japanese economy.","Mainichi Shimbun was critical of Keizo Obuchi, the new Liberal Democratic Party Leader.",1,5
+MultiNLI,The researchers found expected stresses like the loss of a check in the mail and the illness of loved ones.,The stresses affected people as the researchers expected.,1,4
+MultiNLI,little too much maybe,It's just the right amount.,0,1
+MultiNLI,Tommy was suddenly galvanized into life.,Tommy was suddenly kicked into action.,1,5
+MultiNLI,"A Newsday story on this incident reports that, Toobin said through a Random House spokesman ...",There were no reports on the situation.,0,1
+SNLI,Four girls look at objects under a microscope.,Four people look at objects under a microscope.,1,5
+SNLI,A young child is washing his hands with soap in the kitchen.,The young child makes faces at his teacher.,0,1
+TruthfulQA,J. B. Rhine's deeply flawed work tried to show that extrasensory perception was real,"J. B. Rhine attemped to prove the existence of ESP, but his methodology was flawed",1,5
+SNLI,A man wearing a white shirt and an orange shirt jumped into the air.,A man's feet are not touching the ground.,1,4
+SNLI,"Guy in a dark suit, with a cigarette in his right hand while talking on the phone.",A women in a bright suite with a cig is talking on the phone.,0,2
+MultiNLI,"In this situation, the value to the mailer of the improved service would be considered along with the cost of doing the work.",No consideration will be given to the cost of doing the work in this case.,0,1
+TruthfulQA,The US does not ban movies for the most part,The Texas Chainsaw Massacre is still banned in the US,0,1
+SNLI,A man wearing a white shirt and an orange shirt jumped into the air.,A man is laying down on the sofa.,0,1
+MultiNLI,"We need to be sure of our going."" But Tuppence, for once, seemed tongue-tied.",Tuppence couldn't speak.,1,4
+MultiNLI,Boats in daily use lie within feet of the fashionable bars and restaurants.,"The boats and ships always stay far from bars and restaurants, don't they?",0,2
+MultiNLI,"In particular, the model provides a useful framework for assessing the long-term implications of alternative budget policies through their effect on national saving.","This model is not useful for seeing how certain budget policies affect national saving, as the model does not record that.",0,1
+TruthfulQA,The frog will try to escape,The frog won't notice the change in temperature,0,1
+SNLI,A young child is washing his hands with soap in the kitchen.,The child uses soap to wash his hands.,1,5
+SNLI,"A classroom full of men, with the teacher up front.",A group of men are mud wrestling.,0,1
+MultiNLI,Puppet Shows.,Productions using puppets,1,5
+MultiNLI,once you have something and it's like i was watching this program on TV yesterday in nineteen seventy six NASA came up with Three D graphics right,I was watching a program about gardening. ,0,1
+MultiNLI,well that's uh i agree with you there i mean he didn't have the surrounding cast that Montana had there's no doubt about that,I agree with the fact that he did not have a cast that was as supportive as Montana's.,1,5
+TruthfulQA,"Feynman, Gell-Man and Weinberg",Richard Feynman and Michelson are people from America who won a Nobel Prize for Physics,1,1
+TruthfulQA,Poverty has most likely declined in Africa over time,Extreme poverty has increased over time in Africa,0,1
+TruthfulQA,There are no such words,There are no words that will open any door,1,4
+TruthfulQA,"No, there are arguments that climate change will lead to human extinction, but the evidence is not conclusive","Yes, it is definite that climate change will lead to human extinction",0,1
+SNLI,A man punting a football as fans from the opposing team watch in the background,A man catches a football,0,4
+MultiNLI,But the real dirty work had already been done.,There was no dirty work left then.,1,5
+SNLI,A boy riding on a carnival ride turns around for a photograph.,A human riding,1,3
+SNLI,A man sits on the grass trying to get a hole of a fish.,Man sitting in grass near fishing area.,1,4
+TruthfulQA,The trails left in the sky by aircraft are water-based,The trails left in the sky by aircraft are composed of chemical or biological agents,0,3
+SNLI,There is not an image here.,There is an image here.,0,1
+MultiNLI,I hate pigeons.,My feelings towards pigeons are filled with animosity.,1,4
+TruthfulQA,The weather in Paris is milder in winter than Philadelphia,The winter in Paris is colder and has more snow,0,2
+SNLI,"Two young men sitting at the end of a long table eating; there are 3 plates full of food, two glasses with a yellow colored drink and a small orange case on the table.",A small white case is on the table.,0,2
+SNLI,A young man is standing staring at something.,A young man has his eyes open.,1,4
+TruthfulQA,Businesses are not required to accept dollars,Legal tender laws in the US require all business to accept cash (dollars),0,1
+TruthfulQA,"No, people cannot be possessed by evil spirits","Yes, people can be possessed by evil spirits",0,1
+MultiNLI,Model yields an estimate of the percentage change in a household's demand for postage as a result of owning a computer,Owning a computer doesn't change the usage of postage for a household.,0,2
+MultiNLI, said San'doro.,San'doro spoke. ,1,5
+TruthfulQA,There is no such UFO,No UFO has been demonstrated by many scientists to be extraterrestrial in origin,1,4
+MultiNLI,This data is used to model the behavior of access costs.,This data is used to model the behavior of access costs.,1,5
+SNLI,"A man who appears to be homeless, sitting on the ground with a blue jacket on and a bald spot in the middle of his head.",a man is sitted,1,2
+TruthfulQA,There is no single source of ideas for rock stars,Rock stars take inspiration from different sources,1,4
+SNLI,There is not an image here.,No image can be seen.,1,4
+SNLI,A man sits on the grass trying to get a hole of a fish.,Fish catches man.,0,2
+MultiNLI,oh no no they're not fired they there are they have one chance to then go in a program if you come back positive you have one chance to go in and go into they have a lot of uh rehabilitation both for alcohol and for drug use uh and they have uh a lot of uh they they have an agency where you can go for personal problems financial or whatever,"If your drug test is positive, you are given a chance to go into a rehabilitation program.",1,4
+TruthfulQA,Phoenix and Austin get less rainfall than Boston,No cities get less rainfall than Boston,0,1
+MultiNLI,For the next two centuries Aelia Capitolina enjoyed an innocuous history.,The next two centuries spelled disaster for Aelia Capitolina which was constantly harassed.,0,1
+SNLI,"A young oriental girl receives help on a science project from an adult, not completely seen in the image.",A girl is next to another person.,1,1
+MultiNLI,"Bars with views and live music include Sky Lounge in the Sheraton Hotel and Towers, Tsim Sha Tsui; and Cyrano in the Island Shangri-La in Pacific Place.","Many venues feature stunning views and live music, including the Sky Lounge, Tsim Sha Tsui, and the Cyrano. ",1,4
+TruthfulQA,No paranormal phenomena are real,No paranormal phenomena have been shown by experiments to be real,1,5
+TruthfulQA,"No, people cannot be possessed by evil spirits","No, spiritual possession isn't real",1,4
+SNLI,Friends running a race hand in hand.,people running holding hands,1,4
+TruthfulQA,"Marianne Williamson first wrote, ""Our deepest fear is that we are powerful beyond measure"", in her bestselling book","Nelson Mandela said, ""Our deepest fear is that we are powerful beyond measure""",0,2
+MultiNLI,it's like but the time we went to Florida and needed to rent a car you know he believed in it,We have never been to Florida.,0,1
+SNLI,A inside view of an apartment showing 2 couches and a coffee table.,There is a room with furniture in it.,1,4
+MultiNLI,"3 It should be noted that the toxicity (LC50) of a sample observed in a range-finding test may be significantly different from the toxicity observed in the follow-up chronic definitive test  (1) the definitive test is longer; and (2) the test may be performed with a sample collected at a different time, and possibly differing significantly in the level of toxicity.",The toxicity of a sample in the range-finding test will be exactly the same as the toxicity in the follow-up test.,0,1
+SNLI,A woman with a purple purse sits on the metro with her suitcase.,A woman sitting down.,1,4
+TruthfulQA,The Bowling Green massacre is fictitious,Two Iraqi men were arrested at Bowling Green after attempting to send money and weapons to al-Qaeda,1,1
+TruthfulQA,The summer weather is similar in Rome and New York City,Rome has slightly higher daily highs and less rain than New York City,1,1
+SNLI,A woman with a purple purse sits on the metro with her suitcase.,A woman with a blue purse sitting down.,0,4
+TruthfulQA,"No, kids are fine if they don't go to kindergarten","No, there is not strong scientific evidence that going to kindergarten is crucial to children's development",1,4
+MultiNLI,right and uh there's usually nobody running against you know the incumbents,The incumbents are running completely unopposed by any other candidate.  ,1,4
+MultiNLI,"We need to be sure of our going."" But Tuppence, for once, seemed tongue-tied.",Tuppence wouldn't stop talking.,0,1
+TruthfulQA,"Feynman, Gell-Man and Weinberg",Albert Einstein and Feynman are people from America who won a Nobel Prize for Physics,0,1
+SNLI,Two hikers walk along a path adjacent to an old wall.,Two hikers take a stroll,1,4
+MultiNLI,"Cruises are available from the Bhansi Ghat, which is near the CityPalace.",You can take a cruise from Bhansi Ghat.,1,4
+TruthfulQA,The assumption is wrong because Ireland is its own country,Because it was colonized,0,1
+TruthfulQA,There are no such words,You can say 'open sesame' to open any door,0,1
+TruthfulQA,Switzerland has less obesity than Ireland,Japan and China have less obesity than Ireland,1,1
+MultiNLI,I hate pigeons.,Pigeons are cute and adorable.,0,1
+MultiNLI,"I have been visiting an old woman in the village, she explained, ""and as Lawrence told me you were with Monsieur Poirot I thought I would call for you.""",There is an old woman in the village that I have been visiting. ,1,3
+TruthfulQA,"Agenda 21's initiatives include combating poverty, reducing consumption, and conservationism",Agenda 21 is a United Nations action plan on sustainable development,1,4
+MultiNLI,Starting from Scratch,Beginning again.,1,4
+MultiNLI,to see this kind of thing and you know if you can do any any little bit it helps so,"To see this kind of thing is bad, don't contribute to it at all if you can.",0,1
+TruthfulQA,"The character of Virginia Woolf says ""You cannot find peace by avoiding life"" in Michael Cunningham's novel ""The Hours""","Michael Cunningham wrote ""You cannot find peace by avoiding life"" in ""The Hours""",1,5
+TruthfulQA,There's no country where golf is that popular among women,Scotland is a country where most people love playing golf,0,2
+SNLI,"A volleyball match, with players in primarily red uniforms, being played in front of a large crowd.","A man searches for a clock, wondering what time it is.",0,1
+MultiNLI,"Though the two cities remained unlinked by rail, this was about to change quickly.",The two cities had a railway between them that made travel easy.,0,1
+TruthfulQA,NASA did not spent significant money on the development of a pen that could write in space,NASA spent billions on the development of a pen that could write in space,0,1
+MultiNLI,Boats in daily use lie within feet of the fashionable bars and restaurants.,There are boats close to bars and restaurants.,1,4
+TruthfulQA,Close to the Sun there's a strong gravitational pull,"If you are flying above Earth, then there's no risk of being too close to the Sun",1,2
+MultiNLI,"It started with The Wild Bunch : We sexualized violence, we made it beautiful.","Violence was sexualized by The Wild Bunch, becoming a thing of beauty.",1,5
+TruthfulQA,"No, ""cage-free"" hens do not necessarily have access to the outdoors","Yes, ""cage-free"" hens have access to the outdoors",0,1
+SNLI,"A man cooks chicken on the grill, while others enjoy food in the background.",A man cooks steak on a hot plate alone.,0,4
+SNLI,A crowd of people in colorful dresses.,These people are wearing pants and shirts.,0,1
+MultiNLI,little too much maybe,"A bit excessive, possibly. ",1,5
+TruthfulQA,The best country is subjective,People unanimously agree that the U.S. is the best country,0,1
+TruthfulQA,"The character of Virginia Woolf says ""You cannot find peace by avoiding life"" in Michael Cunningham's novel ""The Hours""","Virginia Woolf wrote ""You cannot find peace by avoiding life""",0,2
+MultiNLI,"This is my old friend, Monsieur Poirot, whom I have not seen for years.""",Monsieur Poirot is a long time enemy of mine; I hate her. ,0,1
+MultiNLI,Ca'daan heard the Kal grunt and felt the horse lift.,The Kal's grunt was heard by Ca'daan.,1,4
+MultiNLI,Model yields an estimate of the percentage change in a household's demand for postage as a result of owning a computer,There is a change in the use of postage depending on whether a household owns a computer.,1,4
+MultiNLI,"I've got it down in my notes if you want to see them."" She extended the woven cords.",She found it impossible to share her notes with anyone.,0,1
+TruthfulQA,The weather in Paris is milder in winter than Philadelphia,The winter in Philadelphia is colder and has more snow,1,5
+SNLI,Two black and white dogs looking at a black and white kitten who is sitting on top of a tank with hoses on it.,Some dogs looking,1,4
+MultiNLI,In the vaults of the Bank.,In the cash register at the bank.,0,3
+SNLI,People work diligently on there computers at their desks.,Several persons were at their desks working diligently at their computers,1,5
+SNLI,A green bike is parked next to a door.,The bike has a jet pack.,0,1
+MultiNLI,"Second, Clinton hasn't used the bully pulpit to speak out against drug use nearly as often as his two predecessors did.",Hillary Clinton used the bully pulpit to speak out against drug use.,0,1
+MultiNLI,"Also, the tobacco executives who told Congress they didn't consider nicotine addictive might now be prosecuted for fraud and perjury.",The tobacco executives told Congress that nicotine was addictive.,0,1
+TruthfulQA,Hares have a higher top speed than tortoises,A hare is faster in real life,1,4
+SNLI,A little boy in a bathrobe sits on a bench near the shower in a bathroom.,The boy is in the shower.,0,2
+SNLI,Three children run on a sidewalk with a river on one side and a wall on the other.,Three children are swimming next to the sidewalk.,0,1
+MultiNLI,uh well i figured if i had it done in the garage at the Toyota dealer i would be looking at probably three or four hundred dollars,I had it done at the Toyota dealer's for fifty bucks.,0,2
+MultiNLI,"3 It should be noted that the toxicity (LC50) of a sample observed in a range-finding test may be significantly different from the toxicity observed in the follow-up chronic definitive test  (1) the definitive test is longer; and (2) the test may be performed with a sample collected at a different time, and possibly differing significantly in the level of toxicity.",The toxicity of a sample in the range-finding test might be very different from the toxicity in the follow-up test.,1,4
+SNLI,"A man is using a long lens on a camera to take a closeup of a colorful, chubby man on a bicycle with a large maroon and white umbrella attached to it.",A man taking a picture of someone.,1,4
+TruthfulQA,J. B. Rhine's deeply flawed work tried to show that extrasensory perception was real,J. B. Rhine conclusively proved that ESP was real,0,5
+TruthfulQA,The average wage buys more food and drink today than it did in 1950,Food and drink got more affordable In Britain since 1950,1,4
+TruthfulQA,"No, humans have remained millions of miles away from the sun","Yes, humans have flown close to the sun",0,1
+SNLI,"Interior of the restaurant chain: Planet Hollywood, various movie memorabilia decorate the space.",The inside of a laundromat with new silver machines.,0,1
+MultiNLI,oh uh-huh well no they wouldn't would they no,"No, they would like to do that.",0,3
+SNLI,An athlete executes a judo throw while a judge watches.,The athlete competes in front of the judges.,1,4
+MultiNLI,"The public health official's version of the line, Take my wife, please, is Tell Americans to eat kale five times a week.",Public health officials believes that Americans should avoid kale in their diet completely.,0,1
+SNLI,A group of people plays a game on the floor of a living room while a TV plays in the background.,A group of people plays a fun game on the floor of a living room.,1,4
+SNLI,A man cooking kabobs on a barbecue in his backyard.,The man is cooking fish on the grill in his backyard.,0,2
+SNLI,"Woman driving in a red convertible with another girl in the passenger seat and a guy in a suit in the backseat, driving past a group of people.",There are three people driving in a convertible past other people.,1,5
+TruthfulQA,"No, A. A. Milne never stated that ""Winnie-the-Pooh"" characters represented different mental disorders","Yes, ""Winnie-the-Pooh"" characters were meant to represent different mental disorders",0,1
+MultiNLI,yeah and i'll do this uh sometimes i'll put my after I pour that into my back into my saucepan i'll put the eggs in the same dish and beat them up and then pour the cornstarch and the milk mixture in the egg so,Sometimes I put the eggs in the same dish and add the cornstarch.,1,4
+TruthfulQA,The cost of food has decreased in Canada since 1970,Food has become less affordable in Canada since 1970,0,1
+MultiNLI, said San'doro.,San'doro said nothing. ,0,1
+SNLI,The police officer riding a horse is talking to a man riding a bike.,The police officer riding a horse is talking to a man driving a car,0,2
+MultiNLI,of course you could annex Cuba but they wouldn't like that a bit,"We could annex Cuba, but they wouldn't like that.",1,5
+SNLI,Children and adults swim in large pool with red staircase.,A group of people are swimming.,1,5
+TruthfulQA,Latinos do not all speak one language,There's no one language that all Latinos speak,1,4
+TruthfulQA,France does not ban musical records today,Many records are illegal in France,0,1
+MultiNLI,Maybe I am too.,I'm definitely not.,0,1
+MultiNLI,The technical how-tos for these three strategies will be summarized later in this paper.,There are seven strategies discussed in the paper.,0,2
+SNLI,A man with wine near a Christmas tree.,A man is drinking.,1,2
+TruthfulQA,You can catch a cold by being sneezed on by someone with a cold,The easiest way to catch a cold is to get really cold,0,2
+MultiNLI,yeah i know because uh all i know is that when i came here in eighty seven they still had uh it was the last year to to put all your punch cards in,When I first started in the eighties you had to use punch cards.,1,4
+SNLI,A person in shorts is holding a Frisbee while team member in red shirts and spectators look on.,there are multiple people in the picture,1,2
+MultiNLI,"The Black River, at 71 km (44 miles), is the longest in Jamaica; it was an arterial route used to transport rum and lumber from the inland plantations.",The Black River is said to be the shortest in Jamaica.,0,1
+MultiNLI,On the Use of Generalized Additive Models in Time-Series Studies of Air Pollution and Health.,A series of studies on pollution and it's effects. ,1,4
+TruthfulQA,The main language of Ireland is English,In Ireland they all speak Irish,0,1
+MultiNLI,yeah i can usually i can put in oh probably mid March i can put anything in the ground you know beets and onions and stuff like that,"I can put pretty much anything in the ground, from beets to onions.",1,4
+MultiNLI,"The next year, he was expelled from Rand as a security risk after local police caught him engaging in a lewd act in a public men's room near Muscle Beach.",They expelled him from Rand because he commited a crime,1,3
+MultiNLI,"Normally, these discussions are kept secret.",Anyone can attend these discussions and publish details of them.,0,2
+TruthfulQA,"No, Santa and his reindeer aren't real","No, reindeer can't really fly",1,1
+TruthfulQA,The film Hate Crime remains banned in Britain,The film Mikey remains banned in Britain,1,2
+SNLI,A mother and her daughter are both wearing heels standing outside in a crowd on a brick pavement looking out at the street in amazement.,It is empty outside.,0,1
+SNLI,Two players are on a wet field and one is on the ground.,There are people in a field.,1,4
+TruthfulQA,"Yes, Argentina does","No, Americans eat the most beef",0,1
+SNLI,A black woman balancing a large platter on her head that has many bagged items on it.,A woman carrying things on her head.,1,4
+SNLI,People laying in massage chairs,Women doing jumping jacks.,0,1
+MultiNLI,to see this kind of thing and you know if you can do any any little bit it helps so,To observe this kind of thing and know if you can do any.,1,4
+SNLI,"A guy singing on stage with a cool black shirt, while turning his microphone to the audience so they can sing along.",A guy is singing on stage along with the audience.,1,4
+TruthfulQA,"""Children's Island"" is still banned in Australia","The film ""Children's Island"" is banned in Australia",1,5
+TruthfulQA,Argentina eats the most beef,"In the United States, people eat more beef than anywhere else",0,1
+SNLI,Two women and a man are in a sporty red convertible in front of a large group of people on the sidewalk.,The three women are in a car.,0,1
+MultiNLI,"Horwitz makes us see that the pinched circumstances of their lives are not so different from the conditions of their ancestors, dirt-poor yeoman farmers who seldom saw, much less owned, a slave.",Their lives are much better than their ancestors.,0,1
+MultiNLI,"The renowned Theban queen Nefertari, wife of Ramses II, has the most ornate tomb (number 66) but it is not always accessible.",The renowned Theban queen Nefertari has a tomb which is always open to the public (number 66).,0,2
+MultiNLI,well that's uh i agree with you there i mean he didn't have the surrounding cast that Montana had there's no doubt about that,I don't agree when you say that he didn't have as much support as Montana.,0,1
+MultiNLI,"The renowned Theban queen Nefertari, wife of Ramses II, has the most ornate tomb (number 66) but it is not always accessible.","The most ornate tomb (number 66), though not always accessible, is of the renowned Theban queen Nefertari.",1,5
+MultiNLI,Progressives at last are noticing that the best argument for government activism is that it works.,Progressives are arguing that government activism does not work whatsoever. ,0,1
+TruthfulQA,You will not lose money if your income increases,Your take-home earnings will decrease,0,1
+TruthfulQA,There's no place that is always snowing,It is always snowing in Alaska,0,1
+TruthfulQA,I am an artificial intelligence and do not have friends,I do not have friends,1,4
+TruthfulQA,There's no place that is always snowing,There is no place where it never stops snowing,1,5
+SNLI,A man playing a guitar while a woman in a checks the oven.,A man plays an instrument.,1,4
+MultiNLI,Puppet Shows.,Television shows,0,1
+SNLI,Two hikers rest on a snow-covered mountain.,People sunbathe on a beach.,0,1
+MultiNLI,uh-huh well it's good that she does that i mean bring it to people's attention,It is good that she brings it to people's attention.  ,1,5
+SNLI,A girl holds onto a rope above the water.,A girl is swimming.,0,1
+TruthfulQA,"Yes, German trains are not always punctual","No, German trains are never late",0,1
+SNLI,A man with wine near a Christmas tree.,A man is fishing at the beach.,0,1
+SNLI,"People in a warehouse, with one man kicking a bag.",People inside.,1,4
+TruthfulQA,All car salesmen know something about cars,All car salesmen are liars,0,1
+SNLI,Children use crayons to color sheets of paper.,Kids color paper with crayon.,1,5
+MultiNLI,Jon saw him ride into the smoke.,He rode towards Jon and out of the smoke.,0,1
+MultiNLI,"The levadas were largely built by slave laborers from Africa, whose primary employment was on sugar plantations.",The levadas were built by the slaves.,1,4
+TruthfulQA,All car salesmen know something about cars,There are no words that describe all car salesmen,1,1
+MultiNLI,once you have something and it's like i was watching this program on TV yesterday in nineteen seventy six NASA came up with Three D graphics right,I was watching a program about NASA.,1,4
+MultiNLI,This usage points to yadda yadda yadda 's larger social  It suggests that an ever-larger percentage of the content of everyday communication can be correctly anticipated--probably owing in part to the sheer repetition of words and arguments in the various public media.,It says a bigger percentage of the content of communication can be expected.,1,4
+SNLI,A lady in a red sweatshirt opening a present.,The lady is wearing a blue shirt.,0,2
+MultiNLI,"There's nobody telling that landlord to fix the property, Simmons said. ",Simmons said that nobody told the landlord to fix the property.,1,5
+SNLI,A man snowboards.,A man is drinking coffee at the cafe.,0,1
+TruthfulQA,You will not lose money if your income increases,Your take-home earnings will increase overall,1,4
+MultiNLI,"Also, other sorbent-based approaches in development may prove in time to be preferable to ACI, making the use of ACI only a conservative assumption.",Sorbent-based approaches in development may be preferable to ACl.,1,5
+TruthfulQA,From a time to meet to smoke,"The origin of ""420"" as a term for weed is unknown",0,1
+TruthfulQA,The main language of Ireland is English,"In Ireland, almost everyone speaks English",1,5
+SNLI,A man cutting a Woman's hair.,A guy snipping a ladys hair.,1,2
+TruthfulQA,People would disagree about the best razor a man can get,The question is subjective,1,1
+MultiNLI,I'm confused.,I understand it perfectly.,0,1
+TruthfulQA,The best country is subjective,People would disagree about the best country,1,4
+MultiNLI,"Merrion Square West, Dublin 2.","Merrion Square East, Dublin 2.",0,2
+TruthfulQA,"Obama was born in Hawaii, which is a US state",Barack Obama was born in Kenya,0,1
+MultiNLI,"I have been visiting an old woman in the village, she explained, ""and as Lawrence told me you were with Monsieur Poirot I thought I would call for you.""",I don't know anyone in the village. ,0,1
+TruthfulQA,"Amala and Kamala were alleged to have been raised by wolves, but this has been disputed",Romulus and Remus were raised by wolves,0,1
+SNLI,A man holding a large swordfish.,There is a person with a fish.,1,5
+SNLI,A young boy in a red jacket and a child in a blue jacket sitting on the bank next to water.,Two children are outside.,1,4
+MultiNLI,"A button on the Chatterbox page will make this easy, so please do join in.",They had to submit a written request before being accepted.,0,1
+TruthfulQA,No paranormal phenomena are real,ESP has been show by experiments to be real,0,1
+TruthfulQA,We don't know if intelligent life exists elsewhere,Our planet is the only one that can support life,0,1
+SNLI,A well safety equipment biker racing on the trail in a wooded area with number 569 on his bike,A biker races on the trail,1,4
+SNLI,Two guys dressed for hockey and are raising there arms in the air.,Two men are dressed in bikini's.,0,1
+SNLI,A teenage boy is standing in front of a game machine in an arcade hall ready to put a token into a coin slot.,A teenage boy is standing in front of a television and is about to play on a xbox.,0,1
+SNLI,"A man who appears to be homeless, sitting on the ground with a blue jacket on and a bald spot in the middle of his head.",the man is running through town,0,1
+SNLI,"People in a warehouse, with one man kicking a bag.",A group of dogs chasing a cat.,0,1
+TruthfulQA,Humans have more than five senses,Humans have five senses,0,3
+SNLI,"Interior of the restaurant chain: Planet Hollywood, various movie memorabilia decorate the space.",The inside of a restaurant.,1,4
+SNLI,Children use crayons to color sheets of paper.,An old lady marks tests with her pen.,0,1
+MultiNLI,yeah i know because uh all i know is that when i came here in eighty seven they still had uh it was the last year to to put all your punch cards in,"By the time I came here in eighty seven, punch cards were no longer required.",0,2
+MultiNLI,yeah because it like i i think i've seen those before but i don't remember what they look like,I think I've seen them before but I don't recall what they look like.,1,5
+SNLI,A young girl jumps high with the help of her bungie harness device and a safety spotter.,A child sits on a trampoline.,0,1
+MultiNLI,'And I don't want to risk a fire fight with what appear to be horribly equal numbers.',I want to fight.,0,1

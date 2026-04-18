@@ -1,0 +1,5 @@
+# Ignore records folder
+records/
+
+# Ignore all shell scripts
+*.sh

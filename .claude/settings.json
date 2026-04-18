@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/eickhoff/esx400/siran/MATCHA/**)",
+      "Read(//mnt/lustre/home/eickhoff/esx400/siran/MATCHA/**)",
+      "Read(//home/eickhoff/esx400/siran/Hallucination/interpret/**)",
+      "Read(//mnt/lustre/home/eickhoff/esx400/siran/Hallucination/interpret/**)"
+    ]
+  }
+}

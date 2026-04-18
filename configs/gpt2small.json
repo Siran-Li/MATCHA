@@ -1,0 +1,17 @@
+{
+    "architectures": [
+      "GPT2SLMHeadModel"
+    ],
+    "activation_function": "gelu_new",
+    "bos_token_id": 50256,
+    "embd_pdrop": 0.1,
+    "eos_token_id": 50256,
+    "layer_norm_epsilon": 1e-05,
+    "model_type": "gpt2",
+    "n_embd": 768,  
+    "num_senses": 16,
+    "resid_pdrop": 0.1,
+    "sense_intermediate_scale": 4,
+    "transformers_version": "4.29.0.dev0",
+    "vocab_size": 50264
+  }

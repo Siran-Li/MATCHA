@@ -1,0 +1,85 @@
+{
+    "snli":
+        {"file": "parquet",
+        "type": "triplets",
+        "split": {"train": "train", "validation": "validation", "test": "test"},
+        "difficulty": "1"},
+    "multi_nli":
+        {"file": "parquet",
+        "type": "triplets",
+        "split": {"train": "train", "validation_matched": "validation"},
+        "difficulty": "2"},
+    "mnli_mismatched":
+        {"file": "parquet",
+        "type": "triplets",
+        "split": {"train": "train"},
+        "difficulty": "4"},
+    "vitaminc":
+        {"file": "parquet",
+        "type": "triplets",
+        "split": {"train": "train", "validation": "validation", "test": "test"},
+        "difficulty": "2"},
+    "climate_fever":
+        {"file": "parquet",
+        "type": "pairs",
+        "split": {"train": "train", "validation": "validation"},
+        "difficulty": "5"},
+    "newts":
+        {"file": "parquet",
+        "type": "pairs",
+        "split": {"train": "train", "validation": "validation"},
+        "difficulty": "3"},
+    "paranmt":
+        {"file": "parquet",
+        "type": "pairs",
+        "split": {"train": "train"},
+        "difficulty": "2"},
+    "wikianswers": 
+        {"file": "parquet",
+        "type": "pairs",
+        "columns": {"anchor":"premise", "positive":"correct_answer"},
+        "dataset_name": "sentence-transformers/wikianswers-duplicates", 
+        "split": {"train": "train"},
+        "difficulty": "1"},
+    "quora":
+        {"file": "parquet",
+        "type": "triplets",
+        "columns": {"anchor":"premise", "positive":"correct_answer", "negative":"incorrect_answer"},
+        "dataset_name": "sentence-transformers/quora-duplicates", 
+        "subset": "triplet-all",
+        "split": {"train": "train"},
+        "difficulty": "1"},
+    "altlex":
+        {"file": "parquet",
+        "type": "pairs",
+        "columns": {"text":"premise", "simplified":"correct_answer"},
+        "dataset_name": "sentence-transformers/altlex", 
+        "split": {"train": "train"},
+        "difficulty": "2"},
+    "simple-wiki":
+        {"file": "parquet",
+        "type": "pairs",
+        "columns": {"text":"premise", "simplified":"correct_answer"},
+        "dataset_name": "sentence-transformers/simple-wiki", 
+        "split": {"train": "train"},
+        "difficulty": "2"},
+    "wikihow":
+        {"file": "parquet",
+        "type": "pairs",
+        "columns": {"text":"premise", "summary":"correct_answer"},
+        "dataset_name": "sentence-transformers/wikihow", 
+        "split": {"train": "train"},
+        "difficulty": "3"},
+    "coco-captions":
+        {"file": "parquet",
+        "type": "pairs",
+        "dataset_name": "coco-captions",
+        "split": {"train": "train", "val": "validation"},
+        "difficulty": "1"},
+    "flickr30k":
+        {"file": "parquet",
+        "type": "pairs",
+        "dataset_name": "nlphuji/flickr30k",
+        "split": {"train": "train", "val": "validation", "test": "test"},
+        "difficulty": "1"}
+}

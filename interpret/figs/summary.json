@@ -1,0 +1,62 @@
+{
+  "embsim": {
+    "ref_corr_attr": 71.08,
+    "ref_corr_sim": 73.27,
+    "corr_ref_attr": 69.25,
+    "corr_ref_sim": 73.27,
+    "ref_incorr_attr": 66.87,
+    "ref_incorr_sim": 68.64,
+    "incorr_ref_attr": 64.38,
+    "incorr_ref_sim": 68.64
+  },
+  "bertscore": {
+    "ref_corr_attr": 5.03,
+    "ref_corr_sim": 85.39,
+    "corr_ref_attr": 4.63,
+    "corr_ref_sim": 85.39,
+    "ref_incorr_attr": 4.8,
+    "ref_incorr_sim": 84.7,
+    "incorr_ref_attr": 5.36,
+    "incorr_ref_sim": 84.7
+  },
+  "bleurt": {
+    "ref_corr_attr": -146.92,
+    "ref_corr_sim": -52.96,
+    "corr_ref_attr": -122.26,
+    "corr_ref_sim": -72.29,
+    "ref_incorr_attr": -150.8,
+    "ref_incorr_sim": -85.95,
+    "incorr_ref_attr": -179.19,
+    "incorr_ref_sim": -78.15
+  },
+  "simcse": {
+    "ref_corr_attr": 43.89,
+    "ref_corr_sim": 62.94,
+    "corr_ref_attr": 79.22,
+    "corr_ref_sim": 62.94,
+    "ref_incorr_attr": 44.82,
+    "ref_incorr_sim": 59.07,
+    "incorr_ref_attr": 75.25,
+    "incorr_ref_sim": 59.07
+  },
+  "mistral": {
+    "ref_corr_attr": 33.1,
+    "ref_corr_sim": 95.21,
+    "corr_ref_attr": 33.18,
+    "corr_ref_sim": 95.21,
+    "ref_incorr_attr": 32.82,
+    "ref_incorr_sim": 94.82,
+    "incorr_ref_attr": 33.13,
+    "incorr_ref_sim": 94.82
+  },
+  "matcha": {
+    "ref_corr_attr": 70.34,
+    "ref_corr_sim": 72.44,
+    "corr_ref_attr": 102.56,
+    "corr_ref_sim": 72.44,
+    "ref_incorr_attr": -100.01,
+    "ref_incorr_sim": -0.01,
+    "incorr_ref_attr": -100.01,
+    "incorr_ref_sim": -0.01
+  }
+}
