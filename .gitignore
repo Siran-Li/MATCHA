@@ -1,5 +1,12 @@
 # Ignore records folder
 records/
 
+.claude/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
 # Ignore all shell scripts
 *.sh
