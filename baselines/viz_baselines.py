@@ -117,7 +117,7 @@ if __name__ == "__main__":
     })
 
     n_datasets = len(datasets)
-    fig, axes = plt.subplots(1, n_datasets, figsize=(4 * n_datasets, 6), sharey=True)
+    fig, axes = plt.subplots(1, n_datasets, figsize=(4 * n_datasets, 5), sharey=True)
     if n_datasets == 1:
         axes = [axes]
     plt.subplots_adjust(wspace=0.3)
