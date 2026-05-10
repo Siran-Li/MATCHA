@@ -15,6 +15,28 @@ resolve_path() {
     esac
 }
 
+dataset_path() {
+    local dataset="$1"
+    local csv_name
+
+    case "$dataset" in
+        truthfulqa) csv_name="truthfulqa_filtered.csv" ;;
+        climate_fever) csv_name="climate_fever_150.csv" ;;
+        coco-caption) csv_name="coco-caption-concat.csv" ;;
+        newts) csv_name="newts_random_first1sent.csv" ;;
+        *) csv_name="$dataset.csv" ;;
+    esac
+
+    local candidate
+    for candidate in "$DATA_DIR/$csv_name" "$DATA_DIR/$dataset.pkl"; do
+        if [[ -f "$candidate" ]]; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+    return 1
+}
+
 requires_hf_token() {
     # MODELS unset means score_lm_embeddings.py will run every registered model,
     # including the gated Hugging Face models below.
@@ -76,10 +98,9 @@ fi
 DATASET_ARGS=()
 PRECOMPUTED_ARGS=()
 for dataset in $DATASETS; do
-    path="$DATA_DIR/$dataset.pkl"
-    if [[ ! -f "$path" ]]; then
-        echo "Missing dataset file: $path" >&2
-        echo "Set DATA_DIR to the folder containing the prepared .pkl files" >&2
+    if ! path="$(dataset_path "$dataset")"; then
+        echo "Missing dataset file for: $dataset" >&2
+        echo "Set DATA_DIR to the folder containing the prepared .csv or .pkl files" >&2
         exit 1
     fi
     DATASET_ARGS+=(--dataset "$dataset=$path")

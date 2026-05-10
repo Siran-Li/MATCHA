@@ -32,6 +32,8 @@ SNPMI is stored on `[0, 1]`.
 
 Wraps `score_lm_embeddings.py`. Defaults read datasets from
 `lm-embedding/data/` and write outputs to `lm-embedding/outputs/lm_embeddings/`.
+CSV files are preferred when present so row order matches the legacy
+precomputed SNPMI score files; `.pkl` files are still supported as a fallback.
 
 Env vars (override on the command line):
 
@@ -98,7 +100,7 @@ python3 -m nltk.downloader punkt punkt_tab
 
 ```text
 lm-embedding/
-├── data/                     # prepared triplet .pkl files
+├── data/                     # prepared triplet .csv or .pkl files
 ├── precomputed/
 │   └── snpmi/                # imported SNPMI score CSVs
 ├── outputs/lm_embeddings/    # scoring outputs (created on run)
@@ -108,9 +110,15 @@ lm-embedding/
 └── *.py                      # scorer, plotter, model registry, IO helpers
 ```
 
-Datasets must be `.pkl` files with the columns `premise`, `correct_answer`,
-`incorrect_answer`. SNPMI files must have `pos_sim` and `neg_sim` columns;
-`row_id` is used for alignment if present, otherwise rows align by order.
+Datasets can be CSV files with `premise`, `correct`, `incorrect` columns, or
+pickle files with `premise`, `correct_answer`, `incorrect_answer` columns.
+The default CSV names are `snli.csv`, `multi_nli.csv`,
+`truthfulqa_filtered.csv`, `climate_fever_150.csv`,
+`coco-caption-concat.csv`, and `newts_random_first1sent.csv`. CSV rows with
+only `correct` or only `incorrect` are kept and scored on the available side;
+pandas summaries ignore the missing side. SNPMI files must have `pos_sim` and
+`neg_sim` columns; `row_id` is used for alignment if present, otherwise rows
+align by order.
 
 Outputs:
 
@@ -134,7 +142,7 @@ The shell scripts are wrappers. To call the scorer directly:
 ```bash
 cd lm-embedding
 python3 score_lm_embeddings.py \
-  --dataset snli=data/snli.pkl \
+  --dataset snli=data/snli.csv \
   --models mpnet s-bert bge-large \
   --precomputed-score snli:snpmi=precomputed/snpmi/snli_snpmi_scores.csv \
   --output-dir outputs/lm_embeddings

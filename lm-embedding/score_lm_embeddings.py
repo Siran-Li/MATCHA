@@ -35,7 +35,7 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[],
         metavar="NAME=PATH",
-        help="Dataset input, can be repeated, example: --dataset snli=data/snli.pkl",
+        help="Dataset input, can be repeated, example: --dataset snli=data/snli.csv",
     )
     parser.add_argument("--models", nargs="*", default=available_model_keys(), help=f"Embedding model keys, choices: {available_model_keys()}")
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/lm_embeddings"), help="Output directory")
@@ -115,7 +115,11 @@ def load_or_compute_model_scores(args: argparse.Namespace, table: DatasetTable, 
     )
     # Batching is only for throughput, score_dataset_table keeps rows aligned
     records = score_dataset_table(table, spec, encoder, batch_size=args.batch_size)
-    records = drop_invalid_score_rows(records, keep_invalid=args.keep_invalid)
+    records = drop_invalid_score_rows(
+        records,
+        keep_invalid=args.keep_invalid,
+        allow_partial_scores=table.allow_partial_answers,
+    )
     write_model_scores(records, clean_path)
     del encoder
     return records
