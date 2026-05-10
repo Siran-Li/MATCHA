@@ -342,7 +342,7 @@ class EmbeddingEncoder:
 
     def encode(self, texts: list[str], batch_size: int = 64) -> np.ndarray:
         """Encode texts with the selected backend and return one vector per input row"""
-        # Whitespace normalize then drop empty strings before embedding
+        # Whitespace-normalize while preserving row alignment with the source table.
         texts = prepare_embedding_texts(texts)
         if not texts:
             return np.asarray([], dtype=np.float32)

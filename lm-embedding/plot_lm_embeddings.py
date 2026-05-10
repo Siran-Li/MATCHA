@@ -159,6 +159,16 @@ def summarize(scores: pd.DataFrame) -> pd.DataFrame:
     return summary
 
 
+def score_label_series(scores: pd.DataFrame) -> pd.Series:
+    """Return the display label used for sorting and plotting."""
+    return scores["model_display"].fillna(scores["model"]).astype(str)
+
+
+def model_label_sort_key(label: str) -> tuple[int, str]:
+    """Sort labels alphabetically, with MATCHA pinned after all baselines."""
+    return (1 if label == "MATCHA" else 0, label.casefold())
+
+
 def filter_available(scores: pd.DataFrame, requested: list[str]) -> pd.DataFrame:
     """Keep requested datasets that are present in the score table"""
     available = []
@@ -182,7 +192,8 @@ def plot_similarity_bar(scores: pd.DataFrame, output_dir: Path, dataset: str) ->
     """Plot correct and incorrect mean similarities for one dataset"""
     summary = summarize(scores)
     data = summary[summary["dataset"] == dataset].copy()
-    data = data.sort_values("correct_mean", ascending=False).reset_index(drop=True)
+    data["_sort_key"] = data["model_display"].map(model_label_sort_key)
+    data = data.sort_values("_sort_key").drop(columns="_sort_key").reset_index(drop=True)
     data["correct_mean"] = data["correct_mean"] * 100
     data["incorrect_mean"] = data["incorrect_mean"] * 100
 
@@ -271,7 +282,7 @@ def plot_threshold_curves(scores: pd.DataFrame, output_dir: Path) -> None:
 
     handles, labels = axes[-1].get_legend_handles_labels()
     if handles:
-        ordered = sorted(zip(labels, handles), key=lambda item: item[0])
+        ordered = sorted(zip(labels, handles), key=lambda item: model_label_sort_key(item[0]))
         labels, handles = zip(*ordered)
         axes[-1].legend(handles, labels, bbox_to_anchor=(1.05, 1), loc="upper left")
 
@@ -286,7 +297,7 @@ def plot_threshold_curves(scores: pd.DataFrame, output_dir: Path) -> None:
 
 def score_labels(scores: pd.DataFrame) -> list[str]:
     """Return model labels present in the score table"""
-    labels = scores["model_display"].fillna(scores["model"]).astype(str)
+    labels = score_label_series(scores)
     return labels.tolist()
 
 

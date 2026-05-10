@@ -24,6 +24,9 @@ from result_io import (
 from compute_scores import drop_invalid_score_rows, score_dataset_table, summarize_model_scores
 
 
+GATED_MODEL_KEYS = {"mistral-7b", "llama-2-13b", "llama-3.1-8B-Instruct"}
+
+
 def parse_args() -> argparse.Namespace:
     """Parse CLI flags for dataset scoring and score import"""
     parser = argparse.ArgumentParser(description="Score LM embeddings and save CSVs for plotting")
@@ -68,6 +71,7 @@ def main() -> None:
 
     dataset_specs = parse_dataset_specs(args.dataset)
     model_specs = apply_transformer_pooling(resolve_model_specs(args.models), args.pooling_type)
+    validate_hf_token(model_specs)
     precomputed_specs = parse_precomputed_score_specs(args.precomputed_score)
     validate_precomputed_datasets(dataset_specs, precomputed_specs)
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -121,7 +125,8 @@ def load_and_write_precomputed_scores(args: argparse.Namespace, table: DatasetTa
     """Import an external score file and save it beside computed model scores"""
     print(f"[{table.name}/{spec.model}] importing precomputed scores: {spec.path}")
     records = load_precomputed_scores(table, spec, denormalize=args.denormalize_precomputed_scores)
-    records = drop_invalid_score_rows(records, keep_invalid=args.keep_invalid)
+    if spec.model != "snpmi":
+        records = drop_invalid_score_rows(records, keep_invalid=args.keep_invalid)
     path = model_scores_dir(args.output_dir, table.name) / f"{safe_filename(spec.model)}.csv"
     write_model_scores(records, path)
     return records
@@ -142,6 +147,17 @@ def apply_transformer_pooling(model_specs, pooling_type: str):
         replace(spec, pooling=pooling_type) if spec.backend == "transformer" else spec
         for spec in model_specs
     ]
+
+
+def validate_hf_token(model_specs) -> None:
+    """Fail early when a requested model is known to require Hugging Face auth."""
+    requested_gated = sorted(spec.key for spec in model_specs if spec.key in GATED_MODEL_KEYS)
+    if requested_gated and not os.getenv("HF_TOKEN"):
+        gated = ", ".join(requested_gated)
+        raise ValueError(
+            f"HF_TOKEN is required for gated Hugging Face model(s): {gated}. "
+            "Export HF_TOKEN=hf_... or pass --hf-token."
+        )
 
 
 def print_dataset_header(name: str, row_count: int) -> None:

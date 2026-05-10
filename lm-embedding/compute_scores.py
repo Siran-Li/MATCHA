@@ -31,6 +31,9 @@ def score_triplet_rows(
     reference_embeddings = encoder.encode(df["reference"].tolist(), batch_size=batch_size)
     correct_embeddings = encoder.encode(df["correct"].tolist(), batch_size=batch_size)
     incorrect_embeddings = encoder.encode(df["incorrect"].tolist(), batch_size=batch_size)
+    validate_embedding_count(reference_embeddings, len(df), "reference", table.name, spec.key)
+    validate_embedding_count(correct_embeddings, len(df), "correct", table.name, spec.key)
+    validate_embedding_count(incorrect_embeddings, len(df), "incorrect", table.name, spec.key)
 
     # Compare the same reference against the two answer choices
     correct_sim = cosine_similarity_by_row(reference_embeddings, correct_embeddings)
@@ -70,6 +73,22 @@ def cosine_similarity_by_row(left: np.ndarray, right: np.ndarray) -> np.ndarray:
     scores = numerator / np.where(denom == 0, np.nan, denom)
     scores[~np.isfinite(scores)] = np.nan
     return scores
+
+
+def validate_embedding_count(
+    embeddings: np.ndarray,
+    expected_rows: int,
+    column: str,
+    dataset: str,
+    model: str,
+) -> None:
+    """Fail loudly if an encoder loses row alignment."""
+    actual_rows = len(embeddings)
+    if actual_rows != expected_rows:
+        raise ValueError(
+            f"Encoder returned {actual_rows} {column} embeddings for {expected_rows} "
+            f"rows on {dataset}/{model}; row alignment would be invalid"
+        )
 
 
 def drop_invalid_score_rows(records: pd.DataFrame, keep_invalid: bool) -> pd.DataFrame:

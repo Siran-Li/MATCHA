@@ -4,6 +4,9 @@ records/
 # Claude directory at root only (if that's your intent)
 .claude/
 
+# Local Python virtual environments
+.venv/
+
 # Python cache files (these are correct)
 __pycache__/
 

@@ -1,7 +1,7 @@
 # LM Embedding Baselines
-Compare different language model embedding models, testing their ability to distinguish between correct and incorrect pairs using cosine similarity.
 
-Compute and plot embedding-based semantic-separation scores.
+Compute and plot embedding-based semantic-separation scores for the MATCHA
+triplet datasets. Self-contained inside `lm-embedding/`.
 
 ## Quick Start
 
@@ -9,7 +9,7 @@ Compute and plot embedding-based semantic-separation scores.
 # 1. install deps
 pip install -r lm-embedding/requirements.txt
 
-# 2. export your Hugging Face token (required, see "HF_TOKEN" below)
+# 2. export your Hugging Face token for gated/default full runs
 export HF_TOKEN=hf_...
 
 # 3. score embeddings
@@ -19,17 +19,12 @@ lm-embedding/scripts/compute.sh
 lm-embedding/scripts/analyze.sh
 ```
 
-Prerequisite: prepared dataset files must live under `lm-embedding/data/` with
-names matching the dataset keys, for example `snli.pkl`, `multi_nli.pkl`,
-`truthfulqa.pkl`, `climate_fever.pkl`, `coco-caption.pkl`, `newts.pkl`.
-# TODO
-refer to the prepare_eval_datasets.py with the validation split
-
 SNPMI scores are auto-included: any file matching
-`precomputed_snpmi/{dataset}_snpmi_scores.csv` is picked up automatically for
-the datasets in `DATASETS`. To override, set `SNPMI_DIR=/some/path`, or set
-`SKIP_AUTO_SNPMI=1` and pass `--precomputed-score` flags yourself. Add
-`--denormalize-precomputed-scores` if SNPMI is stored on `[0, 1]`.
+`precomputed/snpmi/{dataset}_snpmi_scores.csv` is picked up automatically for
+the datasets in `DATASETS`.
+To override, set `SNPMI_DIR=/some/path`, or set `SKIP_AUTO_SNPMI=1` and pass
+`--precomputed-score` flags yourself. Add `--denormalize-precomputed-scores` if
+SNPMI is stored on `[0, 1]`.
 
 ## Scripts
 
@@ -41,10 +36,10 @@ Wraps `score_lm_embeddings.py`. Defaults read datasets from
 Env vars (override on the command line):
 
 ```bash
-HF_TOKEN=hf_...                       # required, see below
+HF_TOKEN=hf_...                       # required only for gated models
 DATA_DIR=data                         # relative to lm-embedding/
 OUTPUT_DIR=outputs/lm_embeddings
-SNPMI_DIR=precomputed_snpmi           # auto-discovered SNPMI score CSVs
+SNPMI_DIR=precomputed/snpmi           # auto-discovered SNPMI score CSVs
 DATASETS="snli multi_nli truthfulqa climate_fever coco-caption newts"
 MODELS="mpnet s-bert bge-large"       # unset = run all registered models
 BATCH_SIZE=64
@@ -52,7 +47,6 @@ DEVICE=cuda:0
 MAX_LENGTH=512
 SKIP_EXISTING=1                       # skip per-model CSVs that already exist
 SKIP_AUTO_SNPMI=1                     # disable SNPMI auto-discovery
-ALLOW_MISSING_HF_TOKEN=1              # only for word2vec/glove-only runs
 ```
 
 ### `scripts/analyze.sh`
@@ -69,21 +63,20 @@ FIG5_DATASETS="climate_fever coco-caption newts"
 FIG6_DATASETS="snli multi_nli truthfulqa"
 ```
 
-## HF_TOKEN (Required)
+## HF_TOKEN
 
-`HF_TOKEN` is required for any run that touches Hugging Face. Every transformer
-and sentence-transformer load path in `load_models.py` reads it via
-`os.getenv("HF_TOKEN")` and the default model list contains gated models
-(`mistral-7b`, `llama-2-13b`, `llama-3.1-8B-Instruct`) that fail without auth.
+`HF_TOKEN` is required only when the requested model set includes gated Hugging
+Face models. If `MODELS` is unset, `score_lm_embeddings.py` runs every
+registered model, including `mistral-7b`, `llama-2-13b`, and
+`llama-3.1-8B-Instruct`, so `compute.sh` requires a token.
 
 Get a token at <https://huggingface.co/settings/tokens> after accepting the
 license for each gated model.
 
-`compute.sh` fails fast if `HF_TOKEN` is unset. The only run that doesn't
-need it is gensim-only:
+Public-only runs do not need a token:
 
 ```bash
-ALLOW_MISSING_HF_TOKEN=1 MODELS="word2vec glove" lm-embedding/scripts/compute.sh
+MODELS="mpnet s-bert bge-large" lm-embedding/scripts/compute.sh
 ```
 
 ## Models
@@ -106,7 +99,8 @@ python3 -m nltk.downloader punkt punkt_tab
 ```text
 lm-embedding/
 ├── data/                     # prepared triplet .pkl files
-├── precomputed_snpmi/        # imported SNPMI score CSVs
+├── precomputed/
+│   └── snpmi/                # imported SNPMI score CSVs
 ├── outputs/lm_embeddings/    # scoring outputs (created on run)
 ├── scripts/
 │   ├── compute.sh
@@ -142,7 +136,7 @@ cd lm-embedding
 python3 score_lm_embeddings.py \
   --dataset snli=data/snli.pkl \
   --models mpnet s-bert bge-large \
-  --precomputed-score snli:snpmi=precomputed_snpmi/snli_snpmi_scores.csv \
+  --precomputed-score snli:snpmi=precomputed/snpmi/snli_snpmi_scores.csv \
   --output-dir outputs/lm_embeddings
 
 python3 plot_lm_embeddings.py \
