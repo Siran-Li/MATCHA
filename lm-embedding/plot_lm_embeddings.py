@@ -30,8 +30,10 @@ DATASET_DISPLAY = {
 
 CORRECT_COLOR = "#1f77b4"
 INCORRECT_COLOR = "#ff7f0e"
+GAP_COLOR = "#2ca02c"
 CORRECT_HATCH = "///"
 INCORRECT_HATCH = "\\\\\\"
+GAP_HATCH = "xxxx"
 GRID_STYLE = {"linestyle": "--", "linewidth": 0.7, "alpha": 0.5, "color": "gray"}
 PAPER_THRESHOLDS = np.linspace(0, 2, 200)
 THRESHOLD_FILENAME = "threshold_curves_norm=False_cutoff=None.png"
@@ -148,6 +150,10 @@ def load_per_model_score_files(model_scores_dir: Path, dataset: str) -> pd.DataF
 
 def summarize(scores: pd.DataFrame) -> pd.DataFrame:
     """Compute per-dataset/model means used by the bar plots"""
+    scores = scores.copy()
+    if "gap" not in scores.columns and {"correct_sim", "incorrect_sim"}.issubset(scores.columns):
+        scores["gap"] = scores["correct_sim"] - scores["incorrect_sim"]
+
     grouped = scores.groupby(["dataset", "model", "model_display"], dropna=False)
     summary = grouped.agg(
         correct_mean=("correct_sim", "mean"),
@@ -189,13 +195,14 @@ def unique_datasets(datasets: list[str]) -> list[str]:
 
 
 def plot_similarity_bar(scores: pd.DataFrame, output_dir: Path, dataset: str) -> None:
-    """Plot correct and incorrect mean similarities for one dataset"""
+    """Plot correct, incorrect, and gap mean similarities for one dataset"""
     summary = summarize(scores)
     data = summary[summary["dataset"] == dataset].copy()
     data["_sort_key"] = data["model_display"].map(model_label_sort_key)
     data = data.sort_values("_sort_key").drop(columns="_sort_key").reset_index(drop=True)
     data["correct_mean"] = data["correct_mean"] * 100
     data["incorrect_mean"] = data["incorrect_mean"] * 100
+    data["gap_mean"] = data["gap_mean"] * 100
 
     x = np.arange(len(data))
     width = 0.2
@@ -206,20 +213,30 @@ def plot_similarity_bar(scores: pd.DataFrame, output_dir: Path, dataset: str) ->
         data["correct_mean"],
         width,
         label="Correct",
-        facecolor="white",
-        edgecolor=CORRECT_COLOR,
+        color=CORRECT_COLOR,
+        edgecolor="black",
         hatch=CORRECT_HATCH,
-        linewidth=1.5,
+        linewidth=0.8,
     )
     ax.bar(
         x,
         data["incorrect_mean"],
         width,
         label="Incorrect",
-        facecolor="white",
-        edgecolor=INCORRECT_COLOR,
+        color=INCORRECT_COLOR,
+        edgecolor="black",
         hatch=INCORRECT_HATCH,
-        linewidth=1.5,
+        linewidth=0.8,
+    )
+    ax.bar(
+        x + width,
+        data["gap_mean"],
+        width,
+        label="Gap",
+        color=GAP_COLOR,
+        edgecolor="black",
+        hatch=GAP_HATCH,
+        linewidth=0.8,
     )
 
     labels = data["model_display"].fillna(data["model"]).tolist()
@@ -227,7 +244,7 @@ def plot_similarity_bar(scores: pd.DataFrame, output_dir: Path, dataset: str) ->
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=45, ha="right")
     ax.set_ylabel("Mean Similarity (%)")
-    ax.set_title(f"Mean Similarity - Correct vs Incorrect({dataset_label})")
+    ax.set_title(f"Mean Similarity - Correct vs Incorrect vs Gap ({dataset_label})")
     ax.legend(framealpha=0.7)
     ax.grid(True, **GRID_STYLE)
 

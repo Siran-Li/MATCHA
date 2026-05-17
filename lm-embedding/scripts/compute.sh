@@ -53,16 +53,31 @@ requires_hf_token() {
     return 1
 }
 
+uses_nltk_tokenizer() {
+    # MODELS unset means score_lm_embeddings.py will run every registered model,
+    # including Word2Vec and GloVe.
+    if [[ -z "${MODELS:-}" ]]; then
+        return 0
+    fi
+
+    local model
+    for model in $MODELS; do
+        case "$model" in
+            word2vec|glove) return 0 ;;
+        esac
+    done
+    return 1
+}
+
 DATA_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${DATA_DIR:-data}")"
 OUTPUT_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${OUTPUT_DIR:-outputs/lm_embeddings}")"
 SNPMI_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${SNPMI_DIR:-precomputed/snpmi}")"
 DATASETS="${DATASETS:-snli multi_nli truthfulqa climate_fever coco-caption newts}"
 
 if requires_hf_token && [[ -z "${HF_TOKEN:-}" ]]; then
-    echo "HF_TOKEN is not set, but the requested model set includes gated Hugging Face models." >&2
+    echo "Warning: HF_TOKEN is not set, but the requested model set includes gated Hugging Face models." >&2
     echo "Gated models: mistral-7b, llama-2-13b, llama-3.1-8B-Instruct" >&2
-    echo "Export HF_TOKEN=hf_..., or set MODELS to public/non-gated models only." >&2
-    exit 1
+    echo "Those models will be skipped and the run will continue." >&2
 fi
 
 # Uncomment and edit this line to choose specific models.
@@ -129,6 +144,10 @@ OPTIONAL_ARGS=()
 [[ -n "${DEVICE:-}" ]] && OPTIONAL_ARGS+=(--device "$DEVICE")
 [[ -n "${MAX_LENGTH:-}" ]] && OPTIONAL_ARGS+=(--max-length "$MAX_LENGTH")
 [[ "${SKIP_EXISTING:-}" == "1" ]] && OPTIONAL_ARGS+=(--skip-existing)
+[[ "${FAIL_FAST:-}" == "1" ]] && OPTIONAL_ARGS+=(--fail-fast)
+if uses_nltk_tokenizer && [[ "${SKIP_NLTK_DATA:-0}" != "1" ]]; then
+    OPTIONAL_ARGS+=(--ensure-nltk-data)
+fi
 
 cd "$LM_EMBEDDING_DIR"
 

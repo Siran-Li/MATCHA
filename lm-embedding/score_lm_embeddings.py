@@ -6,6 +6,7 @@ import argparse
 from dataclasses import replace
 import os
 from pathlib import Path
+import sys
 
 import pandas as pd
 
@@ -25,6 +26,7 @@ from compute_scores import drop_invalid_score_rows, score_dataset_table, summari
 
 
 GATED_MODEL_KEYS = {"mistral-7b", "llama-2-13b", "llama-3.1-8B-Instruct"}
+FAILURES_FILENAME = "failures.csv"
 
 
 def parse_args() -> argparse.Namespace:
@@ -59,6 +61,16 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--skip-existing", action="store_true", help="Skip per-model CSVs that already exist")
     parser.add_argument("--keep-invalid", action="store_true", help="Keep rows whose embeddings are NaN instead of dropping them")
+    parser.add_argument(
+        "--ensure-nltk-data",
+        action="store_true",
+        help="Download missing NLTK tokenizer data needed by Word2Vec/GloVe",
+    )
+    parser.add_argument(
+        "--fail-fast",
+        action="store_true",
+        help="Stop on the first model/import failure instead of continuing",
+    )
     return parser.parse_args()
 
 
@@ -71,12 +83,13 @@ def main() -> None:
 
     dataset_specs = parse_dataset_specs(args.dataset)
     model_specs = apply_transformer_pooling(resolve_model_specs(args.models), args.pooling_type)
-    validate_hf_token(model_specs)
+    warn_missing_hf_token(model_specs)
     precomputed_specs = parse_precomputed_score_specs(args.precomputed_score)
     validate_precomputed_datasets(dataset_specs, precomputed_specs)
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     all_summaries = []
+    failures = []
     for dataset_name, dataset_path in dataset_specs:
         table = load_dataset_table(dataset_name, dataset_path, split=args.split)
         print_dataset_header(table.name, len(table.frame))
@@ -84,12 +97,40 @@ def main() -> None:
         dataset_records = []
         summary_records = []
         for spec in model_specs:
-            records = load_or_compute_model_scores(args, table, spec)
+            if missing_gated_model_token(spec):
+                message = (
+                    f"HF_TOKEN is required for gated Hugging Face model '{spec.key}'. "
+                    "Export HF_TOKEN=hf_... or pass --hf-token to score this model."
+                )
+                failure = record_failure(table.name, spec.key, "model", "MissingHFToken", message)
+                failures.append(failure)
+                print_failure(failure)
+                if args.fail_fast:
+                    raise RuntimeError(message)
+                continue
+
+            try:
+                records = load_or_compute_model_scores(args, table, spec)
+            except Exception as exc:
+                failure = record_failure_from_exception(table.name, spec.key, "model", exc)
+                failures.append(failure)
+                print_failure(failure)
+                if args.fail_fast:
+                    raise
+                continue
             dataset_records.append(records)
             summary_records.append(summarize_model_scores(records, table.name, spec))
 
         for spec in precomputed_specs.get(table.name, []):
-            records = load_and_write_precomputed_scores(args, table, spec)
+            try:
+                records = load_and_write_precomputed_scores(args, table, spec)
+            except Exception as exc:
+                failure = record_failure_from_exception(table.name, spec.model, "precomputed", exc)
+                failures.append(failure)
+                print_failure(failure)
+                if args.fail_fast:
+                    raise
+                continue
             dataset_records.append(records)
             summary_records.append(summarize_precomputed_scores(records, spec))
 
@@ -98,6 +139,7 @@ def main() -> None:
             all_summaries.append(pd.DataFrame(summary_records))
 
     write_all_datasets_summary(args.output_dir, all_summaries)
+    write_failures(args.output_dir, failures)
 
 
 def load_or_compute_model_scores(args: argparse.Namespace, table: DatasetTable, spec):
@@ -106,6 +148,9 @@ def load_or_compute_model_scores(args: argparse.Namespace, table: DatasetTable, 
     if args.skip_existing and clean_path.exists():
         print(f"[{table.name}/{spec.key}] loading existing scores from {clean_path}")
         return load_model_scores(clean_path, table.name, spec)
+
+    if args.ensure_nltk_data and spec.backend == "gensim":
+        ensure_nltk_data()
 
     print(f"[{table.name}/{spec.key}] loading model: {spec.display_name}")
     encoder = EmbeddingEncoder(
@@ -153,15 +198,89 @@ def apply_transformer_pooling(model_specs, pooling_type: str):
     ]
 
 
-def validate_hf_token(model_specs) -> None:
-    """Fail early when a requested model is known to require Hugging Face auth."""
+def ensure_nltk_data() -> None:
+    """Download NLTK tokenizer resources only when they are missing."""
+    try:
+        import nltk
+    except ImportError as exc:
+        raise RuntimeError("Install nltk before using --ensure-nltk-data") from exc
+
+    for package, resource in [
+        ("punkt", "tokenizers/punkt"),
+        ("punkt_tab", "tokenizers/punkt_tab"),
+    ]:
+        try:
+            nltk.data.find(resource)
+        except LookupError:
+            print(f"Downloading missing NLTK data: {package}")
+            if not nltk.download(package):
+                raise RuntimeError(f"Failed to download NLTK data package: {package}")
+            nltk.data.find(resource)
+
+
+def warn_missing_hf_token(model_specs) -> None:
+    """Warn when requested models are known to require Hugging Face auth."""
     requested_gated = sorted(spec.key for spec in model_specs if spec.key in GATED_MODEL_KEYS)
     if requested_gated and not os.getenv("HF_TOKEN"):
         gated = ", ".join(requested_gated)
-        raise ValueError(
-            f"HF_TOKEN is required for gated Hugging Face model(s): {gated}. "
-            "Export HF_TOKEN=hf_... or pass --hf-token."
+        print(
+            f"Warning: HF_TOKEN is missing, gated model(s) will be skipped: {gated}",
+            file=sys.stderr,
         )
+
+
+def missing_gated_model_token(spec) -> bool:
+    """Return whether a model should be skipped because auth is unavailable."""
+    return spec.key in GATED_MODEL_KEYS and not os.getenv("HF_TOKEN")
+
+
+def record_failure_from_exception(
+    dataset: str,
+    model: str,
+    stage: str,
+    exc: Exception,
+) -> dict[str, str]:
+    """Convert an exception to the stable failure table schema."""
+    return record_failure(dataset, model, stage, type(exc).__name__, str(exc))
+
+
+def record_failure(
+    dataset: str,
+    model: str,
+    stage: str,
+    error_type: str,
+    error: str,
+) -> dict[str, str]:
+    """Create one model/import failure record."""
+    return {
+        "dataset": dataset,
+        "model": model,
+        "stage": stage,
+        "error_type": error_type,
+        "error": error,
+    }
+
+
+def print_failure(failure: dict[str, str]) -> None:
+    """Print a compact failure line while the run continues."""
+    print(
+        f"[{failure['dataset']}/{failure['model']}] {failure['stage']} failed: "
+        f"{failure['error_type']}: {failure['error']}",
+        file=sys.stderr,
+    )
+
+
+def write_failures(output_dir: Path, failures: list[dict[str, str]]) -> None:
+    """Write a CSV of skipped/failed model runs for post-run inspection."""
+    if not failures:
+        return
+
+    path = output_dir / FAILURES_FILENAME
+    pd.DataFrame(failures).to_csv(path, index=False)
+    print(
+        f"\nCompleted with {len(failures)} model/import failure(s). "
+        f"Saved failure report: {path}"
+    )
 
 
 def print_dataset_header(name: str, row_count: int) -> None:

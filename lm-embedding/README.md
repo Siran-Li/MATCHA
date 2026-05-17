@@ -9,7 +9,7 @@ triplet datasets. Self-contained inside `lm-embedding/`.
 # 1. install deps
 pip install -r lm-embedding/requirements.txt
 
-# 2. export your Hugging Face token for gated/default full runs
+# 2. optionally export your Hugging Face token for gated models
 export HF_TOKEN=hf_...
 
 # 3. score embeddings
@@ -49,6 +49,8 @@ DEVICE=cuda:0
 MAX_LENGTH=512
 SKIP_EXISTING=1                       # skip per-model CSVs that already exist
 SKIP_AUTO_SNPMI=1                     # disable SNPMI auto-discovery
+SKIP_NLTK_DATA=1                      # do not auto-download punkt/punkt_tab
+FAIL_FAST=1                           # stop on first model/import failure
 ```
 
 ### `scripts/analyze.sh`
@@ -70,7 +72,8 @@ FIG6_DATASETS="snli multi_nli truthfulqa"
 `HF_TOKEN` is required only when the requested model set includes gated Hugging
 Face models. If `MODELS` is unset, `score_lm_embeddings.py` runs every
 registered model, including `mistral-7b`, `llama-2-13b`, and
-`llama-3.1-8B-Instruct`, so `compute.sh` requires a token.
+`llama-3.1-8B-Instruct`. Without a token, those gated models are skipped and
+the remaining models continue.
 
 Get a token at <https://huggingface.co/settings/tokens> after accepting the
 license for each gated model.
@@ -95,6 +98,11 @@ Word2Vec / GloVe also need NLTK tokenizer data:
 ```bash
 python3 -m nltk.downloader punkt punkt_tab
 ```
+
+This data cannot be installed through `requirements.txt`; `requirements.txt`
+only installs the `nltk` Python package. `compute.sh` passes
+`--ensure-nltk-data` automatically when Word2Vec/GloVe are included, unless
+`SKIP_NLTK_DATA=1` is set.
 
 ## Layout
 
@@ -125,6 +133,7 @@ Outputs:
 ```text
 outputs/lm_embeddings/
 ├── summary_all.csv
+├── failures.csv              # present only if a model/import failed or was skipped
 ├── {dataset}/
 │   ├── scores_long.csv       # main plotting input
 │   ├── summary.csv
@@ -145,6 +154,7 @@ python3 score_lm_embeddings.py \
   --dataset snli=data/snli.csv \
   --models mpnet s-bert bge-large \
   --precomputed-score snli:snpmi=precomputed/snpmi/snli_snpmi_scores.csv \
+  --ensure-nltk-data \
   --output-dir outputs/lm_embeddings
 
 python3 plot_lm_embeddings.py \
