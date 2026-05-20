@@ -19,12 +19,13 @@ lm-embedding/scripts/compute.sh
 lm-embedding/scripts/analyze.sh
 ```
 
-SNPMI scores are auto-included: any file matching
-`precomputed/snpmi/{dataset}_snpmi_scores.csv` is picked up automatically for
-the datasets in `DATASETS`.
-To override, set `SNPMI_DIR=/some/path`, or set `SKIP_AUTO_SNPMI=1` and pass
-`--precomputed-score` flags yourself. Add `--denormalize-precomputed-scores` if
-SNPMI is stored on `[0, 1]`.
+SNPMI and MATCHA scores are auto-included: files matching
+`precomputed/snpmi/{dataset}_snpmi_scores.csv` and
+`precomputed/matcha/{dataset}_matcha_scores.csv` are picked up automatically
+for the datasets in `DATASETS`.
+To override, set `SNPMI_DIR=/some/path` or `MATCHA_DIR=/some/path`, or set
+`SKIP_AUTO_SNPMI=1` / `SKIP_AUTO_MATCHA=1` and pass `--precomputed-score` flags
+yourself. Add `--denormalize-precomputed-scores` if SNPMI is stored on `[0, 1]`.
 
 ## Scripts
 
@@ -42,6 +43,7 @@ HF_TOKEN=hf_...                       # required only for gated models
 DATA_DIR=data                         # relative to lm-embedding/
 OUTPUT_DIR=outputs/lm_embeddings
 SNPMI_DIR=precomputed/snpmi           # auto-discovered SNPMI score CSVs
+MATCHA_DIR=precomputed/matcha         # auto-discovered MATCHA score CSVs
 DATASETS="snli multi_nli truthfulqa climate_fever coco-caption newts"
 MODELS="mpnet s-bert bge-large"       # unset = run all registered models
 BATCH_SIZE=64
@@ -49,6 +51,7 @@ DEVICE=cuda:0
 MAX_LENGTH=512
 SKIP_EXISTING=1                       # skip per-model CSVs that already exist
 SKIP_AUTO_SNPMI=1                     # disable SNPMI auto-discovery
+SKIP_AUTO_MATCHA=1                    # disable MATCHA auto-discovery
 SKIP_NLTK_DATA=1                      # do not auto-download punkt/punkt_tab
 FAIL_FAST=1                           # stop on first model/import failure
 ```
@@ -104,12 +107,25 @@ only installs the `nltk` Python package. `compute.sh` passes
 `--ensure-nltk-data` automatically when Word2Vec/GloVe are included, unless
 `SKIP_NLTK_DATA=1` is set.
 
+## Precomputed MATCHA
+
+MATCHA precomputed files can be regenerated from `data/` with:
+
+```bash
+lm-embedding/scripts/build_matcha_precomputed.py
+```
+
+The script uses `pos_sim_M` / `neg_sim_M` when those columns exist, otherwise
+`pos_sim` / `neg_sim`. Unit-interval source scores are converted to `[-1, 1]`
+with `2*x - 1`; scores already containing negatives are copied as-is.
+
 ## Layout
 
 ```text
 lm-embedding/
 ├── data/                     # prepared triplet .csv or .pkl files
 ├── precomputed/
+│   ├── matcha/               # copied MATCHA score CSVs
 │   └── snpmi/                # imported SNPMI score CSVs
 ├── outputs/lm_embeddings/    # scoring outputs (created on run)
 ├── scripts/
@@ -154,6 +170,7 @@ python3 score_lm_embeddings.py \
   --dataset snli=data/snli.csv \
   --models mpnet s-bert bge-large \
   --precomputed-score snli:snpmi=precomputed/snpmi/snli_snpmi_scores.csv \
+  --precomputed-score snli:matcha=precomputed/matcha/snli_matcha_scores.csv \
   --ensure-nltk-data \
   --output-dir outputs/lm_embeddings
 

@@ -72,6 +72,7 @@ uses_nltk_tokenizer() {
 DATA_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${DATA_DIR:-data}")"
 OUTPUT_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${OUTPUT_DIR:-outputs/lm_embeddings}")"
 SNPMI_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${SNPMI_DIR:-precomputed/snpmi}")"
+MATCHA_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${MATCHA_DIR:-precomputed/matcha}")"
 DATASETS="${DATASETS:-snli multi_nli truthfulqa climate_fever coco-caption newts}"
 
 if requires_hf_token && [[ -z "${HF_TOKEN:-}" ]]; then
@@ -126,6 +127,15 @@ for dataset in $DATASETS; do
         snpmi_path="$SNPMI_DIR/${dataset}_snpmi_scores.csv"
         if [[ -f "$snpmi_path" ]]; then
             PRECOMPUTED_ARGS+=(--precomputed-score "$dataset:snpmi=$snpmi_path")
+        fi
+    fi
+
+    # Include precomputed MATCHA scores from the standardized copied dataset files.
+    # Set SKIP_AUTO_MATCHA=1 to disable (e.g. when passing --precomputed-score manually).
+    if [[ "${SKIP_AUTO_MATCHA:-0}" != "1" ]]; then
+        matcha_path="$MATCHA_DIR/${dataset}_matcha_scores.csv"
+        if [[ -f "$matcha_path" ]]; then
+            PRECOMPUTED_ARGS+=(--precomputed-score "$dataset:matcha=$matcha_path")
         fi
     fi
 done

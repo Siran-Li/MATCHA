@@ -70,8 +70,8 @@ SCORE_ONLY_POS_NEG_MAPPING = PrecomputedColumnMapping(
 
 MATCHA_EVAL_SCORE_MAPPING = PrecomputedColumnMapping(
     reference="premise",
-    correct="correct_answer",
-    incorrect="incorrect_answer",
+    correct="correct",
+    incorrect="incorrect",
     correct_sim="pos_sim",
     incorrect_sim="neg_sim",
 )
