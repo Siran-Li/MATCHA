@@ -30,6 +30,7 @@ MATCHA/
 ├── baselines/
 │   ├── eval_baselines.py       # Compare MATCHA against 8 baseline metrics
 │   └── human_eval.py           # Correlation analysis with human judgments
+├── lm-embedding/               # LM embedding baseline scoring and plotting suite
 └── interpret/
     └── captum_interpret.py     # Token-level attribution via Integrated Gradients
 ```
@@ -112,6 +113,14 @@ Compares MATCHA against 9 widely used baseline metrics:
 | MATCHA | Contrastive semantic alignment (proposed method) |
 
 Reports macro F1, Wasserstein distance, and balanced accuracy per dataset and cross-dataset.
+
+### LM Embedding Baselines
+
+The `lm-embedding/` directory contains a self-contained pipeline for scoring
+sentence and language-model embeddings on the MATCHA evaluation datasets,
+importing precomputed SNPMI/MATCHA scores, and plotting comparison figures.
+See [`lm-embedding/README.md`](lm-embedding/README.md) for model keys and
+output layout.
 
 ### Human Evaluation 
 

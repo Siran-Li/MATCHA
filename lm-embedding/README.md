@@ -60,7 +60,9 @@ FAIL_FAST=1                           # stop on first model/import failure
 
 Wraps `plot_lm_embeddings.py`. Defaults read scores from
 `lm-embedding/outputs/lm_embeddings/` and write figures to that folder's
-`figures/` subdirectory.
+`figures/` subdirectory. This script does not choose models itself; it plots
+the models already present in `SCORES_DIR`, usually from the previous
+`compute.sh` run.
 
 ```bash
 SCORES_DIR=outputs/lm_embeddings
@@ -140,9 +142,11 @@ The default CSV names are `snli.csv`, `multi_nli.csv`,
 `truthfulqa_filtered.csv`, `climate_fever_150.csv`,
 `coco-caption-concat.csv`, and `newts_random_first1sent.csv`. CSV rows with
 only `correct` or only `incorrect` are kept and scored on the available side;
-pandas summaries ignore the missing side. SNPMI files must have `pos_sim` and
-`neg_sim` columns; `row_id` is used for alignment if present, otherwise rows
-align by order.
+pandas summaries ignore the missing side. Row-level `gap` is computed only
+when both sides exist on the same row, so one-sided datasets such as
+Climate-FEVER can show correct/incorrect means without a visible gap bar.
+SNPMI files must have `pos_sim` and `neg_sim` columns; `row_id` is used for
+alignment if present, otherwise rows align by order.
 
 Outputs:
 
