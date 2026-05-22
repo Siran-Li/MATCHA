@@ -69,7 +69,7 @@ uses_nltk_tokenizer() {
     return 1
 }
 
-DATA_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${DATA_DIR:-data}")"
+DATA_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${DATA_DIR:-datasets}")"
 OUTPUT_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${OUTPUT_DIR:-outputs/lm_embeddings}")"
 SNPMI_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${SNPMI_DIR:-precomputed/snpmi}")"
 MATCHA_DIR="$(resolve_path "$LM_EMBEDDING_DIR" "${MATCHA_DIR:-precomputed/matcha}")"

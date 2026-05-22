@@ -37,7 +37,7 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[],
         metavar="NAME=PATH",
-        help="Dataset input, can be repeated, example: --dataset snli=data/snli.csv",
+        help="Dataset input, can be repeated, example: --dataset snli=datasets/snli.csv",
     )
     parser.add_argument("--models", nargs="*", default=available_model_keys(), help=f"Embedding model keys, choices: {available_model_keys()}")
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/lm_embeddings"), help="Output directory")

@@ -117,8 +117,9 @@ Reports macro F1, Wasserstein distance, and balanced accuracy per dataset and cr
 ### LM Embedding Baselines
 
 The `lm-embedding/` directory contains a self-contained pipeline for scoring
-sentence and language-model embeddings on the MATCHA evaluation datasets,
-importing precomputed SNPMI/MATCHA scores, and plotting comparison figures.
+sentence and language-model embeddings on the prepared CSVs in
+`lm-embedding/datasets/`, importing precomputed SNPMI/MATCHA scores, and
+plotting comparison figures.
 See [`lm-embedding/README.md`](lm-embedding/README.md) for model keys and
 output layout.
 
