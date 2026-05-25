@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from result_io import MODEL_SCORES_DIRNAME
+from result_io import MODEL_SCORES_DIRNAME, SCORES_LONG_FILENAME
 
 DEFAULT_FIG3 = ["snli", "multi_nli", "truthfulqa"]
 DEFAULT_FIG5 = ["climate_fever", "coco-caption", "newts"]
@@ -118,34 +118,49 @@ def main() -> None:
 def load_all_scores(scores_dir: Path) -> pd.DataFrame:
     """Load score CSVs from either combined or per-model output layout"""
     frames = []
-    for long_csv in sorted(scores_dir.glob("*/scores_long.csv")):
-        frames.append(pd.read_csv(long_csv))
 
-    if frames:
-        # Prefer long files when they exist, since they are the scorer's plot-ready output
-        return pd.concat(frames, ignore_index=True)
-
-    for model_scores_dir in sorted(scores_dir.glob(f"*/{MODEL_SCORES_DIRNAME}")):
-        dataset = model_scores_dir.parent.name
+    for dataset_dir in sorted(path for path in scores_dir.iterdir() if path.is_dir()):
+        dataset = dataset_dir.name
+        model_scores_dir = dataset_dir / MODEL_SCORES_DIRNAME
         model_scores = load_per_model_score_files(model_scores_dir, dataset)
         if not model_scores.empty:
             frames.append(model_scores)
+            continue
 
-    if frames:
-        return pd.concat(frames, ignore_index=True)
+        long_csv = dataset_dir / SCORES_LONG_FILENAME
+        if long_csv.exists():
+            frames.append(pd.read_csv(long_csv))
 
-    return pd.DataFrame()
+    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
 
 def load_per_model_score_files(model_scores_dir: Path, dataset: str) -> pd.DataFrame:
-    """Load older per-model score CSVs for one dataset"""
+    """Load per-model score CSVs for one dataset"""
+    if not model_scores_dir.exists():
+        return pd.DataFrame()
+
     frames = []
     for path in sorted(model_scores_dir.glob("*.csv")):
         df = pd.read_csv(path)
-        if "dataset" not in df.columns:
-            df["dataset"] = dataset
-        frames.append(df)
+        if not df.empty:
+            frames.append(fill_score_metadata(df, dataset, path.stem))
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+
+
+def fill_score_metadata(records: pd.DataFrame, dataset: str, model: str) -> pd.DataFrame:
+    """Fill metadata needed for plotting older per-model score files"""
+    records = records.copy()
+    if "dataset" not in records.columns:
+        records["dataset"] = dataset
+    if "model" not in records.columns:
+        records["model"] = model
+    if "model_display" not in records.columns:
+        records["model_display"] = records["model"].astype(str)
+    if "row_id" not in records.columns:
+        records["row_id"] = np.arange(len(records))
+    if "gap" not in records.columns and {"correct_sim", "incorrect_sim"}.issubset(records.columns):
+        records["gap"] = records["correct_sim"] - records["incorrect_sim"]
+    return records
 
 
 def summarize(scores: pd.DataFrame) -> pd.DataFrame:

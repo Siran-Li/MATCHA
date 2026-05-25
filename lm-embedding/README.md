@@ -62,7 +62,9 @@ Wraps `plot_lm_embeddings.py`. Defaults read scores from
 `lm-embedding/outputs/lm_embeddings/` and write figures to that folder's
 `figures/` subdirectory. This script does not choose models itself; it plots
 the models already present in `SCORES_DIR`, usually from the previous
-`compute.sh` run.
+`compute.sh` run. When per-model score files exist under
+`{dataset}/model_scores/`, those files are used for plotting so chunked compute
+runs with different `MODELS` subsets are combined automatically.
 
 ```bash
 SCORES_DIR=outputs/lm_embeddings
