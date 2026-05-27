@@ -109,7 +109,7 @@ Compares MATCHA against 9 widely used baseline metrics:
 | BLEURT | Learned evaluation metric fine-tuned on human judgments |
 | SimCSE | Contrastive sentence embedding similarity |
 | MAUVE | Distribution-based metric for text generation quality |
-| MATCHA | Contrastive semantic alignment (proposed method) |
+| MATCHA | Token-grounded contrastive semantic alignment (proposed method) |
 
 Reports macro F1, Wasserstein distance, and balanced accuracy per dataset and cross-dataset.
 
