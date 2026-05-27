@@ -83,7 +83,7 @@ accelerate launch train_interleaved.py
 Evaluates trained checkpoints on 7 benchmarks using triplet-based and pairwise evaluation:
 
 ```bash
-python eval_matcha.py --checkpoint path/to/max_diff.pth
+python eval_matcha.py --output-path path/to/run_directory
 ```
 
 **Triplet evaluation:** SNLI, MultiNLI, MedNLI, TruthfulQA, COCO-Caption, NEWTS

@@ -8,7 +8,7 @@ aggregate metrics (mean pos/neg similarity, std, F1 score), and saves
 per-dataset CSV results.
 
 Usage:
-    python eval.py --output-path outputs --datasets snli newts climate_fever
+    python eval_matcha.py --output-path outputs --datasets snli newts climate_fever
 """
 
 import os
