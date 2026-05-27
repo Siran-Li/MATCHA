@@ -10,3 +10,6 @@ __pycache__/
 
 # Shell scripts anywhere
 *.sh
+
+# HuggingFace upload directory
+hf_upload/
