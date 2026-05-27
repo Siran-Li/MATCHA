@@ -139,6 +139,10 @@ Analyzes which tokens contribute most to similarity scores for EmbSim, BERTScore
 Please cite our paper if you use MATCHA in your work:
 
 ```bibtex
-@inproceedings{
+@article{li2026matcha,
+  title={MATCHA: Matching Text via Contrastive Semantic Alignment},
+  author={Li, Siran and Etoglu, Ece Sena and Eickhoff, Carsten and Bahrainian, Seyed Ali},
+  journal={arXiv preprint arXiv:2605.27345},
+  year={2026}
 }
 ```
