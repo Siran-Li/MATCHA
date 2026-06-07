@@ -1,222 +1,203 @@
-"""Load prepared MATCHA evaluation datasets for LM embedding scoring"""
+"""Load lm-embedding evaluation data from MATCHA-prepared eval pickles."""
 
 from __future__ import annotations
 
 import ast
+import pickle
 from dataclasses import dataclass
 from pathlib import Path
-import pickle
 
 import numpy as np
 import pandas as pd
 
-from load_models import normalize_text
-
-
-@dataclass
-class DatasetTable:
-    """Prepared scoring table plus its source path"""
-
-    name: str
-    path: Path
-    frame: pd.DataFrame
-    allow_partial_answers: bool = False
-
 
 @dataclass(frozen=True)
-class TripletDatasetSchema:
-    """Exact source columns for one reference/correct/incorrect dataset"""
+class DatasetTable:
+    """Normalized evaluation table used by embedding scorers."""
 
-    reference: str
-    correct: str
-    incorrect: str
+    name: str
+    split: str
+    frame: pd.DataFrame
+    source_path: Path
 
 
-PREPARED_TRIPLET_SCHEMA = TripletDatasetSchema(
-    reference="premise",
-    correct="correct_answer",
-    incorrect="incorrect_answer",
-)
-
-CSV_TRIPLET_SCHEMA = TripletDatasetSchema(
-    reference="premise",
-    correct="correct",
-    incorrect="incorrect",
-)
-
-PREPARED_EVAL_DATASETS = {
-    # Keep this explicit, guessing column names can silently change a dataset split
-    "snli": PREPARED_TRIPLET_SCHEMA,
-    "multi_nli": PREPARED_TRIPLET_SCHEMA,
-    "truthfulqa": PREPARED_TRIPLET_SCHEMA,
-    "climate_fever": PREPARED_TRIPLET_SCHEMA,
-    "coco-caption": PREPARED_TRIPLET_SCHEMA,
-    "newts": PREPARED_TRIPLET_SCHEMA,
+PREPARED_EVAL_DATASETS: dict[str, tuple[str, str]] = {
+    "snli": ("snli", "validation"),
+    "multi_nli": ("multi_nli", "validation_matched"),
+    "vitaminc": ("vitaminc", "validation"),
+    "mednli": ("mednli", "validation"),
+    "truthfulqa": ("truthfulqa", "validation"),
+    "coco-caption": ("coco-caption", "validation"),
+    "newts": ("newts", "validation"),
+    "climate_fever": ("climate_fever", "validation"),
 }
 
-CSV_EVAL_DATASETS = {
-    "snli": CSV_TRIPLET_SCHEMA,
-    "multi_nli": CSV_TRIPLET_SCHEMA,
-    "truthfulqa": CSV_TRIPLET_SCHEMA,
-    "truthfulqa_filtered": CSV_TRIPLET_SCHEMA,
-    "climate_fever": CSV_TRIPLET_SCHEMA,
-    "climate_fever_150": CSV_TRIPLET_SCHEMA,
-    "coco-caption": CSV_TRIPLET_SCHEMA,
-    "coco-caption-concat": CSV_TRIPLET_SCHEMA,
-    "newts": CSV_TRIPLET_SCHEMA,
-    "newts_random_first1sent": CSV_TRIPLET_SCHEMA,
+PAPER_PLOT_DATASETS = (
+    "snli",
+    "multi_nli",
+    "truthfulqa",
+    "climate_fever",
+    "coco-caption",
+    "newts",
+)
+
+DEFAULT_DATASETS = PAPER_PLOT_DATASETS
+
+TRIPLET_COLUMNS = ("reference", "correct", "incorrect")
+PREPARED_COLUMNS = {
+    "premise": "reference",
+    "correct_answer": "correct",
+    "incorrect_answer": "incorrect",
 }
 
-PICKLE_SUFFIXES = {".pkl", ".pickle"}
-CSV_SUFFIXES = {".csv"}
-SUPPORTED_SUFFIXES = PICKLE_SUFFIXES | CSV_SUFFIXES
+
+def parse_dataset_specs(
+    specs: list[str] | None,
+    dataset_path: Path,
+) -> list[DatasetTable]:
+    """Load all dataset specs from a list of names or pickle paths."""
+    requested = specs or list(DEFAULT_DATASETS)
+    return [load_dataset_table(spec, dataset_path) for spec in requested]
 
 
-def parse_dataset_specs(dataset_args: list[str]) -> list[tuple[str, Path]]:
-    """Parse repeated --dataset NAME=PATH arguments"""
-    if not dataset_args:
-        raise ValueError("Provide at least one dataset as --dataset NAME=PATH")
-    specs = []
-    for item in dataset_args:
-        specs.append(parse_dataset_spec(item))
-    return specs
+def load_dataset_table(
+    spec: str,
+    dataset_path: Path,
+) -> DatasetTable:
+    """Load one dataset table from a prepared eval pickle.
+
+    Supported spec forms:
+      - dataset_name
+      - dataset_name:split_name
+      - dataset_name=/path/to/file.pkl
+      - dataset_name=/path/to/file.pkl:split_name
+    """
+    name, path, split = parse_dataset_spec(spec, dataset_path)
+    raw = load_pickle(path)
+
+    if split is None:
+        split = default_split_for(name)
+    if split not in raw:
+        available = ", ".join(raw.keys())
+        raise KeyError(f"{path} does not contain split '{split}'. Available: {available}")
+
+    frame = normalize_triplet_frame(raw[split], name)
+    return DatasetTable(name=name, split=split, frame=frame, source_path=path)
 
 
-def parse_dataset_spec(item: str) -> tuple[str, Path]:
-    """Parse one dataset argument into a dataset name and local path"""
-    if "=" not in item:
-        raise ValueError(f"--dataset must be NAME=PATH, got: {item}")
-    name, path = item.split("=", 1)
-    name = name.strip()
-    path = path.strip()
-    if not name or not path:
-        raise ValueError(f"--dataset must be NAME=PATH, got: {item}")
-    return name, Path(path).expanduser()
+def parse_dataset_spec(spec: str, dataset_path: Path) -> tuple[str, Path, str | None]:
+    """Resolve a dataset name/path spec to canonical name, path, optional split."""
+    if "=" in spec:
+        raw_name, raw_target = spec.split("=", 1)
+        name = canonical_dataset_name(raw_name)
+        raw_path, split = split_optional_split(raw_target)
+        path = Path(raw_path).expanduser()
+    else:
+        raw_name, split = split_optional_split(spec)
+        path_candidate = Path(raw_name).expanduser()
+        if path_candidate.suffix == ".pkl":
+            path = path_candidate
+            name = canonical_dataset_name(path.stem)
+        else:
+            name = canonical_dataset_name(raw_name)
+            path = dataset_path / f"{name}.pkl"
+
+    if not path.is_absolute():
+        path = path.resolve()
+    return name, path, split
 
 
-def load_dataset_table(name: str, path: Path, split: str | None = None) -> DatasetTable:
-    """Load one prepared dataset and convert it to the scoring table format"""
+def split_optional_split(value: str) -> tuple[str, str | None]:
+    """Split a value into main text and an optional ':split' suffix."""
+    if ":" not in value:
+        return value, None
+    main, maybe_split = value.rsplit(":", 1)
+    if "/" in maybe_split or maybe_split.endswith(".pkl"):
+        return value, None
+    return main, maybe_split
+
+
+def canonical_dataset_name(name: str) -> str:
+    """Validate a prepare_eval_datasets.py dataset name."""
+    key = name.strip().lower()
+    if key not in PREPARED_EVAL_DATASETS:
+        supported = ", ".join(sorted(PREPARED_EVAL_DATASETS))
+        raise ValueError(f"Unsupported dataset '{name}'. Supported: {supported}")
+    return PREPARED_EVAL_DATASETS[key][0]
+
+
+def default_split_for(name: str) -> str:
+    """Return the default evaluation split for a canonical dataset name."""
+    for canonical, split in PREPARED_EVAL_DATASETS.values():
+        if canonical == name:
+            return split
+    raise ValueError(f"No default split registered for '{name}'")
+
+
+def load_pickle(path: Path) -> dict[str, pd.DataFrame]:
+    """Read one prepared eval pickle and validate the outer structure."""
     if not path.exists():
-        raise FileNotFoundError(f"Dataset not found: {path}")
-    suffix = path.suffix.lower()
-    if suffix not in SUPPORTED_SUFFIXES:
-        raise ValueError(
-            f"LM embedding expects prepared .csv or .pkl datasets, got {path.name}"
+        raise FileNotFoundError(
+            f"Missing prepared eval dataset: {path}. "
+            "Run `python dataset_process/prepare_eval_datasets.py --data_path data` first."
         )
 
-    if suffix in PICKLE_SUFFIXES:
-        df = load_pickle_frame(path, split=split)
-    else:
-        if split is not None:
-            raise ValueError(f"--split is only supported for pickle datasets, got CSV: {path}")
-        df = pd.read_csv(path)
+    with path.open("rb") as handle:
+        data = pickle.load(handle)
 
-    schema = resolve_dataset_schema(name, path, df)
-    allow_partial_answers = suffix in CSV_SUFFIXES
-    frame = normalize_triplet_frame(df, schema, allow_partial_answers=allow_partial_answers)
-    return DatasetTable(
-        name=name,
-        path=path,
-        frame=frame,
-        allow_partial_answers=allow_partial_answers,
-    )
+    if not isinstance(data, dict):
+        raise TypeError(f"{path} must contain a split-name dictionary")
+    return data
 
 
-def resolve_dataset_schema(name: str, path: Path, df: pd.DataFrame) -> TripletDatasetSchema:
-    """Return the exact column mapping for a supported LM embedding dataset"""
-    candidates = [normalize_dataset_key(name), normalize_dataset_key(path.stem)]
-    for key in candidates:
-        for registry in (PREPARED_EVAL_DATASETS, CSV_EVAL_DATASETS):
-            schema = registry.get(key)
-            if schema is not None and has_columns(df, [schema.reference, schema.correct, schema.incorrect]):
-                return schema
-
-    raise ValueError(
-        f"No explicit dataset schema for '{name}' ({path.name}), "
-        f"supported LM embedding datasets are: {', '.join(sorted(PREPARED_EVAL_DATASETS))}, "
-        f"found columns: {list(df.columns)}"
-    )
-
-
-def normalize_dataset_key(name: str) -> str:
-    """Normalize dataset names for registry lookup"""
-    return name.strip().lower()
-
-
-def has_columns(df: pd.DataFrame, columns: list[str]) -> bool:
-    """Return whether all schema columns are present"""
-    return all(column in df.columns for column in columns)
-
-
-def load_pickle_frame(path: Path, split: str | None = None) -> pd.DataFrame:
-    """Load a prepared pickle and select the requested or default split"""
-    with open(path, "rb") as handle:
-        obj = pickle.load(handle)
-    if isinstance(obj, dict):
-        # Prepared pickles usually store split names at the top level
-        if split is None:
-            split = next((key for key in ["validation", "validation_matched", "test", "val"] if key in obj), None)
-        if split is None:
-            split = next(iter(obj))
-        obj = obj[split]
-    if not isinstance(obj, pd.DataFrame):
-        obj = pd.DataFrame(obj)
-    return obj.reset_index(drop=True)
-
-
-def normalize_triplet_frame(
-    df: pd.DataFrame,
-    schema: TripletDatasetSchema,
-    allow_partial_answers: bool = False,
-) -> pd.DataFrame:
-    """Rename prepared triplet columns to reference/correct/incorrect"""
-    require_columns(df, [schema.reference, schema.correct, schema.incorrect])
-
-    out = pd.DataFrame(
-        {
-            "row_id": np.arange(len(df)),
-            "reference": df[schema.reference].map(extract_first_nonempty_text),
-            "correct": df[schema.correct].map(extract_first_nonempty_text),
-            "incorrect": df[schema.incorrect].map(extract_first_nonempty_text),
-        }
-    )
-    return drop_empty_triplets(out, allow_partial_answers=allow_partial_answers)
-
-
-def require_columns(df: pd.DataFrame, columns: list[str | None]) -> None:
-    """Raise a clear error when required columns are missing"""
-    required = [column for column in columns if column is not None]
-    missing = [column for column in required if column not in df.columns]
+def normalize_triplet_frame(frame: pd.DataFrame, dataset_name: str) -> pd.DataFrame:
+    """Convert prepared eval frames to reference/correct/incorrect text columns."""
+    data = pd.DataFrame(frame).copy()
+    missing = [col for col in PREPARED_COLUMNS if col not in data.columns]
     if missing:
-        raise ValueError(f"Missing required columns {missing}, found columns: {list(df.columns)}")
+        raise ValueError(f"{dataset_name} is missing columns: {missing}")
+
+    data = data.rename(columns=PREPARED_COLUMNS)
+    data = data.loc[:, list(TRIPLET_COLUMNS)].reset_index(drop=True)
+
+    for column in TRIPLET_COLUMNS:
+        data[column] = data[column].map(extract_first_nonempty_text)
+
+    return drop_empty_triplets(data, dataset_name)
 
 
 def extract_first_nonempty_text(value: object) -> str:
-    """Return the first nonempty text, missing cells become empty and are filtered"""
+    """Return a normalized scalar string from scalars, lists, arrays, or repr lists."""
     if is_missing_scalar(value):
         return ""
-    if isinstance(value, (list, tuple, np.ndarray)):
-        # Some prepared answer fields are lists, the scorer expects one text string
+
+    if isinstance(value, np.ndarray):
+        value = value.tolist()
+
+    if isinstance(value, (list, tuple)):
         for item in value:
-            if is_missing_scalar(item):
-                continue
-            text = normalize_text(item)
+            text = extract_first_nonempty_text(item)
             if text:
                 return text
         return ""
+
     text = normalize_text(value)
-    if text.startswith("[") and text.endswith("]"):
+    if (text.startswith("[") and text.endswith("]")) or (
+        text.startswith("(") and text.endswith(")")
+    ):
         try:
             parsed = ast.literal_eval(text)
-            if isinstance(parsed, (list, tuple)):
-                return extract_first_nonempty_text(parsed)
         except (SyntaxError, ValueError):
             return text
+        return extract_first_nonempty_text(parsed)
+
     return text
 
 
 def is_missing_scalar(value: object) -> bool:
-    """Return True for scalar missing values such as None or NaN"""
+    """Return whether a value is scalar NA-like."""
+    if value is None:
+        return True
     if isinstance(value, (list, tuple, np.ndarray)):
         return False
     try:
@@ -225,15 +206,25 @@ def is_missing_scalar(value: object) -> bool:
         return False
 
 
-def drop_empty_triplets(df: pd.DataFrame, allow_partial_answers: bool = False) -> pd.DataFrame:
-    """Remove rows that cannot provide enough text for scoring"""
-    reference_mask = df["reference"].str.len() > 0
-    if allow_partial_answers:
-        answer_mask = (df["correct"].str.len() > 0) | (df["incorrect"].str.len() > 0)
-    else:
-        answer_mask = (df["correct"].str.len() > 0) & (df["incorrect"].str.len() > 0)
-    mask = reference_mask & answer_mask
-    removed = int((~mask).sum())
-    if removed:
-        print(f"Filtered {removed} rows with empty reference/correct/incorrect text")
-    return df[mask].reset_index(drop=True)
+def normalize_text(value: object) -> str:
+    """Normalize whitespace and NA-like values to a plain string."""
+    if value is None:
+        return ""
+    try:
+        if isinstance(value, float) and np.isnan(value):
+            return ""
+    except TypeError:
+        pass
+    return " ".join(str(value).split())
+
+
+def drop_empty_triplets(frame: pd.DataFrame, dataset_name: str) -> pd.DataFrame:
+    """Drop rows with an empty reference/correct/incorrect field."""
+    mask = frame.apply(
+        lambda row: any(not str(row[col]).strip() for col in TRIPLET_COLUMNS),
+        axis=1,
+    )
+    dropped = int(mask.sum())
+    if dropped:
+        print(f"[{dataset_name}] dropped {dropped} rows with empty triplet fields")
+    return frame.loc[~mask].reset_index(drop=True)

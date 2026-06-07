@@ -1,458 +1,420 @@
-"""Model specs, backend loading, and batched encoders for LM embedding experiments"""
+"""Embedding model loading and batched text encoding."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import os
 import re
+from dataclasses import dataclass, replace
 from typing import Iterable
 
 import numpy as np
 
-try:
-    from nltk.tokenize import word_tokenize as nltk_word_tokenize
-except ImportError:
-    nltk_word_tokenize = None
-
 
 @dataclass(frozen=True)
 class ModelSpec:
-    """Small registry row for one embedding backend"""
-
     key: str
     display_name: str
     backend: str
     model_name: str | None = None
     pooling: str = "mean"
     trust_remote_code: bool = False
-    model_family: str = "encoder"  # other option we handle: causal
-    gensim_name: str | None = None  # only req for word2vec & glove
+    gensim_name: str | None = None
 
 
 MODEL_SPECS: dict[str, ModelSpec] = {
     "word2vec": ModelSpec(
-        "word2vec", "Word2Vec", "gensim", gensim_name="word2vec-google-news-300"
+        key="word2vec",
+        display_name="Word2Vec",
+        backend="gensim",
+        gensim_name="word2vec-google-news-300",
     ),
-    "glove": ModelSpec(
-        "glove", "GloVe", "gensim", gensim_name="glove-wiki-gigaword-300"
+    "glove-6B.300d": ModelSpec(
+        key="glove-6B.300d",
+        display_name="GloVe",
+        backend="gensim",
+        gensim_name="glove-wiki-gigaword-300",
     ),
-    "bert": ModelSpec("bert", "BERT (base)", "transformer", "bert-base-uncased"),
+    "bert-mean": ModelSpec(
+        key="bert-mean",
+        display_name="BERT (base)",
+        backend="transformer",
+        model_name="bert-base-uncased",
+        pooling="mean",
+    ),
     "s-bert": ModelSpec(
-        "s-bert", "MiniLM (S-BERT)", "sentence-transformer", "all-MiniLM-L6-v2"
+        key="s-bert",
+        display_name="MiniLM (S-BERT)",
+        backend="sentence_transformer",
+        model_name="sentence-transformers/all-MiniLM-L6-v2",
     ),
-    "mpnet": ModelSpec("mpnet", "MPNet", "sentence-transformer", "all-mpnet-base-v2"),
-    "distilbert": ModelSpec(
-        "distilbert",
-        "DistilBERT-NLI",
-        "sentence-transformer",
-        "sentence-transformers/distilbert-base-nli-stsb-mean-tokens",
+    "mpnet": ModelSpec(
+        key="mpnet",
+        display_name="MPNet",
+        backend="sentence_transformer",
+        model_name="sentence-transformers/all-mpnet-base-v2",
     ),
     "snet-t5": ModelSpec(
-        "snet-t5",
-        "T5-Large (Sentence-T5)",
-        "sentence-transformer",
-        "sentence-transformers/sentence-t5-large",
+        key="snet-t5",
+        display_name="T5-Large (Sentence-T5)",
+        backend="sentence_transformer",
+        model_name="sentence-transformers/sentence-t5-large",
+    ),
+    "distilbert": ModelSpec(
+        key="distilbert",
+        display_name="DistilBERT-NLI",
+        backend="sentence_transformer",
+        model_name="sentence-transformers/distilbert-base-nli-stsb-mean-tokens",
+    ),
+    "gte-large-mean": ModelSpec(
+        key="gte-large-mean",
+        display_name="GTE-Large",
+        backend="transformer",
+        model_name="thenlper/gte-large",
+        pooling="mean",
     ),
     "e5-large-v2": ModelSpec(
-        "e5-large-v2", "E5-Large-v2", "sentence-transformer", "intfloat/e5-large-v2"
-    ),
-    "bge-large": ModelSpec(
-        "bge-large", "BGE-Large", "sentence-transformer", "BAAI/bge-large-en-v1.5"
-    ),
-    "gte-large": ModelSpec(
-        "gte-large", "GTE-Large", "transformer", "thenlper/gte-large"
-    ),
-    "mistral-7b": ModelSpec(
-        "mistral-7b",
-        "Mistral-7B",
-        "transformer",
-        "mistralai/Mistral-7B-Instruct-v0.2",
-        model_family="causal",
-    ),
-    "llama-2-13b": ModelSpec(
-        "llama-2-13b",
-        "LLaMA-2-13B",
-        "transformer",
-        "meta-llama/Llama-2-13b-hf",
-        model_family="causal",
-    ),
-    "llama-3.1-8B-Instruct": ModelSpec(
-        "llama-3.1-8B-Instruct",
-        "LLaMA-3.1-8B",
-        "transformer",
-        "meta-llama/Llama-3.1-8B-Instruct",
-        model_family="causal",
-    ),
-    "e5-mistral-7b-instruct": ModelSpec(
-        "e5-mistral-7b-instruct",
-        "E5-Mistral-7B",
-        "sentence-transformer",
-        "intfloat/e5-mistral-7b-instruct",
-    ),
-    "speed-embedding-7b-instruct": ModelSpec(
-        "speed-embedding-7b-instruct",
-        "SpeedEmbed-7B-Instruct",
-        "transformer",
-        "Haon-Chen/speed-embedding-7b-instruct",
-    ),
-    "sfr-mistral": ModelSpec(
-        "sfr-mistral",
-        "SFR-Mistral",
-        "sentence-transformer",
-        "Salesforce/SFR-Embedding-Mistral",
-    ),
-    "ling-mistral": ModelSpec(
-        "ling-mistral",
-        "Linq-Embed-Mistral",
-        "sentence-transformer",
-        "Linq-AI-Research/Linq-Embed-Mistral",
+        key="e5-large-v2",
+        display_name="E5-Large-v2",
+        backend="sentence_transformer",
+        model_name="intfloat/e5-large-v2",
     ),
     "multilingual-e5-large-instruct": ModelSpec(
-        "multilingual-e5-large-instruct",
-        "E5-Large (Multilingual)",
-        "sentence-transformer",
-        "intfloat/multilingual-e5-large-instruct",
+        key="multilingual-e5-large-instruct",
+        display_name="E5-Large (Multilingual)",
+        backend="sentence_transformer",
+        model_name="intfloat/multilingual-e5-large-instruct",
     ),
-    "jasper": ModelSpec(
-        "jasper",
-        "Jasper",
-        "sentence-transformer",
-        "NovaSearch/jasper_en_vision_language_v1",
-        trust_remote_code=True,
+    "e5-mistral-7b-instruct": ModelSpec(
+        key="e5-mistral-7b-instruct",
+        display_name="E5-Mistral-7B",
+        backend="sentence_transformer",
+        model_name="intfloat/e5-mistral-7b-instruct",
     ),
-    "stella": ModelSpec(
-        "stella",
-        "Stella",
-        "sentence-transformer",
-        "NovaSearch/stella_en_1.5B_v5",
-        trust_remote_code=True,
+    "bge-large": ModelSpec(
+        key="bge-large",
+        display_name="BGE-Large",
+        backend="sentence_transformer",
+        model_name="BAAI/bge-large-en-v1.5",
     ),
     "bilingual-embedding-large": ModelSpec(
-        "bilingual-embedding-large",
-        "Bilingual-Embedding-Large",
-        "sentence-transformer",
-        "Lajavaness/bilingual-embedding-large",
+        key="bilingual-embedding-large",
+        display_name="Bilingual-embedding-large",
+        backend="sentence_transformer",
+        model_name="Lajavaness/bilingual-embedding-large",
         trust_remote_code=True,
     ),
     "jina-embeddings-v3": ModelSpec(
-        "jina-embeddings-v3",
-        "Jina-Embeddings-V3",
-        "sentence-transformer",
-        "jinaai/jina-embeddings-v3",
+        key="jina-embeddings-v3",
+        display_name="Jina-embeddings-v3",
+        backend="sentence_transformer",
+        model_name="jinaai/jina-embeddings-v3",
         trust_remote_code=True,
+    ),
+    "jasper": ModelSpec(
+        key="jasper",
+        display_name="Jasper",
+        backend="sentence_transformer",
+        model_name="NovaSearch/jasper_en_vision_language_v1",
+        trust_remote_code=True,
+    ),
+    "linq-mistral": ModelSpec(
+        key="linq-mistral",
+        display_name="Linq-Embed-Mistral",
+        backend="sentence_transformer",
+        model_name="Linq-AI-Research/Linq-Embed-Mistral",
+    ),
+    "sfr-mistral": ModelSpec(
+        key="sfr-mistral",
+        display_name="SFR-Mistral",
+        backend="sentence_transformer",
+        model_name="Salesforce/SFR-Embedding-Mistral",
+    ),
+    "stella": ModelSpec(
+        key="stella",
+        display_name="Stella",
+        backend="sentence_transformer",
+        model_name="NovaSearch/stella_en_1.5B_v5",
+        trust_remote_code=True,
+    ),
+    "speed-embedding-7b-instruct-mean": ModelSpec(
+        key="speed-embedding-7b-instruct-mean",
+        display_name="Speed-7B-Instruct",
+        backend="transformer",
+        model_name="Haon-Chen/speed-embedding-7b-instruct",
+        pooling="mean",
+    ),
+    "mistral-7b-mean": ModelSpec(
+        key="mistral-7b-mean",
+        display_name="Mistral-7B",
+        backend="causal_transformer",
+        model_name="mistralai/Mistral-7B-Instruct-v0.2",
+        pooling="mean",
+    ),
+    "llama-2-13b-mean": ModelSpec(
+        key="llama-2-13b-mean",
+        display_name="LLaMA-2-13B",
+        backend="causal_transformer",
+        model_name="meta-llama/Llama-2-13b-hf",
+        pooling="mean",
+    ),
+    "llama-3-8b-mean": ModelSpec(
+        key="llama-3-8b-mean",
+        display_name="LLaMA-3-8B",
+        backend="causal_transformer",
+        model_name="meta-llama/Llama-3.1-8B-Instruct",
+        pooling="mean",
     ),
 }
 
+PAPER_EMBEDDING_MODEL_KEYS = (
+    "bert-mean",
+    "bge-large",
+    "bilingual-embedding-large",
+    "distilbert",
+    "multilingual-e5-large-instruct",
+    "e5-large-v2",
+    "e5-mistral-7b-instruct",
+    "glove-6B.300d",
+    "gte-large-mean",
+    "jasper",
+    "jina-embeddings-v3",
+    "linq-mistral",
+    "llama-2-13b-mean",
+    "llama-3-8b-mean",
+    "s-bert",
+    "mistral-7b-mean",
+    "mpnet",
+    "sfr-mistral",
+    "speed-embedding-7b-instruct-mean",
+    "stella",
+    "snet-t5",
+    "word2vec",
+)
+
 
 def available_model_keys() -> list[str]:
-    """Return model keys accepted by --models"""
-    return list(MODEL_SPECS)
+    """Return model keys accepted by the CLI."""
+    return sorted(MODEL_SPECS)
 
 
-def resolve_model_specs(model_keys: Iterable[str]) -> list[ModelSpec]:
-    """Resolve CLI model keys to registry specs"""
+def resolve_model_specs(keys: Iterable[str]) -> list[ModelSpec]:
+    """Resolve requested model keys."""
     specs = []
-    for key in model_keys:
+    for key in keys:
+        if key == "snpmi":
+            raise ValueError(
+                "SNPMI is not available from precomputed files anymore. "
+                "Add the SNPMI computation logic before enabling this baseline."
+            )
         if key not in MODEL_SPECS:
-            known = ", ".join(sorted(MODEL_SPECS))
-            raise ValueError(f"Unknown model '{key}', known models: {known}")
+            supported = ", ".join(available_model_keys())
+            raise ValueError(f"Unsupported model '{key}'. Supported: {supported}")
         specs.append(MODEL_SPECS[key])
     return specs
 
 
+def with_pooling(spec: ModelSpec, pooling: str | None) -> ModelSpec:
+    """Apply a pooling override to transformer-backed models."""
+    if not pooling or spec.backend not in {"transformer", "causal_transformer"}:
+        return spec
+    key = spec.key
+    if key.endswith(("-mean", "-max", "-pooler")):
+        key = key.rsplit("-", 1)[0]
+    return replace(spec, key=f"{key}-{pooling}", pooling=pooling)
+
+
 def embedding_details(spec: ModelSpec) -> str:
-    """Return the filename/detail label used in saved score files"""
-    if spec.key == "glove":
-        return "glove-6B.300d"
-    if spec.backend == "transformer":
-        return f"{spec.key}-{spec.pooling}"
+    """Return a stable detail key for output filenames and tables."""
     return spec.key
 
 
-def display_name(model_key_or_details: str) -> str:
-    """Return the plot label for a model key or a saved detail label"""
-    if model_key_or_details in MODEL_SPECS:
-        return MODEL_SPECS[model_key_or_details].display_name
-    reverse = {
-        embedding_details(spec): spec.display_name for spec in MODEL_SPECS.values()
-    }
-    return reverse.get(model_key_or_details, model_key_or_details)
-
-
-def tokenize_static_embedding_text(text: str) -> list[str]:
-    """Match the original Word2Vec/GloVe preprocessing and NLTK tokenization"""
-    if nltk_word_tokenize is None:
-        raise RuntimeError(
-            "Word2Vec/GloVe tokenization requires NLTK, install it with `pip install nltk`"
-        )
-
-    sentence = clean_text(text)
-    try:
-        return nltk_word_tokenize(sentence.lower())
-    except LookupError as exc:
-        raise RuntimeError(
-            "Word2Vec/GloVe tokenization requires NLTK tokenizer data, "
-            "Install it with `python -m nltk.downloader punkt punkt_tab`"
-        ) from exc
-
-
-def clean_text(text: str) -> str:
-    """Keep static embedding punctuation cleanup in one place"""
-    return re.sub(r"[^\w\s'-]", "", text)
-
-
-def prepare_embedding_texts(texts: list[object]) -> list[str]:
-    """Clean up batch sentences before embedding while preserving input alignment."""
-    return [normalize_text(value) for value in texts]
+def display_name(spec_or_key: ModelSpec | str) -> str:
+    """Return the human-readable model name."""
+    if isinstance(spec_or_key, ModelSpec):
+        return spec_or_key.display_name
+    fallback = ModelSpec(spec_or_key, spec_or_key, "")
+    return MODEL_SPECS.get(spec_or_key, fallback).display_name
 
 
 class EmbeddingEncoder:
-    """Thin wrapper around the different embedding backends used in the paper"""
+    """Lazy-loading embedding encoder for one model."""
 
     def __init__(
         self,
         spec: ModelSpec,
+        *,
         device: str | None = None,
-        max_length: int | None = None,
-    ):
-        """Load one encoder and keep its runtime options together"""
+        batch_size: int = 32,
+        max_length: int = 256,
+        hf_token: str | None = None,
+    ) -> None:
         self.spec = spec
         self.device = device
+        self.batch_size = batch_size
         self.max_length = max_length
+        self.hf_token = hf_token or os.environ.get("HF_TOKEN")
         self.model = None
         self.tokenizer = None
+        self.vector_size = None
+
+    def encode(self, texts: Iterable[object]) -> np.ndarray:
+        """Encode texts into a 2D numpy array."""
         self._load()
+        normalized = [normalize_text(text) for text in texts]
+
+        if self.spec.backend == "sentence_transformer":
+            vectors = self.model.encode(
+                normalized,
+                batch_size=self.batch_size,
+                show_progress_bar=False,
+                convert_to_numpy=True,
+            )
+            return np.asarray(vectors, dtype=np.float32)
+
+        if self.spec.backend == "gensim":
+            return self._encode_gensim(normalized)
+
+        if self.spec.backend in {"transformer", "causal_transformer"}:
+            return self._encode_transformer(normalized)
+
+        raise ValueError(f"Unknown backend: {self.spec.backend}")
 
     def _load(self) -> None:
-        """Create the backend object for the selected model spec"""
-        # Keep heavy backend imports local so plotting and metadata paths stay light
-        if self.spec.backend == "sentence-transformer":
+        if self.model is not None:
+            return
+
+        if self.spec.backend == "sentence_transformer":
             from sentence_transformers import SentenceTransformer
 
-            kwargs = {"trust_remote_code": self.spec.trust_remote_code}
-            token = os.getenv("HF_TOKEN")
-            if token:
-                kwargs["token"] = token
+            kwargs = {}
+            if self.spec.trust_remote_code:
+                kwargs["trust_remote_code"] = True
+            if self.hf_token:
+                kwargs["token"] = self.hf_token
             self.model = SentenceTransformer(self.spec.model_name, **kwargs)
             if self.device:
-                self.model = self.model.to(self.device)
+                self.model.to(self.device)
             return
 
         if self.spec.backend == "gensim":
             import gensim.downloader as api
 
             self.model = api.load(self.spec.gensim_name)
+            self.vector_size = int(self.model.vector_size)
             return
 
-        if self.spec.backend == "transformer":
-            self._load_transformer()
+        if self.spec.backend in {"transformer", "causal_transformer"}:
+            import torch
+            from transformers import AutoModel, AutoTokenizer
+
+            kwargs = {"trust_remote_code": self.spec.trust_remote_code}
+            if self.hf_token:
+                kwargs["token"] = self.hf_token
+            self.tokenizer = AutoTokenizer.from_pretrained(self.spec.model_name, **kwargs)
+            added_pad_token = False
+            if self.tokenizer.pad_token is None:
+                if self.tokenizer.eos_token:
+                    self.tokenizer.pad_token = self.tokenizer.eos_token
+                else:
+                    self.tokenizer.add_special_tokens({"pad_token": "[PAD]"})
+                    added_pad_token = True
+            self.model = AutoModel.from_pretrained(self.spec.model_name, **kwargs)
+            if added_pad_token:
+                self.model.resize_token_embeddings(len(self.tokenizer))
+            target_device = self.device or ("cuda" if torch.cuda.is_available() else "cpu")
+            self.model.to(target_device)
+            self.model.eval()
+            self.device = target_device
             return
 
-        raise ValueError(f"Unsupported backend: {self.spec.backend}")
+        raise ValueError(f"Unknown backend: {self.spec.backend}")
 
-    def _load_transformer(self) -> None:
-        """Load transformer models with the per-model settings used for scoring"""
-        import torch
-        from transformers import (
-            AutoModel,
-            AutoModelForCausalLM,
-            AutoTokenizer,
-            BertModel,
-            BertTokenizer,
-        )
+    def _encode_gensim(self, texts: list[str]) -> np.ndarray:
+        vectors = []
+        assert self.vector_size is not None
+        for text in texts:
+            token_vectors = [
+                self.model[token]
+                for token in tokenize_static_embedding_text(text)
+                if token in self.model
+            ]
+            if token_vectors:
+                vectors.append(np.mean(token_vectors, axis=0))
+            else:
+                vectors.append(np.full(self.vector_size, np.nan, dtype=np.float32))
+        return np.asarray(vectors, dtype=np.float32)
 
-        if self.spec.key == "bert":
-            self.tokenizer = BertTokenizer.from_pretrained(self.spec.model_name)
-            self.model = BertModel.from_pretrained(self.spec.model_name)
-            self._finish_transformer_load()
-            return
-
-        if self.spec.key == "gte-large":
-            self.tokenizer = AutoTokenizer.from_pretrained(self.spec.model_name)
-            self.model = AutoModel.from_pretrained(self.spec.model_name)
-            self._finish_transformer_load()
-            return
-
-        if self.spec.key == "speed-embedding-7b-instruct":
-            self.tokenizer = AutoTokenizer.from_pretrained(self.spec.model_name)
-            model_kwargs = {"torch_dtype": torch.float16}
-            if self.device is None:
-                model_kwargs["device_map"] = "auto"
-            self.model = AutoModel.from_pretrained(self.spec.model_name, **model_kwargs)
-            self._finish_transformer_load()
-            return
-
-        if self.spec.model_family == "causal":
-            tokenizer_kwargs = self._tokenizer_auth_kwargs(
-                use_cached_token=self.spec.key in {"mistral-7b", "llama-2-13b"}
-            )
-            model_kwargs = self._model_auth_kwargs()
-            model_kwargs["torch_dtype"] = torch.float16
-            if self.device is None:
-                model_kwargs["device_map"] = "auto"
-
-            self.tokenizer = AutoTokenizer.from_pretrained(
-                self.spec.model_name, **tokenizer_kwargs
-            )
-            self.model = AutoModelForCausalLM.from_pretrained(
-                self.spec.model_name, **model_kwargs
-            )
-            self._finish_transformer_load()
-            return
-
-        tokenizer_kwargs = self._tokenizer_auth_kwargs()
-        model_kwargs = self._model_auth_kwargs()
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            self.spec.model_name, **tokenizer_kwargs
-        )
-        self.model = AutoModel.from_pretrained(self.spec.model_name, **model_kwargs)
-        self._finish_transformer_load()
-
-    def _tokenizer_auth_kwargs(
-        self, use_cached_token: bool = False
-    ) -> dict[str, object]:
-        """Build tokenizer auth kwargs without changing model math"""
-        kwargs: dict[str, object] = {}
-        if self.spec.trust_remote_code:
-            kwargs["trust_remote_code"] = True
-        token = os.getenv("HF_TOKEN")
-        if token:
-            kwargs["token"] = token
-        elif use_cached_token:
-            kwargs["token"] = True
-        return kwargs
-
-    def _model_auth_kwargs(self) -> dict[str, object]:
-        """Build model auth kwargs for hosted weights"""
-        kwargs: dict[str, object] = {}
-        if self.spec.trust_remote_code:
-            kwargs["trust_remote_code"] = True
-        token = os.getenv("HF_TOKEN")
-        if token:
-            kwargs["token"] = token
-        return kwargs
-
-    def _finish_transformer_load(self) -> None:
-        """Finish tokenizer padding, optional device override, and eval mode"""
-        if self.tokenizer.pad_token is None and self.tokenizer.eos_token is not None:
-            self.tokenizer.pad_token = self.tokenizer.eos_token
-        if self.device:
-            self.model.to(self.device)
-        self.model.eval()
-
-    def encode(self, texts: list[str], batch_size: int = 64) -> np.ndarray:
-        """Encode texts with the selected backend and return one vector per input row"""
-        # Whitespace-normalize while preserving row alignment with the source table.
-        texts = prepare_embedding_texts(texts)
-        if not texts:
-            return np.asarray([], dtype=np.float32)
-
-        if self.spec.backend == "sentence-transformer":
-            return np.asarray(
-                self.model.encode(
-                    texts,
-                    batch_size=batch_size,
-                    show_progress_bar=False,
-                    convert_to_numpy=True,
-                    normalize_embeddings=False,
-                ),
-                dtype=np.float32,
-            )
-
-        if self.spec.backend == "gensim":
-            vectors = [self._encode_static(text) for text in texts]
-            return np.asarray(vectors, dtype=np.float32)
-
-        if self.spec.backend == "transformer":
-            return self._encode_transformer(texts, batch_size=batch_size)
-
-        raise ValueError(f"Unsupported backend: {self.spec.backend}")
-
-    def _encode_static(self, text: str) -> np.ndarray:
-        """Encode one text with the Word2Vec/GloVe averaging path"""
-        tokens = tokenize_static_embedding_text(text)
-        # Aggregate the vectors if they exist in the corpus
-        vectors = [self.model[token] for token in tokens if token in self.model]
-        if not vectors:
-            return np.full(self.model.vector_size, np.nan, dtype=np.float32)
-        # Average
-        return np.mean(vectors, axis=0, dtype=np.float32)
-
-    def _encode_transformer(self, texts: list[str], batch_size: int) -> np.ndarray:
-        """Encode transformer models in batches while preserving input order"""
+    def _encode_transformer(self, texts: list[str]) -> np.ndarray:
         import torch
 
-        outputs = []
-        device = (
-            self.device
-            or getattr(self.model, "device", None)
-            or next(self.model.parameters()).device
-        )
-        for start in range(0, len(texts), batch_size):
-            batch = texts[start : start + batch_size]
-            inputs = self.tokenizer(
+        vectors = []
+        assert self.model is not None
+        assert self.tokenizer is not None
+
+        for start in range(0, len(texts), self.batch_size):
+            batch = texts[start:start + self.batch_size]
+            encoded = self.tokenizer(
                 batch,
-                return_tensors="pt",
                 padding=True,
                 truncation=True,
-                # Leave max_length unset by default, use tokenizer truncation behavior
-                **(
-                    {"max_length": self.max_length}
-                    if self.max_length is not None
-                    else {}
-                ),
+                max_length=self.max_length,
+                return_tensors="pt",
             )
-            inputs = {key: value.to(device) for key, value in inputs.items()}
+            encoded = {key: value.to(self.device) for key, value in encoded.items()}
             with torch.no_grad():
-                model_output = self.model(
-                    **inputs, output_hidden_states=True, return_dict=True
-                )
+                output = self.model(**encoded)
 
-            pooled = pool_transformer_output(
-                model_output, inputs["attention_mask"], self.spec.pooling
-            )
-            outputs.append(pooled.detach().cpu().float().numpy())
-        return np.concatenate(outputs, axis=0).astype(np.float32)
+            pooled = pool_transformer_output(output, encoded["attention_mask"], self.spec.pooling)
+            vectors.append(pooled.detach().cpu().numpy())
+
+        return np.concatenate(vectors, axis=0).astype(np.float32)
 
 
-def pool_transformer_output(model_output, attention_mask, pooling: str):
-    """Apply the requested transformer pooling mode"""
-    if getattr(model_output, "hidden_states", None) is not None:
-        token_embeddings = model_output.hidden_states[-1]
-    else:
-        token_embeddings = model_output.last_hidden_state
+def pool_transformer_output(output, attention_mask, pooling: str):
+    """Pool token embeddings from a transformer output."""
+    if pooling == "pooler" and hasattr(output, "pooler_output") and output.pooler_output is not None:
+        return output.pooler_output
+
+    hidden = getattr(output, "last_hidden_state", None)
+    if hidden is None and getattr(output, "hidden_states", None):
+        hidden = output.hidden_states[-1]
+    if hidden is None:
+        raise ValueError("Transformer output did not include hidden states")
+    if pooling == "max":
+        mask = attention_mask.unsqueeze(-1).expand(hidden.size()).bool()
+        hidden = hidden.masked_fill(~mask, float("-inf"))
+        return hidden.max(dim=1).values
 
     if pooling == "mean":
-        return mean_pool(token_embeddings, attention_mask)
-    if pooling == "max":
-        return max_pool(token_embeddings, attention_mask)
-    if pooling == "pooler" and hasattr(model_output, "pooler_output"):
-        return model_output.pooler_output
-    raise ValueError(f"Invalid pooling type {pooling}")
+        mask = attention_mask.unsqueeze(-1).expand(hidden.size()).float()
+        return (hidden * mask).sum(dim=1) / mask.sum(dim=1).clamp(min=1e-9)
+
+    raise ValueError(f"Unsupported pooling '{pooling}'")
 
 
-def mean_pool(token_embeddings, attention_mask):
-    """Average non-padding token embeddings"""
-    mask = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
-    summed = (token_embeddings * mask).sum(dim=1)
-    denom = mask.sum(dim=1).clamp(min=1e-9)
-    return summed / denom
+def tokenize_static_embedding_text(text: str) -> list[str]:
+    """Tokenize text for static word-vector models."""
+    cleaned = clean_text(text.lower())
+    try:
+        from nltk.tokenize import word_tokenize
+
+        return word_tokenize(cleaned)
+    except LookupError:
+        return cleaned.split()
 
 
-def max_pool(token_embeddings, attention_mask):
-    """Take a max over non-padding token embeddings"""
-    mask = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).bool()
-    masked_hidden = token_embeddings.masked_fill(~mask, float("-inf"))
-    return masked_hidden.max(dim=1).values
+def clean_text(text: str) -> str:
+    """Remove punctuation while preserving word characters and whitespace."""
+    return re.sub(r"[^\w\s'-]", " ", text)
 
 
-def normalize_text(text: object) -> str:
-    """Collapse missing values and repeated whitespace into plain text"""
-    if text is None:
+def normalize_text(value: object) -> str:
+    """Normalize text input for embedding models."""
+    if value is None:
         return ""
     try:
-        if np.isnan(text):  # type: ignore[arg-type]
+        if isinstance(value, float) and np.isnan(value):
             return ""
     except TypeError:
         pass
-    return re.sub(r"\s+", " ", str(text)).strip()
+    return " ".join(str(value).split())

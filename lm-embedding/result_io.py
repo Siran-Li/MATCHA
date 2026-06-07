@@ -1,11 +1,11 @@
+"""Read and write lm-embedding result tables."""
+
 from __future__ import annotations
 
-from pathlib import Path
 import re
+from pathlib import Path
 
 import pandas as pd
-
-from load_models import ModelSpec, display_name, embedding_details
 
 
 SCORES_LONG_FILENAME = "scores_long.csv"
@@ -13,8 +13,6 @@ SUMMARY_FILENAME = "summary.csv"
 SUMMARY_ALL_FILENAME = "summary_all.csv"
 MODEL_SCORES_DIRNAME = "model_scores"
 
-# Keep the CSV layout stable so cached scores, plotting, and summaries
-# can all read the same files without guessing column order
 MODEL_SCORE_COLUMNS = [
     "dataset",
     "kind",
@@ -30,78 +28,107 @@ MODEL_SCORE_COLUMNS = [
     "gap",
 ]
 
+SUMMARY_COLUMNS = [
+    "dataset",
+    "model",
+    "model_display",
+    "embedding_details",
+    "n_rows",
+    "correct_mean",
+    "incorrect_mean",
+    "gap_mean",
+]
+
 
 def model_scores_dir(output_dir: Path, dataset_name: str) -> Path:
+    """Return the model-score directory for a dataset."""
     return output_dir / dataset_name / MODEL_SCORES_DIRNAME
 
 
-def model_scores_path(output_dir: Path, dataset_name: str, spec: ModelSpec) -> Path:
-    filename = f"{safe_filename(embedding_details(spec))}.csv"
-    return model_scores_dir(output_dir, dataset_name) / filename
+def model_scores_path(output_dir: Path, dataset_name: str, model_key: str) -> Path:
+    """Return the model-score CSV path for one dataset/model pair."""
+    return model_scores_dir(output_dir, dataset_name) / f"{safe_filename(model_key)}.csv"
 
 
-def write_model_scores(records: pd.DataFrame, path: Path) -> None:
+def write_model_scores(path: Path, scores: pd.DataFrame) -> None:
+    """Write a per-model score table."""
     path.parent.mkdir(parents=True, exist_ok=True)
-
-    # Older/imported score tables may not have every metadata column
-    # Write the known columns in order and ignore anything missing
-    columns = [column for column in MODEL_SCORE_COLUMNS if column in records.columns]
-
-    records.to_csv(path, index=False, columns=columns)
-    print(f"Saved model scores: {path}")
+    scores = scores.loc[:, MODEL_SCORE_COLUMNS]
+    scores.to_csv(path, index=False)
+    print(f"Wrote {path}")
 
 
-def load_model_scores(path: Path, dataset_name: str, spec: ModelSpec) -> pd.DataFrame:
-    records = pd.read_csv(path)
-    return fill_missing_score_metadata(records, dataset_name, spec)
+def load_model_scores(path: Path) -> pd.DataFrame:
+    """Read a per-model score table."""
+    return pd.read_csv(path)
 
 
-def fill_missing_score_metadata(records: pd.DataFrame, dataset_name: str, spec: ModelSpec) -> pd.DataFrame:
-    # This lets --skip-existing reuse score files from earlier runs,
-    # even if those files were written before all metadata columns existed.
-    if "dataset" not in records.columns:
-        records["dataset"] = dataset_name
-    if "model" not in records.columns:
-        records["model"] = spec.key
-    if "model_display" not in records.columns:
-        records["model_display"] = display_name(spec.key)
-    if "embedding_details" not in records.columns:
-        records["embedding_details"] = embedding_details(spec)
-    if "gap" not in records.columns and {"correct_sim", "incorrect_sim"}.issubset(records.columns):
-        records["gap"] = records["correct_sim"] - records["incorrect_sim"]
-    return records
+def write_dataset_score_tables(output_dir: Path, dataset_name: str) -> pd.DataFrame:
+    """Rebuild scores_long.csv and summary.csv from model_scores/*.csv."""
+    score_dir = model_scores_dir(output_dir, dataset_name)
+    frames = [pd.read_csv(path) for path in sorted(score_dir.glob("*.csv"))]
+    if frames:
+        scores_long = pd.concat(frames, ignore_index=True)
+    else:
+        scores_long = pd.DataFrame(columns=MODEL_SCORE_COLUMNS)
 
-
-def write_dataset_score_tables(
-    output_dir: Path,
-    dataset_name: str,
-    records_by_model: list[pd.DataFrame],
-    summaries: list[dict[str, object]],
-) -> None:
     dataset_dir = output_dir / dataset_name
     dataset_dir.mkdir(parents=True, exist_ok=True)
+    scores_long.to_csv(dataset_dir / SCORES_LONG_FILENAME, index=False)
 
-    if records_by_model:
-        # The long file is the main plotting input
-        scores_path = dataset_dir / SCORES_LONG_FILENAME
-        pd.concat(records_by_model, ignore_index=True).to_csv(scores_path, index=False)
-        print(f"Saved long scores: {scores_path}")
+    summary = summarize_scores(scores_long)
+    summary.to_csv(dataset_dir / SUMMARY_FILENAME, index=False)
+    print(f"Wrote {dataset_dir / SCORES_LONG_FILENAME}")
+    print(f"Wrote {dataset_dir / SUMMARY_FILENAME}")
+    return summary
 
+
+def write_all_datasets_summary(output_dir: Path) -> pd.DataFrame:
+    """Rebuild summary_all.csv from all dataset summaries under output_dir."""
+    summaries = [
+        pd.read_csv(path)
+        for path in sorted(output_dir.glob(f"*/{SUMMARY_FILENAME}"))
+    ]
     if summaries:
-        summary_path = dataset_dir / SUMMARY_FILENAME
-        pd.DataFrame(summaries).to_csv(summary_path, index=False)
-        print(f"Saved summary: {summary_path}")
+        summary_all = pd.concat(summaries, ignore_index=True)
+    else:
+        summary_all = pd.DataFrame(columns=SUMMARY_COLUMNS)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    summary_all.to_csv(output_dir / SUMMARY_ALL_FILENAME, index=False)
+    print(f"Wrote {output_dir / SUMMARY_ALL_FILENAME}")
+    return summary_all
 
 
-def write_all_datasets_summary(output_dir: Path, summary_tables: list[pd.DataFrame]) -> None:
-    if not summary_tables:
-        return
+def summarize_scores(scores: pd.DataFrame) -> pd.DataFrame:
+    """Summarize model score rows by dataset/model metadata."""
+    if scores.empty:
+        return pd.DataFrame(columns=SUMMARY_COLUMNS)
 
-    path = output_dir / SUMMARY_ALL_FILENAME
-    pd.concat(summary_tables, ignore_index=True).to_csv(path, index=False)
-    print(f"\nSaved combined summary: {path}")
+    rows = []
+    grouped = scores.groupby(
+        ["dataset", "model", "model_display", "embedding_details"],
+        dropna=False,
+    )
+    for keys, group in grouped:
+        correct_mean = group["correct_sim"].mean()
+        incorrect_mean = group["incorrect_sim"].mean()
+        gap_mean = group["gap"].mean()
+        if pd.isna(gap_mean) and pd.notna(correct_mean) and pd.notna(incorrect_mean):
+            gap_mean = correct_mean - incorrect_mean
+        rows.append({
+            "dataset": keys[0],
+            "model": keys[1],
+            "model_display": keys[2],
+            "embedding_details": keys[3],
+            "n_rows": int(group["row_id"].count()),
+            "correct_mean": correct_mean,
+            "incorrect_mean": incorrect_mean,
+            "gap_mean": gap_mean,
+        })
+
+    return pd.DataFrame(rows, columns=SUMMARY_COLUMNS)
 
 
-def safe_filename(name: str) -> str:
-    # Model names can contain slashes from Hugging Face IDs
-    return re.sub(r"[^A-Za-z0-9._-]+", "_", name).strip("_")
+def safe_filename(value: str) -> str:
+    """Create a conservative filename from a model key."""
+    return re.sub(r"[^A-Za-z0-9._=-]+", "_", value).strip("_")

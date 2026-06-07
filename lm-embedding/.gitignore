@@ -1,0 +1,13 @@
+/.venv/
+/__pycache__/
+/**/__pycache__/
+
+# Generated evaluation inputs/outputs should be rebuilt locally.
+/datasets/
+/precomputed/
+/outputs/
+*.csv
+*.pkl
+*.pickle
+*.zip
+
