@@ -2,15 +2,6 @@
 
 This folder contains the code of the experiments of Embedding Based Semantic Seperation
 
-The datasets are loaded from pickle files produced by:
-
-```bash
-python dataset_process/prepare_eval_datasets.py --data_path data
-```
-
-Generated outputs are written under `lm-embedding/outputs/` and ignored
-by git.
-
 ## Installation
 
 Install the repository requirements first, as described in the main README.
@@ -26,6 +17,17 @@ and the plotting stack used by `analyze_lm_embeddings.py`.
 
 ## Datasets
 
+The datasets are loaded from pickle files produced by:
+
+```bash
+cd dataset_process
+python prepare_eval_datasets.py --data_path ../data
+cd ..  # go back to the MATCHA directory
+```
+
+(For `newts`, the preparation script above expects the local input CSVs at
+`data/NEWTS/NEWTS_train_2400.csv` and `data/NEWTS/NEWTS_test_600.csv`.)
+
 The default dataset set matches the paper-style plotting flow:
 
 - `snli`
@@ -35,7 +37,12 @@ The default dataset set matches the paper-style plotting flow:
 - `coco-caption`
 - `newts`
 
+Generated outputs are written under `lm-embedding/outputs/` and ignored
+by git.
+
 ## Score Embedding Models
+
+Run all the commands below from the `MATCHA` repository root. Or adjust the paths
 
 If `--models` is not provided, the scorer runs only the default model:
 `s-bert`.
@@ -44,10 +51,11 @@ If `--models` is not provided, the scorer runs only the default model:
 the provided list replaces the default instead of appending to it.
 
 Use `--paper-models` to run every currently wired paper embedding baseline.
-`MATCHA` is added with the MATCHA commands below, and `SNPMI` stays disabled
-until its computation logic is added for the prepared datasets.
+This option does not include `MATCHA` or `SNPMI`: `MATCHA` is added with the
+MATCHA commands below, and `SNPMI` stays disabled until its computation logic
+is added for the prepared datasets.
 
-Supported paper embedding model keys:
+Models in --paper-models:
 
 | Paper label | CLI key |
 | --- | --- |
@@ -76,10 +84,10 @@ Supported paper embedding model keys:
 
 Use the CLI keys exactly as listed above.
 
-`--paper-models` includes `llama-2-13b-mean` and `llama-3-8b-mean`, which
-download Meta LLaMA checkpoints from Hugging Face. Before running the full
-paper model set, use a Hugging Face account that has accepted access for those
-model repositories and provide the token:
+`llama-2-13b-mean` and `llama-3-8b-mean` download Meta LLaMA checkpoints from
+Hugging Face. Before running the full paper model set, use a Hugging Face
+account that has accepted access for those model repositories and provide the
+token:
 
 ```bash
 export HF_TOKEN=YOUR_HF_TOKEN
@@ -100,7 +108,11 @@ python lm-embedding/score_lm_embeddings.py \
   --output-dir lm-embedding/outputs/test_all_models_all_datasets
 ```
 
-Default paper datasets with the default model:
+The full paper model set includes large models and may fail or be slow on some
+hardware. If that happens, run smaller subsets with `--models` and reuse the
+same `--output-dir`.
+
+Default paper datasets with the default model (S-BERT):
 
 ```bash
 python lm-embedding/score_lm_embeddings.py \
@@ -137,9 +149,16 @@ lm-embedding/outputs/test_all_models_all_datasets/failures.csv
 
 ## Add MATCHA Scores
 
-MATCHA scores are produced by `eval_matcha.py`, not from precomputed files in
-this folder. This CLI can execute `../eval_matcha.py` and import the generated
+MATCHA scores are produced by `eval_matcha.py`. This CLI can execute `../eval_matcha.py` and import the generated
 CSV outputs into the `lm-embedding` result layout:
+
+Pass the completed MATCHA training run directory to `--matcha-output-path`.
+This is the folder that contains `config.yaml`, `model_config.json`, and
+`max_diff.pth`, for example:
+
+```text
+/absolute/path/to/MATCHA/outputs/matcha_gpt2/<training_dataset>/<MM-DD_HH-MM>
+```
 
 ```bash
 python lm-embedding/score_lm_embeddings.py \
@@ -147,7 +166,7 @@ python lm-embedding/score_lm_embeddings.py \
   --output-dir lm-embedding/outputs/test_all_models_all_datasets \
   --matcha-only \
   --run-matcha \
-  --matcha-output-path path/to/run_directory
+  --matcha-output-path /absolute/path/to/MATCHA/outputs/matcha_gpt2/<training_dataset>/<MM-DD_HH-MM>
 ```
 
 To import an already completed `eval_matcha.py` run:
@@ -157,14 +176,20 @@ python lm-embedding/score_lm_embeddings.py \
   --dataset-path data \
   --output-dir lm-embedding/outputs/test_all_models_all_datasets \
   --matcha-only \
-  --import-matcha-results path/to/run_directory/eval_results
+  --import-matcha-results /absolute/path/to/MATCHA/outputs/matcha_gpt2/<training_dataset>/<MM-DD_HH-MM>/eval_results
 ```
 
 ## Analyze Results
 
 Use the analysis command after scoring/importing models. By default
 it analyzes and plots the paper dataset set: `snli`, `multi_nli`, `truthfulqa`,
-`climate_fever`, `coco-caption`, and `newts`.
+`climate_fever`, `coco-caption`, and `newts`. It also writes the paper-style
+threshold curves for `snli`, `multi_nli`, and `truthfulqa`.
+
+The analysis expects all model scores to be cosine-similarity scores in the
+`[-1, 1]` range. The wired embedding models and `eval_matcha.py` produce scores
+in that range. If another model or post-processed result is added later, convert
+it to this range before including it in the analysis.
 
 ```bash
 python lm-embedding/analyze_lm_embeddings.py \
@@ -175,14 +200,7 @@ Outputs:
 
 - `lm-embedding/outputs/test_all_models_all_datasets/figures/summary_table.csv`
 - `lm-embedding/outputs/test_all_models_all_datasets/figures/embedding_barplots_new/*.png`
-
-Write only the paper-style summary table without barplots:
-
-```bash
-python lm-embedding/analyze_lm_embeddings.py \
-  --output-dir lm-embedding/outputs/test_all_models_all_datasets \
-  --no-barplots
-```
+- `lm-embedding/outputs/test_all_models_all_datasets/figures/threshold_curves/threshold_curves_norm=False_cutoff=None.png`
 
 The SNPMI baseline is intentionally not wired here yet because its computation
 logic is dataset-dependent and should be added instead of checked-in score
