@@ -1,6 +1,6 @@
 # LM Embedding Evaluation
 
-This folder contains the code that produced semantic space analysis of embeddings
+This folder contains the code of the experiments of Embedding Based Semantic Seperation
 
 The datasets are loaded from pickle files produced by:
 
@@ -10,6 +10,19 @@ python dataset_process/prepare_eval_datasets.py --data_path data
 
 Generated outputs are written under `lm-embedding/outputs/` and ignored
 by git.
+
+## Installation
+
+Install the repository requirements first, as described in the main README.
+Then install the LM-embedding-specific requirements from the repository root:
+
+```bash
+pip install -r lm-embedding/requirements.txt
+```
+
+This second step is needed because the embedding baseline pipeline has its own
+scoring and plotting dependencies, including `gensim`, `sentence-transformers`,
+and the plotting stack used by `analyze_lm_embeddings.py`.
 
 ## Datasets
 
@@ -63,22 +76,28 @@ Supported paper embedding model keys:
 
 Use the CLI keys exactly as listed above.
 
-`llama-2-13b-mean` and `llama-3-8b-mean` download Meta LLaMA checkpoints
-from Hugging Face, so they require a Hugging Face account with access accepted
-for those model repositories. Provide the same token either per command:
+`--paper-models` includes `llama-2-13b-mean` and `llama-3-8b-mean`, which
+download Meta LLaMA checkpoints from Hugging Face. Before running the full
+paper model set, use a Hugging Face account that has accepted access for those
+model repositories and provide the token:
+
+```bash
+export HF_TOKEN=YOUR_HF_TOKEN
+
+python lm-embedding/score_lm_embeddings.py \
+  --dataset-path data \
+  --paper-models \
+  --output-dir lm-embedding/outputs/test_all_models_all_datasets
+```
+
+The equivalent one-command form is:
 
 ```bash
 python lm-embedding/score_lm_embeddings.py \
   --dataset-path data \
-  --models llama-3-8b-mean \
+  --paper-models \
   --hf-token YOUR_HF_TOKEN \
   --output-dir lm-embedding/outputs/test_all_models_all_datasets
-```
-
-or once in the shell for repeated commands:
-
-```bash
-export HF_TOKEN=YOUR_HF_TOKEN
 ```
 
 Default paper datasets with the default model:
@@ -99,15 +118,6 @@ python lm-embedding/score_lm_embeddings.py \
   --output-dir lm-embedding/outputs/test_all_models_all_datasets
 ```
 
-All currently wired paper embedding models:
-
-```bash
-python lm-embedding/score_lm_embeddings.py \
-  --dataset-path data \
-  --paper-models \
-  --output-dir lm-embedding/outputs/test_all_models_all_datasets
-```
-
 Resume without recomputing existing model CSVs:
 
 ```bash
@@ -116,6 +126,13 @@ python lm-embedding/score_lm_embeddings.py \
   --models s-bert mpnet \
   --skip-existing \
   --output-dir lm-embedding/outputs/test_all_models_all_datasets
+```
+
+If one dataset/model pair fails, the scorer records that failure and continues
+with the remaining models. At the end, failures are written to:
+
+```text
+lm-embedding/outputs/test_all_models_all_datasets/failures.csv
 ```
 
 ## Add MATCHA Scores
@@ -143,11 +160,9 @@ python lm-embedding/score_lm_embeddings.py \
   --import-matcha-results path/to/run_directory/eval_results
 ```
 
-Do not add generated MATCHA score CSV/PKL files under `lm-embedding/`.
-
 ## Analyze Results
 
-Use the paper-style analysis command after scoring/importing models. By default
+Use the analysis command after scoring/importing models. By default
 it analyzes and plots the paper dataset set: `snli`, `multi_nli`, `truthfulqa`,
 `climate_fever`, `coco-caption`, and `newts`.
 

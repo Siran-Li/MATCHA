@@ -116,12 +116,20 @@ Reports macro F1, Wasserstein distance, and balanced accuracy per dataset and cr
 
 ### LM Embedding Baselines
 
-The `lm-embedding/` directory contains a self-contained pipeline for scoring
-sentence and language-model embeddings on the prepared CSVs in
-`lm-embedding/datasets/`, importing precomputed SNPMI/MATCHA scores, and
-plotting comparison figures.
-See [`lm-embedding/README.md`](lm-embedding/README.md) for model keys and
-output layout.
+The `lm-embedding/` directory contains the embedding-baseline evaluation
+pipeline used for the comparison figures. It reads evaluation
+pickles produced by `dataset_process/prepare_eval_datasets.py`, scores selected
+embedding models, can add MATCHA scores from `eval_matcha.py`, and writes
+plot-ready summaries under `lm-embedding/outputs/`.
+
+If running this pipeline, install its additional requirements after the main
+repository requirements:
+
+```bash
+pip install -r lm-embedding/requirements.txt
+```
+
+See [`lm-embedding/README.md`](lm-embedding/README.md) for details
 
 ### Human Evaluation 
 
