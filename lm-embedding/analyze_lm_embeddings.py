@@ -303,6 +303,7 @@ def plot_threshold_curves(scores: pd.DataFrame, output_dir: Path) -> None:
 
     labels_for_colors = score_labels(scores)
     color_map = threshold_color_map(labels_for_colors)
+    legend_handles = {}
 
     for ax, dataset in zip(axes, datasets):
         data = scores[scores["dataset"] == dataset]
@@ -317,13 +318,14 @@ def plot_threshold_curves(scores: pd.DataFrame, output_dir: Path) -> None:
                 for threshold in PAPER_THRESHOLDS
             ]
             label = model_display if pd.notna(model_display) else model
-            ax.plot(
+            line = ax.plot(
                 PAPER_THRESHOLDS,
                 percentages,
                 label=label,
                 linewidth=2,
                 color=color_map.get(label, "gray"),
-            )
+            )[0]
+            legend_handles.setdefault(label, line)
 
         ax.set_title(DATASET_DISPLAY.get(dataset, dataset))
         ax.set_xlabel("Threshold (Correct - Incorrect)")
@@ -333,9 +335,8 @@ def plot_threshold_curves(scores: pd.DataFrame, output_dir: Path) -> None:
         ax.set_xlim(0, 2)
         ax.set_ylim(0, 100)
 
-    handles, labels = axes[-1].get_legend_handles_labels()
-    if handles:
-        ordered = sorted(zip(labels, handles), key=lambda item: model_label_sort_key(item[0]))
+    if legend_handles:
+        ordered = sorted(legend_handles.items(), key=lambda item: model_label_sort_key(item[0]))
         labels, handles = zip(*ordered)
         axes[-1].legend(handles, labels, bbox_to_anchor=(1.05, 1), loc="upper left")
 
