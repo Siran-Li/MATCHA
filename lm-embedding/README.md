@@ -26,7 +26,7 @@ cd ..  # go back to the MATCHA directory
 ```
 
 (For `newts`, the preparation script above expects the local input CSVs at
-`data/NEWTS/NEWTS_train_2400.csv` and `data/NEWTS/NEWTS_test_600.csv`.)
+`data/NEWTS/NEWTS_train_2400.csv` and `data/NEWTS/NEWTS_test_600.csv`. Check the readme inside the folder dataset_process for how to retrieve.)
 
 The default dataset set matches the paper-style plotting flow:
 
@@ -37,18 +37,35 @@ The default dataset set matches the paper-style plotting flow:
 - `coco-caption`
 - `newts`
 
+The scorer can also load any prepared eval dataset registered in
+`load_datasets.py`. The currently supported dataset names are:
+
+- `snli`
+- `multi_nli`
+- `vitaminc`
+- `mednli`
+- `truthfulqa`
+- `climate_fever`
+- `coco-caption`
+- `newts`
+
 Generated outputs are written under `lm-embedding/outputs/` and ignored
 by git.
 
 ## Score Embedding Models
 
-Run all the commands below from the `MATCHA` repository root. Or adjust the paths
+Run all the commands below from the `MATCHA` repository root, or adjust the
+paths for your working directory.
 
 If `--models` is not provided, the scorer runs only the default model:
 `s-bert`.
 
 `--models` is an explicit override list. Pass any subset of supported models;
 the provided list replaces the default instead of appending to it.
+
+If `--datasets` is not provided, the scorer runs the default paper datasets
+listed above. `--datasets` is also an explicit override list, so it can be used
+to run a subset of datasets without changing the model selection.
 
 Use `--paper-models` to run every currently wired paper embedding baseline.
 This option does not include `MATCHA` or `SNPMI`: `MATCHA` is added with the
@@ -120,13 +137,23 @@ python lm-embedding/score_lm_embeddings.py \
   --output-dir lm-embedding/outputs/test_all_models_all_datasets
 ```
 
-Explicit subset of models:
+Explicit subset of datasets and models:
 
 ```bash
 python lm-embedding/score_lm_embeddings.py \
   --dataset-path data \
-  --datasets snli multi_nli truthfulqa climate_fever coco-caption newts \
+  --datasets snli newts \
   --models s-bert mpnet \
+  --output-dir lm-embedding/outputs/test_all_models_all_datasets
+```
+
+Dataset choice and model choice are independent. Use `--datasets` to choose
+which prepared datasets to score:
+
+```bash
+python lm-embedding/score_lm_embeddings.py \
+  --dataset-path data \
+  --datasets truthfulqa climate_fever coco-caption \
   --output-dir lm-embedding/outputs/test_all_models_all_datasets
 ```
 
@@ -199,8 +226,8 @@ python lm-embedding/analyze_lm_embeddings.py \
 Outputs:
 
 - `lm-embedding/outputs/test_all_models_all_datasets/figures/summary_table.csv`
-- `lm-embedding/outputs/test_all_models_all_datasets/figures/embedding_barplots_new/*.png`
-- `lm-embedding/outputs/test_all_models_all_datasets/figures/threshold_curves/threshold_curves_norm=False_cutoff=None.png`
+- `lm-embedding/outputs/test_all_models_all_datasets/figures/embedding_barplots/*.png`
+- `lm-embedding/outputs/test_all_models_all_datasets/figures/threshold_curves/snli_multi_nli_truthfulqa_threshold_curves_norm=False_cutoff=None.png`
 
 The SNPMI baseline is intentionally not wired here yet because its computation
 logic is dataset-dependent and should be added instead of checked-in score

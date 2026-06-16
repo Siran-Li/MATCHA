@@ -32,7 +32,7 @@ INCORRECT_HATCH = "\\\\\\"
 GAP_HATCH = "xxxx"
 GRID_STYLE = {"linestyle": "--", "linewidth": 0.7, "alpha": 0.5, "color": "gray"}
 PAPER_THRESHOLDS = np.linspace(0, 2, 200)
-THRESHOLD_FILENAME = "threshold_curves_norm=False_cutoff=None.png"
+THRESHOLD_FILENAME_SUFFIX = "threshold_curves_norm=False_cutoff=None.png"
 THRESHOLD_COLOR_LABELS = [
     "Word2Vec",
     "GloVe",
@@ -136,7 +136,7 @@ def main() -> None:
     print(f"Wrote {summary_path}")
 
     if not args.no_barplots:
-        barplot_dir = figures_dir / "embedding_barplots_new"
+        barplot_dir = figures_dir / "embedding_barplots"
         barplot_dir.mkdir(parents=True, exist_ok=True)
         for dataset in args.datasets:
             dataset_scores = analysis_scores[analysis_scores["dataset"] == dataset]
@@ -342,7 +342,7 @@ def plot_threshold_curves(scores: pd.DataFrame, output_dir: Path) -> None:
 
     plt.tight_layout()
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_path = output_dir / THRESHOLD_FILENAME
+    output_path = output_dir / threshold_filename(datasets)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close()
@@ -361,6 +361,12 @@ def load_matplotlib():
     import matplotlib.pyplot as plt
 
     return matplotlib, plt
+
+
+def threshold_filename(datasets: list[str]) -> str:
+    """Return the threshold-curve filename for the plotted dataset set."""
+    dataset_part = "_".join(datasets)
+    return f"{dataset_part}_{THRESHOLD_FILENAME_SUFFIX}"
 
 
 def score_labels(scores: pd.DataFrame) -> list[str]:
