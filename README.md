@@ -138,7 +138,7 @@ Analyzes which tokens contribute most to similarity scores for EmbSim, BERTScore
 
 ## Citation
 
-Please cite our paper if you use MATCHA in your work:
+If you find MATCHA useful in your research or project, we would appreciate it if you could cite our paper:
 
 ```bibtex
 @inproceedings{li2026matcha,
