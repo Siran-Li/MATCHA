@@ -4,9 +4,9 @@ MATCHA (Matching Text via Contrastive Semantic Alignment) is a learned text simi
 
 **Paper:** [MATCHA: Matching Text via Contrastive Semantic Alignment](https://aclanthology.org/2026.findings-acl.1055.pdf) | **Model:** [HuggingFace](https://huggingface.co/Siran-Li/MATCHA) | **Package:** [matcha-metric](https://pypi.org/project/matcha-metric/)
 
-<div style="background-color: white; padding: 10px; display: inline-block;">
+<table><tr><td bgcolor="white">
   <img src="figure/matcha_model.png" alt="MATCHA Model Architecture">
-</div>
+</td></tr></table>
 
 ## Project Structure
 
