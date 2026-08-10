@@ -32,6 +32,7 @@ MATCHA/
 ├── baselines/
 │   ├── eval_baselines.py       # Compare MATCHA against 8 baseline metrics
 │   └── human_eval.py           # Correlation analysis with human judgments
+├── lm-embedding/               # LM embedding baseline scoring and plotting suite
 └── interpret/
     └── captum_interpret.py     # Token-level attribution via Integrated Gradients
 ```
@@ -114,6 +115,23 @@ Compares MATCHA against 9 widely used baseline metrics:
 | MATCHA | Token-grounded contrastive semantic alignment (proposed method) |
 
 Reports macro F1, Wasserstein distance, and balanced accuracy per dataset and cross-dataset.
+
+### LM Embedding Baselines
+
+The `lm-embedding/` directory contains the embedding-baseline evaluation
+pipeline used for the comparison figures. It reads evaluation
+pickles produced by `dataset_process/prepare_eval_datasets.py`, scores selected
+embedding models, can add MATCHA scores from `eval_matcha.py`, and writes
+plot-ready summaries under `lm-embedding/outputs/`.
+
+If running this pipeline, install its additional requirements after the main
+repository requirements:
+
+```bash
+pip install -r lm-embedding/requirements.txt
+```
+
+See [`lm-embedding/README.md`](lm-embedding/README.md) for details
 
 ### Human Evaluation 
 
